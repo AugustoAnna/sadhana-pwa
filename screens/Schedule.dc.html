@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Practice Schedule</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#FFFFFF;font-family:'Public Sans',sans-serif;}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;gap:24px;padding:28px 24px 24px 24px;overflow:hidden;">
+
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="PracticeDetail.dc.html" aria-label="Back" style="text-decoration:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="#18160F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:25px;color:#18160F;">Schedule</h1>
+  </div>
+
+  <div style="background:#F1EADA;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;">
+    <div style="width:44px;height:44px;border-radius:12px;background:#E9DFC9;flex-shrink:0;"></div>
+    <div style="display:flex;flex-direction:column;">
+      <span style="font-size:15px;font-weight:700;color:#18160F;">{{practiceName}}</span>
+      <span style="font-size:12.5px;color:#837C6D;">Setting a recurring practice</span>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <span style="font-size:13px;font-weight:700;color:#18160F;">Repeat on</span>
+    <div style="display:flex;gap:8px;justify-content:space-between;">
+      <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+        <button type="button" onClick="{{d.pick}}" aria-label="{{d.full}}" style="width:42px;height:42px;border-radius:999px;border:1.5px solid {{d.border}};background:{{d.bg}};color:{{d.color}};font-weight:700;font-size:13px;">{{d.label}}</button>
+      </sc-for>
+    </div>
+    <span style="font-size:12.5px;color:#837C6D;">{{summary}}</span>
+  </div>
+
+  <div style="display:flex;flex-direction:column;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 2px;border-top:1px solid #E7DFCB;">
+      <div style="display:flex;flex-direction:column;">
+        <span style="font-size:14.5px;font-weight:600;color:#18160F;">Time</span>
+      </div>
+      <!-- An invisible native time input sits over the label, so tapping opens the phone's time picker. -->
+      <label style="position:relative;display:flex;align-items:center;gap:6px;">
+        <span style="font-size:14.5px;color:#837C6D;font-weight:600;">{{timeLabel}}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="#837C6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <input type="time" value="{{time}}" onInput="{{setTime}}" onClick="{{openPicker}}" aria-label="Practice time" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;border:none;padding:0;margin:0;">
+      </label>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 2px;border-top:1px solid #E7DFCB;border-bottom:1px solid #E7DFCB;">
+      <div style="display:flex;flex-direction:column;">
+        <span style="font-size:14.5px;font-weight:600;color:#18160F;">Reminder</span>
+        <span style="font-size:12px;color:#837C6D;">Nudge me 10 minutes before</span>
+      </div>
+      <button type="button" onClick="{{toggleReminder}}" aria-pressed="{{reminderOn}}" style="width:46px;height:28px;border-radius:999px;border:none;background:{{reminderTrackColor}};position:relative;padding:0;">
+        <span style="position:absolute;top:3px;left:{{reminderKnobPos}};width:22px;height:22px;border-radius:999px;background:#FFFFFF;transition:left .15s;"></span>
+      </button>
+    </div>
+  </div>
+
+  <div style="flex:1;"></div>
+
+  <a href="PracticeDetail.dc.html" data-back onClick="{{save}}" style="text-decoration:none;display:block;box-sizing:border-box;width:100%;padding:16px;border-radius:14px;background:#2F6B5E;color:#FFFFFF;font-weight:700;font-size:15.5px;text-align:center;">Save schedule</a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    // Which practice: Schedule.dc.html?p=<id>. Saved per practice under 'schedule.<id>'.
+    const id = nav.param('p') || 'isha';
+    this.practice = content.practices.find((p) => p.id === id) || content.practices[0];
+    const saved = db.get('schedule.' + this.practice.id, null);
+    this.state = saved
+      ? { active: saved.days, reminderOn: saved.reminder, time: saved.time }
+      : {
+          active: { Mon: true, Tue: false, Wed: true, Thu: false, Fri: true, Sat: false, Sun: true },
+          reminderOn: true,
+          time: '06:00',
+        };
+  }
+  renderVals() {
+    const s = this.state;
+    const [h, m] = (s.time || '06:00').split(':').map(Number);
+    const timeLabel = ((h % 12) || 12) + ':' + String(m).padStart(2, '0') + (h < 12 ? ' AM' : ' PM');
+    const setTime = (e) => { if (e.target.value) this.setState({ time: e.target.value }); };
+    const openPicker = (e) => { try { e.target.showPicker(); } catch (err) { /* not supported: the input still works */ } };
+    // Save schedule is a link back; this runs first. (Reminders are only stored for now, not sent.)
+    const save = () => db.set('schedule.' + this.practice.id, { days: s.active, time: s.time, reminder: s.reminderOn });
+    const order = [
+      ['Sun', 'S'], ['Mon', 'M'], ['Tue', 'T'], ['Wed', 'W'], ['Thu', 'T'], ['Fri', 'F'], ['Sat', 'S'],
+    ];
+    const days = order.map(([full, label]) => {
+      const on = !!s.active[full];
+      return {
+        full,
+        label,
+        bg: on ? '#2F6B5E' : '#F1EADA',
+        color: on ? '#FFFFFF' : '#18160F',
+        border: on ? '#2F6B5E' : '#F1EADA',
+        pick: () => this.setState({ active: { ...s.active, [full]: !on } }),
+      };
+    });
+    const count = Object.values(s.active).filter(Boolean).length;
+    const summary = count === 7 ? 'Every day' : count === 0 ? 'No days selected' : count + (count === 1 ? ' day a week' : ' days a week');
+    const toggleReminder = () => this.setState({ reminderOn: !s.reminderOn });
+    return {
+      practiceName: this.practice.name,
+      time: s.time,
+      timeLabel,
+      setTime,
+      openPicker,
+      save,
+      days,
+      summary,
+      reminderOn: s.reminderOn,
+      reminderTrackColor: s.reminderOn ? '#2F6B5E' : '#E7DFCB',
+      reminderKnobPos: s.reminderOn ? '21px' : '3px',
+      toggleReminder,
+    };
+  }
+}
+</script>
+</body>
+</html>

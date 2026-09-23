@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Practice Detail</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#FFFFFF;font-family:'Public Sans',sans-serif;}
+  input,textarea{font-family:'Public Sans',sans-serif;}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;gap:18px;padding:28px 24px 24px 24px;overflow:hidden;">
+
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="Home.dc.html" aria-label="Back" style="text-decoration:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="#18160F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div style="display:flex;flex-direction:column;">
+      <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:#18160F;line-height:1.2;">{{practiceName}}</h1>
+      <span style="font-size:12px;color:#837C6D;font-weight:600;">{{dateLabel}}</span>
+    </div>
+  </div>
+
+  <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:20px;">
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">EXPERIENCE</span>
+      <div style="background:#F1EADA;border-radius:20px;padding:4px 16px;">
+
+        <sc-for list="{{fields}}" as="f" hint-placeholder-count="3">
+          <div style="padding:16px 0;border-top:{{f.border}};">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+              <span style="font-size:14.5px;font-weight:700;color:#18160F;">{{f.label}}</span>
+              <button type="button" onClick="{{f.remove}}" aria-label="Remove field" style="width:22px;height:22px;border-radius:999px;border:none;background:#E9DFC9;display:flex;align-items:center;justify-content:center;">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 5L19 19M19 5L5 19" stroke="#837C6D" stroke-width="2.4" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+
+            <sc-if value="{{f.isNumber}}" hint-placeholder-val="{{false}}">
+              <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
+                <input type="text" inputmode="numeric" value="{{f.value}}" onInput="{{f.setValue}}" style="width:70px;text-align:right;padding:10px 12px;border-radius:12px;border:1.5px solid #E7DFCB;background:#FFFFFF;font-size:15px;font-weight:600;color:#18160F;outline:none;">
+                <span style="font-size:13px;color:#837C6D;font-weight:600;">{{f.unit}}</span>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{f.isStepper}}" hint-placeholder-val="{{false}}">
+              <div style="display:flex;align-items:center;gap:16px;">
+                <button type="button" onClick="{{f.dec}}" aria-label="Decrease" style="width:34px;height:34px;border-radius:999px;border:1.5px solid #2F6B5E;background:#FFFFFF;color:#2F6B5E;font-weight:700;font-size:18px;">–</button>
+                <span style="font-size:17px;font-weight:700;color:#18160F;min-width:20px;text-align:center;">{{f.value}}</span>
+                <button type="button" onClick="{{f.inc}}" aria-label="Increase" style="width:34px;height:34px;border-radius:999px;border:1.5px solid #2F6B5E;background:#FFFFFF;color:#2F6B5E;font-weight:700;font-size:18px;">+</button>
+                <span style="font-size:13px;color:#837C6D;font-weight:600;">{{f.unit}}</span>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{f.isRating10}}" hint-placeholder-val="{{false}}">
+              <div style="display:grid;grid-template-columns:repeat(5, minmax(0, 1fr));gap:6px;">
+                <sc-for list="{{f.options}}" as="opt" hint-placeholder-count="10">
+                  <button type="button" onClick="{{opt.pick}}" style="aspect-ratio:1;border-radius:10px;border:1.5px solid {{opt.border}};background:{{opt.bg}};color:{{opt.color}};font-weight:700;font-size:13px;">{{opt.label}}</button>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{f.isStars5}}" hint-placeholder-val="{{false}}">
+              <div style="display:flex;gap:8px;">
+                <sc-for list="{{f.stars}}" as="st" hint-placeholder-count="5">
+                  <button type="button" onClick="{{st.pick}}" aria-label="Star" style="background:transparent;border:none;padding:0;">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="{{st.fill}}"><path d="M12 2.5L14.9 9.2L22 9.9L16.6 14.6L18.3 21.5L12 17.7L5.7 21.5L7.4 14.6L2 9.9L9.1 9.2Z" stroke="#2F6B5E" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{f.isYesno}}" hint-placeholder-val="{{false}}">
+              <div style="display:flex;gap:8px;">
+                <button type="button" onClick="{{f.pickYes}}" style="flex:1;padding:11px;border-radius:12px;border:1.5px solid {{f.yesBorder}};background:{{f.yesBg}};color:{{f.yesColor}};font-weight:700;font-size:13.5px;">Yes</button>
+                <button type="button" onClick="{{f.pickNo}}" style="flex:1;padding:11px;border-radius:12px;border:1.5px solid {{f.noBorder}};background:{{f.noBg}};color:{{f.noColor}};font-weight:700;font-size:13.5px;">No</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{f.isTrend}}" hint-placeholder-val="{{false}}">
+              <div style="display:flex;gap:8px;">
+                <button type="button" onClick="{{f.pickUp}}" style="flex:1;padding:11px;border-radius:12px;border:1.5px solid {{f.upBorder}};background:{{f.upBg}};color:{{f.upColor}};font-weight:700;font-size:15px;">▲</button>
+                <button type="button" onClick="{{f.pickSame}}" style="flex:1;padding:11px;border-radius:12px;border:1.5px solid {{f.sameBorder}};background:{{f.sameBg}};color:{{f.sameColor}};font-weight:700;font-size:15px;">–</button>
+                <button type="button" onClick="{{f.pickDown}}" style="flex:1;padding:11px;border-radius:12px;border:1.5px solid {{f.downBorder}};background:{{f.downBg}};color:{{f.downColor}};font-weight:700;font-size:15px;">▼</button>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+
+      </div>
+
+      <sc-if value="{{addingField}}" hint-placeholder-val="{{false}}">
+        <div style="background:#FFFFFF;border:1.5px solid #E7DFCB;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;">
+          <input type="text" value="{{newFieldName}}" onInput="{{setNewFieldName}}" placeholder="Field name, e.g. Breath count" style="padding:11px 13px;border-radius:12px;border:1.5px solid #E7DFCB;background:#FFFFFF;font-size:13.5px;color:#18160F;outline:none;">
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <sc-for list="{{commonSymbols}}" as="sym" hint-placeholder-count="4">
+              <button type="button" onClick="{{sym.pick}}" style="padding:8px 11px;border-radius:11px;border:1.5px solid {{sym.border}};background:{{sym.bg}};color:{{sym.color}};font-weight:700;font-size:12px;">{{sym.label}}</button>
+            </sc-for>
+            <button type="button" onClick="{{toggleMoreSymbols}}" style="padding:8px 11px;border-radius:11px;border:1.5px solid #E7DFCB;background:#FFFFFF;color:#837C6D;font-weight:700;font-size:12px;">More ▾</button>
+          </div>
+          <sc-if value="{{showMoreSymbols}}" hint-placeholder-val="{{false}}">
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <sc-for list="{{moreSymbols}}" as="sym" hint-placeholder-count="4">
+                <button type="button" onClick="{{sym.pick}}" style="padding:8px 11px;border-radius:11px;border:1.5px solid {{sym.border}};background:{{sym.bg}};color:{{sym.color}};font-weight:700;font-size:12px;">{{sym.label}}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+          <div style="display:flex;gap:8px;">
+            <button type="button" onClick="{{cancelAddField}}" style="flex:1;padding:11px;border-radius:12px;border:1.5px solid #E7DFCB;background:#FFFFFF;color:#18160F;font-weight:700;font-size:13.5px;">Cancel</button>
+            <button type="button" onClick="{{confirmAddField}}" style="flex:1;padding:11px;border-radius:12px;border:none;background:#2F6B5E;color:#FFFFFF;font-weight:700;font-size:13.5px;">Add field</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{showAddButton}}" hint-placeholder-val="{{true}}">
+        <button type="button" onClick="{{startAddField}}" style="align-self:flex-start;padding:6px 4px;border:none;background:transparent;color:#2F6B5E;font-weight:700;font-size:12.5px;">+ Add field</button>
+      </sc-if>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">NOTES</span>
+      <textarea value="{{notes}}" onInput="{{setNotes}}" placeholder="Anything else you noticed..." style="min-height:90px;padding:14px;border-radius:16px;border:1.5px solid #E7DFCB;background:#FFFFFF;font-size:14.5px;line-height:1.5;color:#18160F;outline:none;resize:none;"></textarea>
+    </div>
+
+  </div>
+
+  <button type="button" onClick="{{save}}" style="width:100%;padding:16px;border-radius:14px;border:none;background:#2F6B5E;color:#FFFFFF;font-weight:700;font-size:15.5px;">Save</button>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    // Which practice: PracticeDetail.dc.html?p=<id> (ids are in lib/content.js).
+    const id = nav.param('p') || 'angamardana';
+    this.practice = content.practices.find((p) => p.id === id) || content.practices[0];
+    document.title = 'Practice Detail — ' + this.practice.name;
+    const pid = this.practice.id;
+    // Field definitions are saved per practice; today's values come from today's 'practice-log' entry.
+    const defs = db.get('fields.' + pid, content.practiceFields[pid] || content.practiceFields.default);
+    const log = db.latest('practice-log', { date: db.today(), match: { practice: pid } });
+    const values = log ? log.data.values || {} : {};
+    const initial = (f) => {
+      if (f.id === 'duration') return this.practice.minutes ? String(this.practice.minutes) : '';
+      if (f.id === 'rounds') return db.get('practices.reps', {})[pid] || 1;
+      if (f.kind === 'stepper' || f.kind === 'stars5') return 0;
+      if (f.kind === 'number') return '';
+      return null;
+    };
+    this.state = {
+      fields: defs.map((f) => ({ ...f, value: f.id in values ? values[f.id] : initial(f) })),
+      notes: log ? log.data.notes || '' : '',
+      addingField: false,
+      newFieldName: '',
+      newFieldSymbol: 'rating',
+      showMoreSymbols: false,
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+
+    const setField = (id, patch) => {
+      this.setState({
+        fields: s.fields.map((f) => (f.id === id ? { ...f, ...patch } : f)),
+      });
+    };
+    const removeField = (id) => this.setState({ fields: s.fields.filter((f) => f.id !== id) });
+
+    const fields = s.fields.map((f, i) => {
+      const base = {
+        label: f.label,
+        border: i === 0 ? 'none' : '1px solid #E7DFCB',
+        remove: () => removeField(f.id),
+        isNumber: f.kind === 'number',
+        isStepper: f.kind === 'stepper',
+        isRating10: f.kind === 'rating10',
+        isStars5: f.kind === 'stars5',
+        isYesno: f.kind === 'yesno',
+        isTrend: f.kind === 'trend',
+      };
+
+      if (f.kind === 'number') {
+        return { ...base, value: f.value, unit: f.unit || '', setValue: (e) => setField(f.id, { value: e.target.value }) };
+      }
+      if (f.kind === 'stepper') {
+        const v = Number(f.value) || 0;
+        return {
+          ...base,
+          value: v,
+          unit: f.unit || '',
+          dec: () => setField(f.id, { value: Math.max(0, v - 1) }),
+          inc: () => setField(f.id, { value: v + 1 }),
+        };
+      }
+      if (f.kind === 'rating10') {
+        const options = Array.from({ length: 10 }, (_, j) => j + 1).map((n) => ({
+          label: String(n),
+          bg: f.value === n ? '#2F6B5E' : '#FFFFFF',
+          color: f.value === n ? '#FFFFFF' : '#18160F',
+          border: f.value === n ? '#2F6B5E' : '#E7DFCB',
+          pick: () => setField(f.id, { value: n }),
+        }));
+        return { ...base, options };
+      }
+      if (f.kind === 'stars5') {
+        const v = Number(f.value) || 0;
+        const stars = [1, 2, 3, 4, 5].map((n) => ({
+          fill: n <= v ? '#2F6B5E' : 'none',
+          pick: () => setField(f.id, { value: n }),
+        }));
+        return { ...base, stars };
+      }
+      if (f.kind === 'yesno') {
+        const yesOn = f.value === 'yes';
+        const noOn = f.value === 'no';
+        return {
+          ...base,
+          yesBg: yesOn ? '#2F6B5E' : '#FFFFFF', yesColor: yesOn ? '#FFFFFF' : '#18160F', yesBorder: yesOn ? '#2F6B5E' : '#E7DFCB',
+          noBg: noOn ? '#2F6B5E' : '#FFFFFF', noColor: noOn ? '#FFFFFF' : '#18160F', noBorder: noOn ? '#2F6B5E' : '#E7DFCB',
+          pickYes: () => setField(f.id, { value: 'yes' }),
+          pickNo: () => setField(f.id, { value: 'no' }),
+        };
+      }
+      if (f.kind === 'trend') {
+        const up = f.value === 'up', same = f.value === 'same', down = f.value === 'down';
+        return {
+          ...base,
+          upBg: up ? '#2F6B5E' : '#FFFFFF', upColor: up ? '#FFFFFF' : '#18160F', upBorder: up ? '#2F6B5E' : '#E7DFCB',
+          sameBg: same ? '#2F6B5E' : '#FFFFFF', sameColor: same ? '#FFFFFF' : '#18160F', sameBorder: same ? '#2F6B5E' : '#E7DFCB',
+          downBg: down ? '#2F6B5E' : '#FFFFFF', downColor: down ? '#FFFFFF' : '#18160F', downBorder: down ? '#2F6B5E' : '#E7DFCB',
+          pickUp: () => setField(f.id, { value: 'up' }),
+          pickSame: () => setField(f.id, { value: 'same' }),
+          pickDown: () => setField(f.id, { value: 'down' }),
+        };
+      }
+      return base;
+    });
+
+    // Symbol library for "+ Add field" -- same idea as Tracker Parameters:
+    // a fast common row plus an expandable rest-of-library row.
+    const symbolDefs = {
+      common: [
+        { key: 'number', label: '#' },
+        { key: 'rating', label: '1–10' },
+        { key: 'check', label: '✓ / –' },
+        { key: 'arrow', label: '↑ / ↓' },
+      ],
+      more: [
+        { key: 'stars', label: '★ 1–5' },
+        { key: 'yesno', label: 'Yes / No' },
+        { key: 'percent', label: '%' },
+        { key: 'duration', label: 'Duration' },
+      ],
+    };
+    const makeSymbolChip = (sym) => ({
+      label: sym.label,
+      bg: s.newFieldSymbol === sym.key ? '#2F6B5E' : '#F1EADA',
+      color: s.newFieldSymbol === sym.key ? '#FFFFFF' : '#18160F',
+      border: s.newFieldSymbol === sym.key ? '#2F6B5E' : '#F1EADA',
+      pick: () => this.setState({ newFieldSymbol: sym.key }),
+    });
+    const commonSymbols = symbolDefs.common.map(makeSymbolChip);
+    const moreSymbols = symbolDefs.more.map(makeSymbolChip);
+
+    const setNewFieldName = (e) => this.setState({ newFieldName: e.target.value });
+    const toggleMoreSymbols = () => this.setState({ showMoreSymbols: !s.showMoreSymbols });
+    const startAddField = () => this.setState({ addingField: true });
+    const cancelAddField = () => this.setState({ addingField: false, newFieldName: '', newFieldSymbol: 'rating', showMoreSymbols: false });
+
+    const symbolToField = {
+      number: { kind: 'stepper', unit: '', value: 0 },
+      rating: { kind: 'rating10', value: null },
+      check: { kind: 'yesno', value: null },
+      arrow: { kind: 'trend', value: null },
+      stars: { kind: 'stars5', value: 0 },
+      yesno: { kind: 'yesno', value: null },
+      percent: { kind: 'number', unit: '%', value: '' },
+      duration: { kind: 'number', unit: 'min', value: '' },
+    };
+    const confirmAddField = () => {
+      const name = (s.newFieldName || '').trim();
+      if (!name) return;
+      const cfg = symbolToField[s.newFieldSymbol] || symbolToField.rating;
+      const newField = { id: 'f' + Date.now(), label: name, ...cfg };
+      this.setState({
+        fields: [...s.fields, newField],
+        addingField: false,
+        newFieldName: '',
+        newFieldSymbol: 'rating',
+        showMoreSymbols: false,
+      });
+    };
+
+    const setNotes = (e) => this.setState({ notes: e.target.value });
+
+    const save = () => {
+      const pid = this.practice.id;
+      // Which fields this practice tracks is remembered for next time.
+      db.set('fields.' + pid, s.fields.map(({ value, ...def }) => def));
+      // Today's values: one 'practice-log' entry per practice per day.
+      const values = Object.fromEntries(s.fields.map((f) => [f.id, f.value]));
+      db.upsert('practice-log', { practice: pid, values, notes: s.notes }, { key: 'practice' });
+      // Logging a practice also ticks it off on Home, using the minutes you entered.
+      const duration = s.fields.find((f) => f.kind === 'number' && f.unit === 'min');
+      const minutes = Number(duration && duration.value) || this.practice.minutes || 0;
+      db.upsert('practice', { practice: pid, minutes }, { key: 'practice' });
+      nav.back('Home.dc.html');
+    };
+
+    return {
+      practiceName: this.practice.name,
+      dateLabel: 'TODAY, ' + db.format(db.today()).toUpperCase(),
+      save,
+      fields,
+      addingField: s.addingField,
+      showAddButton: !s.addingField,
+      newFieldName: s.newFieldName,
+      setNewFieldName,
+      commonSymbols,
+      moreSymbols,
+      showMoreSymbols: s.showMoreSymbols,
+      toggleMoreSymbols,
+      startAddField,
+      cancelAddField,
+      confirmAddField,
+      notes: s.notes,
+      setNotes,
+    };
+  }
+}
+</script>
+</body>
+</html>

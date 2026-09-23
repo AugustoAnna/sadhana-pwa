@@ -1,0 +1,21 @@
+{
+  "start": "Home.dc.html",
+  "screens": [
+    { "file": "Home.dc.html", "title": "Home" },
+    { "file": "AddPractices.dc.html", "title": "Add Practices" },
+    { "file": "PracticeDetail.dc.html", "title": "Practice Detail" },
+    { "file": "Schedule.dc.html", "title": "Practice Schedule" },
+    { "file": "Journal.dc.html", "title": "Journal" },
+    { "file": "MoodCheckin.dc.html", "title": "Mood & Energy" },
+    { "file": "DailyReflection.dc.html", "title": "Daily Reflection" },
+    { "file": "WeeklyReflection.dc.html", "title": "Weekly Reflection" },
+    { "file": "ReflectionParams.dc.html", "title": "Reflection Parameters" },
+    { "file": "WeeklyTracker.dc.html", "title": "Daily Tracker" },
+    { "file": "TrackerParams.dc.html", "title": "Tracker Parameters" },
+    { "file": "Expressions.dc.html", "title": "Expressions" },
+    { "file": "CommitmentLetter.dc.html", "title": "My Commitment" },
+    { "file": "Insights.dc.html", "title": "Insights" },
+    { "file": "Scratch.dc.html", "title": "Scratch (copy me to start a new screen)" },
+    { "file": "Dev.html", "title": "Dev: screens & data" }
+  ]
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mood Check-in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#FFFFFF;font-family:'Public Sans',sans-serif;}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;gap:32px;padding:32px 24px 24px 24px;overflow:hidden;">
+
+  <div style="display:flex;flex-direction:column;gap:4px;">
+    <a href="Journal.dc.html" aria-label="Back" style="text-decoration:none;width:32px;height:32px;margin-left:-6px;display:flex;align-items:center;justify-content:center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="#18160F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <span style="font-size:13px;color:#837C6D;font-weight:600;">{{dateLabel}}</span>
+    <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:27px;color:#18160F;">How are you today?</h1>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <span style="font-size:13.5px;font-weight:700;color:#18160F;">Mood</span>
+    <div style="display:flex;gap:8px;">
+      <sc-for list="{{moods}}" as="m" hint-placeholder-count="5">
+        <button type="button" onClick="{{m.pick}}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;background:transparent;border:none;padding:0;">
+          <span style="width:100%;aspect-ratio:1;border-radius:14px;border:1.5px solid {{m.border}};background:{{m.bg}};"></span>
+          <span style="font-size:10.5px;font-weight:600;color:{{m.labelColor}};">{{m.label}}</span>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <span style="font-size:13.5px;font-weight:700;color:#18160F;">Energy</span>
+    <div style="display:flex;gap:8px;">
+      <sc-for list="{{energies}}" as="e" hint-placeholder-count="5">
+        <button type="button" onClick="{{e.pick}}" style="flex:1;padding:16px 0;border-radius:14px;border:1.5px solid {{e.border}};background:{{e.bg}};color:{{e.color}};font-weight:700;font-size:15px;">{{e.label}}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="flex:1;"></div>
+
+  <button type="button" onClick="{{logCheckin}}" style="width:100%;padding:16px;border-radius:14px;border:none;background:{{ctaColor}};color:#FFFFFF;font-weight:700;font-size:15.5px;">{{ctaLabel}}</button>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    // Show today's latest check-in, if there is one. Each "Log check-in" adds a 'mood' entry.
+    const last = db.latest('mood', { date: db.today() });
+    this.state = last
+      ? { mood: last.data.mood, energy: last.data.energy - 1, logged: true }
+      : { mood: null, energy: null, logged: false };
+  }
+  renderVals() {
+    const s = this.state;
+    const moodLabels = ['Low', 'Down', 'Okay', 'Good', 'Great'];
+    const moods = moodLabels.map((label, i) => {
+      const on = s.mood === i;
+      return {
+        label,
+        bg: on ? '#2F6B5E' : '#F1EADA',
+        border: on ? '#2F6B5E' : '#F1EADA',
+        labelColor: on ? '#18160F' : '#837C6D',
+        pick: () => this.setState({ mood: i, logged: false }),
+      };
+    });
+    const energyLabels = ['1', '2', '3', '4', '5'];
+    const energies = energyLabels.map((label, i) => {
+      const on = s.energy === i;
+      return {
+        label,
+        bg: on ? '#2F6B5E' : '#F1EADA',
+        border: on ? '#2F6B5E' : '#F1EADA',
+        color: on ? '#FFFFFF' : '#18160F',
+        pick: () => this.setState({ energy: i, logged: false }),
+      };
+    });
+    const ready = s.mood !== null && s.energy !== null;
+    const logCheckin = () => {
+      if (!ready || s.logged) return;
+      db.add('mood', { mood: s.mood, moodLabel: moodLabels[s.mood], energy: s.energy + 1 });
+      this.setState({ logged: true });
+    };
+    return {
+      dateLabel: db.format(db.today(), { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase(),
+      moods,
+      energies,
+      ctaLabel: s.logged ? 'Logged ✓' : 'Log check-in',
+      ctaColor: s.logged ? '#1E4A40' : (ready ? '#2F6B5E' : '#C9D9D2'),
+      logCheckin,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Add Practices</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#FFFFFF;font-family:'Public Sans',sans-serif;}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;overflow:hidden;">
+
+  <div style="flex:1;overflow-y:auto;padding:28px 24px 16px 24px;display:flex;flex-direction:column;gap:18px;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="Home.dc.html" aria-label="Back" style="text-decoration:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="#18160F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:23px;color:#18160F;">Add Practices</h1>
+    </div>
+
+    <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">COMMONLY PRACTICED</span>
+
+    <div style="background:#F1EADA;border-radius:20px;padding:4px 16px;">
+      <sc-for list="{{items}}" as="it" hint-placeholder-count="6">
+        <div style="padding:16px 0;border-top:{{it.border}};">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="width:44px;height:44px;flex-shrink:0;border-radius:12px;background:{{it.iconBg}};"></span>
+            <span style="flex:1;font-size:15px;font-weight:700;color:#18160F;">{{it.name}}</span>
+            <button type="button" onClick="{{it.toggle}}" style="padding:9px 16px;border-radius:12px;border:1.5px solid {{it.btnBorder}};background:{{it.btnBg}};color:{{it.btnColor}};font-weight:700;font-size:13px;">{{it.btnLabel}}</button>
+          </div>
+          <sc-if value="{{it.showReps}}" hint-placeholder-val="{{false}}">
+            <div style="display:flex;gap:8px;margin-top:10px;padding-left:56px;">
+              <button type="button" onClick="{{it.pick1x}}" style="padding:7px 16px;border-radius:10px;border:none;background:{{it.oneBg}};color:{{it.oneColor}};font-weight:700;font-size:12.5px;">1X</button>
+              <button type="button" onClick="{{it.pick2x}}" style="padding:7px 16px;border-radius:10px;border:none;background:{{it.twoBg}};color:{{it.twoColor}};font-weight:700;font-size:12.5px;">2X</button>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="flex-shrink:0;padding:0 24px 24px 24px;">
+    <a href="Home.dc.html" data-back onClick="{{save}}" style="text-decoration:none;display:block;width:100%;box-sizing:border-box;padding:16px;border-radius:14px;background:#2F6B5E;color:#FFFFFF;font-weight:700;font-size:15.5px;text-align:center;">Save</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    // Start from what's saved. Nothing is written until you tap Save (the back arrow discards).
+    const selected = db.get('practices.selected', content.defaultPractices);
+    this.state = {
+      added: Object.fromEntries(selected.map((id) => [id, true])),
+      reps: db.get('practices.reps', {}),
+    };
+  }
+  renderVals() {
+    const s = this.state;
+    // The full catalog lives in lib/content.js.
+    const items = content.practices.map((d, i) => {
+      const on = !!s.added[d.id];
+      const reps = s.reps[d.id] || 1;
+      const pickReps = (n) => this.setState({ reps: { ...s.reps, [d.id]: n } });
+      return {
+        name: d.name,
+        iconBg: d.color,
+        border: i === 0 ? 'none' : '1px solid #E7DFCB',
+        btnLabel: on ? 'Remove' : 'Add',
+        btnBg: on ? 'transparent' : '#2F6B5E',
+        btnColor: on ? '#2F6B5E' : '#FFFFFF',
+        btnBorder: on ? '#2F6B5E' : '#2F6B5E',
+        toggle: () => this.setState({ added: { ...s.added, [d.id]: !on } }),
+        showReps: !!d.reps && on,
+        oneBg: reps === 1 ? '#2F6B5E' : '#E9DFC9',
+        oneColor: reps === 1 ? '#FFFFFF' : '#18160F',
+        twoBg: reps === 2 ? '#2F6B5E' : '#E9DFC9',
+        twoColor: reps === 2 ? '#FFFFFF' : '#18160F',
+        pick1x: () => pickReps(1),
+        pick2x: () => pickReps(2),
+      };
+    });
+    const save = () => {
+      // Keep the order you already have on Home; newly added practices go to the end.
+      const kept = db.get('practices.selected', content.defaultPractices).filter((id) => s.added[id]);
+      const added = content.practices.map((p) => p.id).filter((id) => s.added[id] && !kept.includes(id));
+      db.set('practices.selected', [...kept, ...added]);
+      db.set('practices.reps', s.reps);
+    };
+    return { items, save };
+  }
+}
+</script>
+</body>
+</html>

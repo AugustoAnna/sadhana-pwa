@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Expressions</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#FFFFFF;font-family:'Public Sans',sans-serif;}
+  textarea{font-family:'Fraunces',serif;}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;padding:28px 24px 28px 24px;overflow:hidden;position:relative;">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;">
+    <a href="Journal.dc.html" aria-label="Back" style="text-decoration:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="#18160F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <span style="font-size:13px;color:{{headerColor}};font-weight:600;">{{headerLabel}}</span>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;padding-top:28px;background-image:repeating-linear-gradient(to bottom, transparent, transparent 43px, #EEE8D6 43px, #EEE8D6 44px);background-position:0 8px;overflow:hidden;">
+    <label for="expression-note" style="position:absolute;left:-9999px;">Write an expression</label>
+    <textarea id="expression-note" value="{{text}}" onInput="{{setText}}" placeholder="A moment to remember, a line for a poem, a stray thought worth keeping -- e.g. &quot;Finally did 33 Surya Shaktis today, the experience was amazing&quot; or &quot;A wonderful sit in Dhyanalinga.&quot;" style="flex:1;resize:none;border:none;background:transparent;font-size:17px;line-height:44px;color:#18160F;outline:none;padding:0;"></textarea>
+  </div>
+
+  <div style="display:flex;gap:6px;flex-wrap:wrap;padding:14px 90px 0 0;">
+    <button type="button" onClick="{{spiralPick}}" aria-label="Look back later" style="width:28px;height:28px;border-radius:999px;border:none;background:{{spiralBg}};display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 8a4 4 0 1 1 1.2 2.8" stroke="{{spiralColor}}" stroke-width="1.6" stroke-linecap="round"/><path d="M4 11v-2.5h2.5" stroke="{{spiralColor}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button type="button" onClick="{{starPick}}" aria-label="Done well" style="width:28px;height:28px;border-radius:999px;border:none;background:{{starBg}};display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4L2.2 5.7l4-.6L8 1.5Z" stroke="{{starColor}}" stroke-width="1.2"/></svg></button>
+    <button type="button" onClick="{{ladderPick}}" aria-label="Made progress" style="width:28px;height:28px;border-radius:999px;border:none;background:{{ladderBg}};display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.5" y="9" width="2.4" height="3.5" rx="0.6" fill="{{ladderColor}}"/><rect x="6.3" y="6.5" width="2.4" height="6" rx="0.6" fill="{{ladderColor}}"/><rect x="10.1" y="4" width="2.4" height="8.5" rx="0.6" fill="{{ladderColor}}"/></svg></button>
+    <button type="button" onClick="{{noentryPick}}" aria-label="No change" style="width:28px;height:28px;border-radius:999px;border:none;background:{{noentryBg}};display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="{{noentryColor}}" stroke-width="1.4"/><line x1="4" y1="12" x2="12" y2="4" stroke="{{noentryColor}}" stroke-width="1.4"/></svg></button>
+    <button type="button" onClick="{{balancePick}}" aria-label="Balance" style="width:28px;height:28px;border-radius:999px;border:none;background:{{balanceBg}};display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><line x1="3" y1="8" x2="13" y2="8" stroke="{{balanceColor}}" stroke-width="1.4"/><path d="M5 6l-2 2 2 2M11 6l2 2-2 2" stroke="{{balanceColor}}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button type="button" onClick="{{lotusPick}}" aria-label="Clarity" style="width:28px;height:28px;border-radius:999px;border:none;background:{{lotusBg}};display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><ellipse cx="8" cy="4.5" rx="1.6" ry="2.6" stroke="{{lotusColor}}" stroke-width="1.1"/><ellipse cx="8" cy="11.5" rx="1.6" ry="2.6" stroke="{{lotusColor}}" stroke-width="1.1"/><ellipse cx="4.5" cy="8" rx="2.6" ry="1.6" stroke="{{lotusColor}}" stroke-width="1.1"/><ellipse cx="11.5" cy="8" rx="2.6" ry="1.6" stroke="{{lotusColor}}" stroke-width="1.1"/><circle cx="8" cy="8" r="1.3" stroke="{{lotusColor}}" stroke-width="1.1"/></svg></button>
+    <button type="button" onClick="{{bulbPick}}" aria-label="Intensity" style="width:28px;height:28px;border-radius:999px;border:none;background:{{bulbBg}};display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1.5a4 4 0 0 0-2 7.5c.5.4.8 1 .8 1.6v.4h2.4v-.4c0-.6.3-1.2.8-1.6A4 4 0 0 0 8 1.5Z" stroke="{{bulbColor}}" stroke-width="1.2"/><line x1="6.5" y1="13.2" x2="9.5" y2="13.2" stroke="{{bulbColor}}" stroke-width="1.2"/><line x1="6.8" y1="14.4" x2="9.2" y2="14.4" stroke="{{bulbColor}}" stroke-width="1.2"/></svg></button>
+    <button type="button" onClick="{{eyePick}}" aria-label="Needs attention" style="width:28px;height:28px;border-radius:999px;border:none;background:{{eyeBg}};display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8Z" stroke="{{eyeColor}}" stroke-width="1.2"/><circle cx="8" cy="8" r="1.8" stroke="{{eyeColor}}" stroke-width="1.2"/></svg></button>
+    <button type="button" onClick="{{chatPick}}" aria-label="Talk to facilitator" style="width:28px;height:28px;border-radius:999px;border:none;background:{{chatBg}};display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2.5 3.5h11a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H7l-3 2.5v-2.5H2.5a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1Z" stroke="{{chatColor}}" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
+  </div>
+
+  <button type="button" onClick="{{save}}" aria-label="Save expression" style="position:absolute;bottom:28px;right:24px;width:56px;height:56px;border-radius:999px;border:none;background:{{saveBg}};display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(47,107,94,0.32);">
+    <svg width="20" height="16" viewBox="0 0 24 20" fill="none"><path d="M2 10L9 17L22 2" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { justSaved: false };
+  }
+  componentWillUnmount() {
+    clearTimeout(this.savedTimer);
+  }
+  renderVals() {
+    // The unsaved draft lives in the database too, so it survives leaving the screen.
+    const draft = db.get('draft.expression', { text: '', tag: null });
+    const s = { ...this.state, ...draft };
+    const setDraft = (patch) => db.set('draft.expression', { ...draft, ...patch });
+    const setText = (e) => setDraft({ text: e.target.value });
+    const toggleTag = (t) => setDraft({ tag: s.tag === t ? null : t });
+    // The check button saves the expression as an 'expression' entry and clears the page.
+    const canSave = !!s.text.trim();
+    const save = () => {
+      if (!canSave) return;
+      db.add('expression', { text: s.text.trim(), tag: s.tag });
+      db.del('draft.expression');
+      this.setState({ justSaved: true });
+      clearTimeout(this.savedTimer);
+      this.savedTimer = setTimeout(() => this.setState({ justSaved: false }), 2500);
+    };
+    const now = new Date();
+    const dateLabel = db.format(db.today(), { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() +
+      ' · ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const TAGS = ['spiral', 'star', 'ladder', 'noentry', 'balance', 'lotus', 'bulb', 'eye', 'chat'];
+    const tagFields = {};
+    TAGS.forEach((t) => {
+      const sel = s.tag === t;
+      tagFields[t + 'Bg'] = sel ? '#2F6B5E' : '#F1EADA';
+      tagFields[t + 'Color'] = sel ? '#FFFFFF' : '#837C6D';
+      tagFields[t + 'Pick'] = () => toggleTag(t);
+    });
+    return {
+      ...tagFields,
+      text: s.text,
+      setText,
+      save,
+      saveBg: canSave ? '#2F6B5E' : '#C9D9D2',
+      headerLabel: s.justSaved ? 'SAVED TO YOUR JOURNAL ✓' : dateLabel,
+      headerColor: s.justSaved ? '#2F6B5E' : '#837C6D',
+    };
+  }
+}
+</script>
+</body>
+</html>
