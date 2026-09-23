@@ -25,7 +25,7 @@
         <span style="height:5px;border-radius:999px;flex:1;min-width:8px;background:{{d.color}};"></span>
       </sc-for>
     </div>
-    <a href="ReflectionParams.dc.html" aria-label="Edit parameters" style="text-decoration:none;width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+    <a href="{{editHref}}" aria-label="Edit parameters" style="text-decoration:none;width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 20h4l11-11-4-4L4 16v4Z" stroke="#837C6D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
   </div>
@@ -41,7 +41,71 @@
           <p style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.4;color:#18160F;">{{quoteText}}</p>
           <span style="font-size:12.5px;color:#837C6D;">{{quoteBy}}</span>
         </div>
-        <p style="margin:0;font-size:14.5px;color:#837C6D;line-height:1.5;">Take a breath before you begin. This is a moment for you, not a task to finish.</p>
+        <p style="margin:0;font-size:14.5px;color:#837C6D;line-height:1.5;">Take a moment to recall and think about your day.</p>
+      </div>
+    </sc-if>
+
+    <!-- Mood & energy: saved as today's 'mood' entry once both are picked (Insights charts it). -->
+    <sc-if value="{{isMood}}" hint-placeholder-val="{{false}}">
+      <div style="display:flex;flex-direction:column;gap:26px;">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#2F6B5E;">MOOD &amp; ENERGY</span>
+          <h2 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:23px;line-height:1.35;color:#18160F;">How are you today?</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <span style="font-size:13.5px;font-weight:700;color:#18160F;">Mood</span>
+          <div style="display:flex;gap:8px;">
+            <sc-for list="{{moods}}" as="m" hint-placeholder-count="5">
+              <button type="button" onClick="{{m.pick}}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;background:transparent;border:none;padding:0;">
+                <span style="width:100%;aspect-ratio:1;border-radius:14px;border:1.5px solid {{m.border}};background:{{m.bg}};"></span>
+                <span style="font-size:10.5px;font-weight:600;color:{{m.labelColor}};">{{m.label}}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <span style="font-size:13.5px;font-weight:700;color:#18160F;">Energy</span>
+          <div style="display:flex;gap:8px;">
+            <sc-for list="{{energies}}" as="e" hint-placeholder-count="5">
+              <button type="button" onClick="{{e.pick}}" style="flex:1;padding:16px 0;border-radius:14px;border:1.5px solid {{e.border}};background:{{e.bg}};color:{{e.color}};font-weight:700;font-size:15px;">{{e.label}}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- Daily Tracker: today's parameters (set on Tracker Parameters). Each pick is saved right away as
+         today's 'tracker' entry, the same entries the weekly grid (WeeklyTracker.dc.html) shows. -->
+    <sc-if value="{{isTracker}}" hint-placeholder-val="{{false}}">
+      <div style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:18px;">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#2F6B5E;">DAILY TRACKER</span>
+          <h2 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:23px;line-height:1.35;color:#18160F;">How did these go today?</h2>
+        </div>
+        <div style="flex-shrink:0;background:#F1EADA;border-radius:18px;padding:2px 16px;">
+          <sc-for list="{{trackerRows}}" as="t" hint-placeholder-count="5">
+            <div style="display:flex;flex-direction:column;gap:10px;padding:14px 0;border-top:{{t.border}};">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;">
+                <span style="font-size:14.5px;font-weight:700;color:#18160F;">{{t.name}}</span>
+                <span style="font-size:10.5px;font-weight:700;letter-spacing:.03em;color:#837C6D;text-transform:uppercase;white-space:nowrap;">{{t.time}}</span>
+              </div>
+              <sc-if value="{{t.hasChoices}}" hint-placeholder-val="{{true}}">
+                <div style="display:grid;grid-template-columns:repeat({{t.cols}}, minmax(0, 1fr));gap:6px;">
+                  <sc-for list="{{t.choices}}" as="o" hint-placeholder-count="3">
+                    <button type="button" onClick="{{o.pick}}" style="padding:9px 0;border-radius:10px;border:1.5px solid {{o.border}};background:{{o.bg}};color:{{o.color}};font-weight:700;font-size:13.5px;">{{o.label}}</button>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{t.hasInput}}" hint-placeholder-val="{{false}}">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input type="text" inputmode="decimal" value="{{t.inputValue}}" onInput="{{t.setInput}}" placeholder="{{t.placeholder}}" style="width:110px;padding:10px 12px;border-radius:10px;border:1.5px solid #E7DFCB;background:#FFFFFF;font-family:'Public Sans',sans-serif;font-size:15px;font-weight:600;color:#18160F;outline:none;">
+                  <span style="font-size:13px;color:#837C6D;font-weight:600;">{{t.unit}}</span>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <a href="WeeklyTracker.dc.html" style="flex-shrink:0;align-self:flex-start;text-decoration:none;font-size:13px;font-weight:700;color:#2F6B5E;">See the whole week →</a>
       </div>
     </sc-if>
 
@@ -122,7 +186,8 @@
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { done: false, symbolsOpen: false };
+    // inputs: what's typed in the tracker's number fields, so "7." survives until it's a number.
+    this.state = { done: false, symbolsOpen: false, inputs: {} };
   }
   componentDidMount() {
     quotes.refreshReflection(db.today());
@@ -131,8 +196,10 @@ class Component extends DCLogic {
     const today = db.today();
     const quote = quotes.reflection(today);
 
-    // Step 1 of Daily Reflection: the parameters the user defined on Reflection Parameters.
+    // The flow: today's quote, mood & energy, the Daily Tracker, the questions from Reflection
+    // Parameters, then the 5 Inner Engineering tools.
     const params = db.get('reflection.daily', content.dailyQuestions).map((q) => ({ key: 'q:' + q, q }));
+    const trackerParams = db.get('tracker.params', content.trackerParams);
 
     // The 5 standard Inner Engineering tools, from the Sadhanapada journal's
     // own reference page. Descriptions are original one-line prompts, not quotes.
@@ -145,7 +212,9 @@ class Component extends DCLogic {
     ];
 
     const steps = [
-      { type: 'quote' },
+      { type: 'quote', key: 'quote' },
+      { type: 'mood', key: 'mood' },
+      ...(trackerParams.length ? [{ type: 'tracker', key: 'tracker' }] : []),
       ...params.map((p) => ({ type: 'param', key: p.key, heading: p.q })),
       ...tools.map((t) => ({ type: 'tool', key: t.key, heading: t.name, subtext: t.desc })),
     ];
@@ -156,21 +225,105 @@ class Component extends DCLogic {
     const saved = db.latest('daily-reflection', { date: today });
     let draft = db.get('draft.dailyReflection', null);
     if (!draft || draft.date !== today) {
-      draft = { date: today, step: 0, answers: {}, tags: {} };
+      draft = { v: 2, date: today, step: 0, answers: {}, tags: {} };
       if (saved) {
         saved.data.answers.forEach((a) => {
           draft.answers[a.key] = a.text;
           if (a.tag) draft.tags[a.key] = a.tag;
         });
       }
+    } else if (draft.v !== 2) {
+      draft = { ...draft, v: 2, step: 0 }; // saved before mood & the tracker joined the flow: steps moved
     }
     const s = { ...draft, step: this.state.done ? total : Math.min(draft.step, total - 1) };
     const saveDraft = (patch) => db.set('draft.dailyReflection', { ...draft, ...patch });
     const current = steps[Math.min(s.step, total - 1)];
 
+    // Mood & energy (1-5 each). Picks wait in the draft; once both are there they're saved as
+    // today's 'mood' entry (one per day).
+    const MOODS = ['Low', 'Down', 'Okay', 'Good', 'Great'];
+    const checkin = db.latest('mood', { date: today });
+    const moodNow = draft.mood !== undefined ? draft.mood : checkin ? checkin.data.mood : null;
+    const energyNow = draft.energy !== undefined ? draft.energy : checkin ? checkin.data.energy : null;
+    const pickMood = (patch) => {
+      const next = { mood: moodNow, energy: energyNow, ...patch };
+      saveDraft(patch);
+      if (next.mood !== null && next.energy !== null) {
+        db.upsert('mood', { mood: next.mood, moodLabel: MOODS[next.mood], energy: next.energy }, { date: today });
+      }
+    };
+    const moods = MOODS.map((label, i) => {
+      const on = moodNow === i;
+      return {
+        label,
+        bg: on ? '#2F6B5E' : '#F1EADA',
+        border: on ? '#2F6B5E' : '#F1EADA',
+        labelColor: on ? '#18160F' : '#837C6D',
+        pick: () => pickMood({ mood: i }),
+      };
+    });
+    const energies = [1, 2, 3, 4, 5].map((n) => {
+      const on = energyNow === n;
+      return {
+        label: String(n),
+        bg: on ? '#2F6B5E' : '#F1EADA',
+        border: on ? '#2F6B5E' : '#F1EADA',
+        color: on ? '#FFFFFF' : '#18160F',
+        pick: () => pickMood({ energy: n }),
+      };
+    });
+
+    // Daily Tracker: one row per parameter, with choices (or a number field) by its format.
+    // Tapping the chosen value again clears it.
+    const CHOICES = {
+      arrow: [['▲', 'up'], ['–', 'same'], ['▼', 'down']],
+      check: [['✓', 'yes'], ['–', 'no']],
+      yesno: [['Yes', 'yes'], ['No', 'no']],
+      rating: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => [String(n), n]),
+      stars: [1, 2, 3, 4, 5].map((n) => [n + '★', n]),
+    };
+    const UNITS = { number: '', percent: '%', duration: 'min' };
+    const typed = this.state.inputs || {};
+    const trackerRows = trackerParams.map((p, i) => {
+      const latest = () => db.latest('tracker', { date: today, match: { param: p.id } });
+      const entry = latest();
+      const value = entry ? entry.data.value : null;
+      const setValue = (v) => db.upsert('tracker', { param: p.id, value: v }, { key: 'param', date: today });
+      const clear = () => { const e = latest(); if (e) db.remove(e.id); };
+      const choices = (CHOICES[p.format] || []).map(([label, v]) => {
+        const on = value === v;
+        return {
+          label,
+          bg: on ? '#2F6B5E' : '#FFFFFF',
+          color: on ? '#FFFFFF' : '#18160F',
+          border: on ? '#2F6B5E' : '#E7DFCB',
+          pick: () => (on ? clear() : setValue(v)),
+        };
+      });
+      return {
+        name: p.name,
+        time: p.time || '',
+        border: i === 0 ? 'none' : '1px solid #E7DFCB',
+        hasChoices: choices.length > 0,
+        cols: choices.length || 1,
+        choices,
+        hasInput: !CHOICES[p.format],
+        inputValue: typed[p.id] !== undefined ? typed[p.id] : value === null ? '' : String(value),
+        unit: UNITS[p.format] || '',
+        placeholder: p.format === 'duration' ? 'Minutes' : 'Value',
+        setInput: (e) => {
+          const raw = e.target.value;
+          this.setState({ inputs: { ...(this.state.inputs || {}), [p.id]: raw } });
+          const n = parseFloat(String(raw).replace(',', '.'));
+          if (Number.isFinite(n)) setValue(n);
+          else if (!String(raw).trim()) clear();
+        },
+      };
+    });
+
     const finish = () => {
       const answers = steps
-        .filter((st) => st.type !== 'quote')
+        .filter((st) => st.type === 'param' || st.type === 'tool')
         .map((st) => ({ key: st.key, kind: st.type, question: st.heading, text: (s.answers[st.key] || '').trim(), tag: s.tags[st.key] || null }))
         .filter((a) => a.text || a.tag);
       db.upsert('daily-reflection', { answers });
@@ -216,6 +369,12 @@ class Component extends DCLogic {
       quoteBy: quote ? '—Sadhguru' : '',
       answer: s.answers[current.key] || '',
       isQuote: s.step < total && current.type === 'quote',
+      isMood: s.step < total && current.type === 'mood',
+      isTracker: s.step < total && current.type === 'tracker',
+      moods,
+      energies,
+      trackerRows,
+      editHref: current.type === 'tracker' ? 'TrackerParams.dc.html' : 'ReflectionParams.dc.html',
       isAnswer: s.step < total && isAnswer,
       isComplete: s.step === total,
       sectionLabel: current.type === 'param' ? 'DAILY PARAMETER' : 'INNER ENGINEERING TOOL',
