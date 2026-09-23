@@ -23,9 +23,11 @@
     <span style="font-size:13px;color:{{headerColor}};font-weight:600;">{{headerLabel}}</span>
   </div>
 
-  <div style="flex:1;display:flex;flex-direction:column;padding-top:28px;background-image:repeating-linear-gradient(to bottom, transparent, transparent 43px, #EEE8D6 43px, #EEE8D6 44px);background-position:0 8px;overflow:hidden;">
+  <div style="flex:1;display:flex;flex-direction:column;padding-top:28px;overflow:hidden;">
     <label for="expression-note" style="position:absolute;left:-9999px;">Write an expression</label>
-    <textarea id="expression-note" value="{{text}}" onInput="{{setText}}" placeholder="A moment to remember, a line for a poem, a stray thought worth keeping -- e.g. &quot;Finally did 33 Surya Shaktis today, the experience was amazing&quot; or &quot;A wonderful sit in Dhyanalinga.&quot;" style="flex:1;resize:none;border:none;background:transparent;font-size:17px;line-height:44px;color:#18160F;outline:none;padding:0;"></textarea>
+    <!-- Ruled lines live on the textarea itself: one per 44px line of text, just under where the text
+         sits (about 28px down each line), and they scroll along with the text (background-attachment:local). -->
+    <textarea id="expression-note" value="{{text}}" onInput="{{setText}}" placeholder="A moment to remember, a line for a poem, a stray thought worth keeping -- e.g. &quot;Finally did 33 Surya Shaktis today, the experience was amazing&quot; or &quot;A wonderful sit in Dhyanalinga.&quot;" style="flex:1;resize:none;border:none;background-color:transparent;background-image:linear-gradient(to bottom, transparent 32px, #EEE8D6 32px, #EEE8D6 33px, transparent 33px);background-size:100% 44px;background-attachment:local;font-size:17px;line-height:44px;color:#18160F;outline:none;padding:0;"></textarea>
   </div>
 
   <div style="display:flex;gap:6px;flex-wrap:wrap;padding:14px 90px 0 0;">
