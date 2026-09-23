@@ -77,6 +77,7 @@ async function networkFirst(req) {
     if (res.ok && !res.redirected) cache.put(key, res.clone());
     return res;
   });
+  network.catch(() => {}); // if the timeout wins and the network later fails, don't log an unhandled rejection
   try {
     return await Promise.race([
       network,
