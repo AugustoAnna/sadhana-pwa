@@ -15,9 +15,21 @@
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;overflow:hidden;">
 
-  <div style="flex:1;overflow-y:auto;padding:28px 24px 20px 24px;display:flex;flex-direction:column;gap:20px;">
+  <div style="flex:1;overflow-y:auto;padding:28px 24px 20px 24px;display:flex;flex-direction:column;gap:18px;">
 
     <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:26px;color:#18160F;">Journal</h1>
+
+    <!-- Entries this month (like the Journal app on iPhone): opens Past Entries. -->
+    <a href="History.dc.html" aria-label="Past entries" style="text-decoration:none;flex-shrink:0;display:flex;align-items:center;gap:14px;background:#1E4A40;border-radius:20px;padding:18px 20px;">
+      <span style="flex:1;display:flex;flex-direction:column;gap:2px;">
+        <span style="font-family:'Fraunces',serif;font-weight:600;font-size:34px;line-height:1.05;color:#FFFFFF;">{{entriesCount}}</span>
+        <span style="font-size:13px;font-weight:600;color:#BFE0D6;">{{entriesLabel}}</span>
+      </span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#FFFFFF;">
+        See all
+        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1L7 7L1 13" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </a>
 
     <div style="background:#F1EADA;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;flex-shrink:0;">
       <div style="position:relative;width:100%;height:130px;">
@@ -34,64 +46,43 @@
       </div>
     </div>
 
-    <div style="display:flex;flex-direction:column;gap:10px;">
-
-      <a href="MoodCheckin.dc.html" style="text-decoration:none;display:flex;align-items:center;gap:14px;background:#F1EADA;border-radius:18px;padding:16px;">
-        <img src="../images/journal/mood.svg" alt="" style="width:46px;height:46px;flex-shrink:0;border-radius:13px;display:block;">
-        <span style="flex:1;display:flex;flex-direction:column;">
-          <span style="font-size:15px;font-weight:700;color:#18160F;">Mood &amp; Energy</span>
-        </span>
-        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1L7 7L1 13" stroke="#837C6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-
-      <a href="DailyReflection.dc.html" style="text-decoration:none;display:flex;align-items:center;gap:14px;background:#F1EADA;border-radius:18px;padding:16px;">
-        <img src="../images/journal/daily-reflection.svg" alt="" style="width:46px;height:46px;flex-shrink:0;border-radius:13px;display:block;">
-        <span style="flex:1;display:flex;flex-direction:column;">
-          <span style="font-size:15px;font-weight:700;color:#18160F;">Daily Reflection</span>
-        </span>
-        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1L7 7L1 13" stroke="#837C6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-
-      <a href="WeeklyReflection.dc.html" style="text-decoration:none;display:flex;align-items:center;gap:14px;background:#F1EADA;border-radius:18px;padding:16px;">
-        <img src="../images/journal/weekly-reflection.svg" alt="" style="width:46px;height:46px;flex-shrink:0;border-radius:13px;display:block;">
-        <span style="flex:1;display:flex;flex-direction:column;">
-          <span style="font-size:15px;font-weight:700;color:#18160F;">Weekly Reflection</span>
-        </span>
-        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1L7 7L1 13" stroke="#837C6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-
-      <a href="WeeklyTracker.dc.html" style="text-decoration:none;display:flex;align-items:center;gap:14px;background:#F1EADA;border-radius:18px;padding:16px;">
-        <img src="../images/journal/daily-tracker.svg" alt="" style="width:46px;height:46px;flex-shrink:0;border-radius:13px;display:block;">
-        <span style="flex:1;display:flex;flex-direction:column;">
-          <span style="font-size:15px;font-weight:700;color:#18160F;">Daily Tracker</span>
-        </span>
-        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1L7 7L1 13" stroke="#837C6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-
-      <a href="Expressions.dc.html" style="text-decoration:none;display:flex;align-items:center;gap:14px;background:#F1EADA;border-radius:18px;padding:16px;">
-        <img src="../images/journal/expressions.svg" alt="" style="width:46px;height:46px;flex-shrink:0;border-radius:13px;display:block;">
-        <span style="flex:1;display:flex;flex-direction:column;">
-          <span style="font-size:15px;font-weight:700;color:#18160F;">Expressions</span>
-        </span>
-        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1L7 7L1 13" stroke="#837C6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-
-      <a href="CommitmentLetter.dc.html" style="text-decoration:none;display:flex;align-items:center;gap:14px;background:#F1EADA;border-radius:18px;padding:16px;">
-        <img src="../images/journal/commitment.svg" alt="" style="width:46px;height:46px;flex-shrink:0;border-radius:13px;display:block;">
+    <!-- My Commitment: shows whether it's signed and a line to come back to; opens the letter. -->
+    <a href="CommitmentLetter.dc.html" style="text-decoration:none;flex-shrink:0;display:flex;flex-direction:column;gap:12px;background:#F1EADA;border-radius:20px;padding:16px 18px;">
+      <span style="display:flex;align-items:center;gap:12px;">
+        <img src="../images/journal/commitment.svg" alt="" style="width:40px;height:40px;flex-shrink:0;border-radius:11px;display:block;">
         <span style="flex:1;display:flex;flex-direction:column;">
           <span style="font-size:15px;font-weight:700;color:#18160F;">My Commitment</span>
+          <span style="font-size:12.5px;color:#837C6D;">{{commitStatus}}</span>
         </span>
         <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1L7 7L1 13" stroke="#837C6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="History.dc.html" style="text-decoration:none;display:flex;align-items:center;gap:14px;background:#F1EADA;border-radius:18px;padding:16px;">
-        <img src="../images/journal/past-entries.svg" alt="" style="width:46px;height:46px;flex-shrink:0;border-radius:13px;display:block;">
-        <span style="flex:1;display:flex;flex-direction:column;">
-          <span style="font-size:15px;font-weight:700;color:#18160F;">Past Entries</span>
-        </span>
-        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1L7 7L1 13" stroke="#837C6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
+      </span>
+      <span style="font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:15px;line-height:1.45;color:#18160F;">{{commitPreview}}</span>
+    </a>
 
+    <!-- Journal tools as big squares, two per row. -->
+    <div style="flex-shrink:0;display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:12px;">
+      <a href="MoodCheckin.dc.html" style="text-decoration:none;aspect-ratio:1;box-sizing:border-box;background:#F1EADA;border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;">
+        <img src="../images/journal/mood.svg" alt="" style="width:64px;height:64px;border-radius:17px;display:block;">
+        <span style="font-size:15px;font-weight:700;color:#18160F;line-height:1.25;">Mood &amp; Energy</span>
+      </a>
+      <a href="DailyReflection.dc.html" style="text-decoration:none;aspect-ratio:1;box-sizing:border-box;background:#F1EADA;border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;">
+        <img src="../images/journal/daily-reflection.svg" alt="" style="width:64px;height:64px;border-radius:17px;display:block;">
+        <span style="font-size:15px;font-weight:700;color:#18160F;line-height:1.25;">Daily Reflection</span>
+      </a>
+      <a href="WeeklyReflection.dc.html" style="text-decoration:none;aspect-ratio:1;box-sizing:border-box;background:#F1EADA;border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;">
+        <img src="../images/journal/weekly-reflection.svg" alt="" style="width:64px;height:64px;border-radius:17px;display:block;">
+        <span style="font-size:15px;font-weight:700;color:#18160F;line-height:1.25;">Weekly Reflection</span>
+      </a>
+      <a href="WeeklyTracker.dc.html" style="text-decoration:none;aspect-ratio:1;box-sizing:border-box;background:#F1EADA;border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;">
+        <img src="../images/journal/daily-tracker.svg" alt="" style="width:64px;height:64px;border-radius:17px;display:block;">
+        <span style="font-size:15px;font-weight:700;color:#18160F;line-height:1.25;">Daily Tracker</span>
+      </a>
+      <a href="Expressions.dc.html" style="text-decoration:none;aspect-ratio:1;box-sizing:border-box;background:#F1EADA;border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;">
+        <img src="../images/journal/expressions.svg" alt="" style="width:64px;height:64px;border-radius:17px;display:block;">
+        <span style="font-size:15px;font-weight:700;color:#18160F;line-height:1.25;">Expressions</span>
+      </a>
     </div>
+
   </div>
 
   <div style="flex-shrink:0;display:flex;border-top:1px solid #E7DFCB;background:#FFFFFF;">
@@ -120,7 +111,28 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const toggleWhy = () => this.setState({ whyOpen: !s.whyOpen });
+    const today = db.today();
+
+    // Entries this month: the same kinds Past Entries shows, counted by the day they were written.
+    const JOURNAL = ['daily-reflection', 'weekly-reflection', 'expression'];
+    const monthStart = today.slice(0, 8) + '01';
+    const entriesCount = db.list(null, {
+      where: (e) => {
+        const day = db.iso(new Date(e.ts));
+        return JOURNAL.includes(e.type) && day >= monthStart && day <= today;
+      },
+    }).length;
+
+    // My Commitment (saved by CommitmentLetter.dc.html as kv 'commitment').
+    const c = db.get('commitment', null);
+    const anchor = c && c.anchors && c.anchors[0];
+    const long = (d) => db.format(d, { month: 'short', day: 'numeric', year: 'numeric' });
+
     return {
+      entriesCount,
+      entriesLabel: (entriesCount === 1 ? 'entry' : 'entries') + ' this month',
+      commitStatus: c && c.signed ? 'Signed ' + (c.signedOn ? long(c.signedOn) : '') : 'Not signed yet',
+      commitPreview: anchor ? '“' + anchor + '”' : 'Write a letter to yourself to come back to on hard days.',
       whyOpen: s.whyOpen,
       whyToggleLabel: s.whyOpen ? 'Read less' : 'Read more',
       whyRotate: s.whyOpen ? 'rotate(180deg)' : 'rotate(0deg)',
