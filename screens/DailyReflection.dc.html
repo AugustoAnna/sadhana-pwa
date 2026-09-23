@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Daily Reflection</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#FFFFFF;font-family:'Public Sans',sans-serif;}
+  textarea{font-family:'Public Sans',sans-serif;}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;padding:28px 24px 24px 24px;overflow:hidden;">
+
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
+    <a href="Journal.dc.html" aria-label="Close" style="text-decoration:none;width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 5L19 19M19 5L5 19" stroke="#837C6D" stroke-width="2" stroke-linecap="round"/></svg>
+    </a>
+    <div style="display:flex;gap:4px;flex:1;flex-wrap:wrap;">
+      <sc-for list="{{dots}}" as="d" hint-placeholder-count="9">
+        <span style="height:5px;border-radius:999px;flex:1;min-width:8px;background:{{d.color}};"></span>
+      </sc-for>
+    </div>
+    <a href="ReflectionParams.dc.html" aria-label="Edit parameters" style="text-decoration:none;width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 20h4l11-11-4-4L4 16v4Z" stroke="#837C6D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+
+    <sc-if value="{{isQuote}}" hint-placeholder-val="{{true}}">
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">{{dateLabel}}</span>
+        <div style="background:#F1EADA;border-radius:20px;padding:28px 22px;display:flex;flex-direction:column;gap:14px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#2F6B5E;">TODAY'S QUOTE</span>
+          <p style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:21px;line-height:1.4;color:#18160F;">[Today's Sadhguru quote appears here]</p>
+        </div>
+        <p style="margin:0;font-size:14.5px;color:#837C6D;line-height:1.5;">Take a breath before you begin. This is a moment for you, not a task to finish.</p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isAnswer}}" hint-placeholder-val="{{false}}">
+      <div style="display:flex;flex-direction:column;gap:18px;flex:1;">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#2F6B5E;">{{sectionLabel}}</span>
+        <h2 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:23px;line-height:1.35;color:#18160F;">{{heading}}</h2>
+        <sc-if value="{{hasSubtext}}" hint-placeholder-val="{{false}}">
+          <p style="margin:0;font-size:13.5px;color:#837C6D;line-height:1.5;">{{subtext}}</p>
+        </sc-if>
+        <textarea key="{{stepKey}}" value="{{answer}}" onInput="{{setAnswer}}" placeholder="Write freely, no need to edit yourself..." style="flex:1;resize:none;border:none;background:transparent;font-size:17px;line-height:1.6;color:#18160F;outline:none;padding:0;"></textarea>
+        <div style="display:flex;gap:6px;padding-top:4px;flex-wrap:wrap;">
+          <button type="button" onClick="{{spiralPick}}" aria-label="Look back later" style="width:30px;height:30px;border-radius:999px;border:none;background:{{spiralBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 8a4 4 0 1 1 1.2 2.8" stroke="{{spiralColor}}" stroke-width="1.6" stroke-linecap="round"/><path d="M4 11v-2.5h2.5" stroke="{{spiralColor}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" onClick="{{starPick}}" aria-label="Done well" style="width:30px;height:30px;border-radius:999px;border:none;background:{{starBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4L2.2 5.7l4-.6L8 1.5Z" stroke="{{starColor}}" stroke-width="1.2"/></svg></button>
+          <button type="button" onClick="{{ladderPick}}" aria-label="Made progress" style="width:30px;height:30px;border-radius:999px;border:none;background:{{ladderBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2.5" y="9" width="2.4" height="3.5" rx="0.6" fill="{{ladderColor}}"/><rect x="6.3" y="6.5" width="2.4" height="6" rx="0.6" fill="{{ladderColor}}"/><rect x="10.1" y="4" width="2.4" height="8.5" rx="0.6" fill="{{ladderColor}}"/></svg></button>
+          <button type="button" onClick="{{noentryPick}}" aria-label="No change" style="width:30px;height:30px;border-radius:999px;border:none;background:{{noentryBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="{{noentryColor}}" stroke-width="1.4"/><line x1="4" y1="12" x2="12" y2="4" stroke="{{noentryColor}}" stroke-width="1.4"/></svg></button>
+          <button type="button" onClick="{{balancePick}}" aria-label="Balance" style="width:30px;height:30px;border-radius:999px;border:none;background:{{balanceBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><line x1="3" y1="8" x2="13" y2="8" stroke="{{balanceColor}}" stroke-width="1.4"/><path d="M5 6l-2 2 2 2M11 6l2 2-2 2" stroke="{{balanceColor}}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" onClick="{{lotusPick}}" aria-label="Clarity" style="width:30px;height:30px;border-radius:999px;border:none;background:{{lotusBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><ellipse cx="8" cy="4.5" rx="1.6" ry="2.6" stroke="{{lotusColor}}" stroke-width="1.1"/><ellipse cx="8" cy="11.5" rx="1.6" ry="2.6" stroke="{{lotusColor}}" stroke-width="1.1"/><ellipse cx="4.5" cy="8" rx="2.6" ry="1.6" stroke="{{lotusColor}}" stroke-width="1.1"/><ellipse cx="11.5" cy="8" rx="2.6" ry="1.6" stroke="{{lotusColor}}" stroke-width="1.1"/><circle cx="8" cy="8" r="1.3" stroke="{{lotusColor}}" stroke-width="1.1"/></svg></button>
+          <button type="button" onClick="{{bulbPick}}" aria-label="Intensity" style="width:30px;height:30px;border-radius:999px;border:none;background:{{bulbBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5a4 4 0 0 0-2 7.5c.5.4.8 1 .8 1.6v.4h2.4v-.4c0-.6.3-1.2.8-1.6A4 4 0 0 0 8 1.5Z" stroke="{{bulbColor}}" stroke-width="1.2"/><line x1="6.5" y1="13.2" x2="9.5" y2="13.2" stroke="{{bulbColor}}" stroke-width="1.2"/><line x1="6.8" y1="14.4" x2="9.2" y2="14.4" stroke="{{bulbColor}}" stroke-width="1.2"/></svg></button>
+          <button type="button" onClick="{{eyePick}}" aria-label="Needs attention" style="width:30px;height:30px;border-radius:999px;border:none;background:{{eyeBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8Z" stroke="{{eyeColor}}" stroke-width="1.2"/><circle cx="8" cy="8" r="1.8" stroke="{{eyeColor}}" stroke-width="1.2"/></svg></button>
+          <button type="button" onClick="{{chatPick}}" aria-label="Talk to facilitator" style="width:30px;height:30px;border-radius:999px;border:none;background:{{chatBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2.5 3.5h11a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H7l-3 2.5v-2.5H2.5a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1Z" stroke="{{chatColor}}" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isComplete}}" hint-placeholder-val="{{false}}">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;">
+        <div style="width:64px;height:64px;border-radius:999px;background:#DCEBE5;display:flex;align-items:center;justify-content:center;">
+          <svg width="28" height="22" viewBox="0 0 28 22" fill="none"><path d="M2 11L10 19L26 2" stroke="#2F6B5E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:#18160F;">Reflection saved</h2>
+        <p style="margin:0;font-size:14.5px;color:#837C6D;max-width:260px;line-height:1.5;">See how today shapes up in your weekly summary.</p>
+      </div>
+    </sc-if>
+
+  </div>
+
+  <sc-if value="{{showNav}}" hint-placeholder-val="{{true}}">
+    <div style="display:flex;gap:12px;padding-top:20px;">
+      <sc-if value="{{showBack}}" hint-placeholder-val="{{false}}">
+        <button type="button" onClick="{{back}}" style="flex:1;padding:15px;border-radius:14px;border:1.5px solid #E7DFCB;background:#FFFFFF;color:#18160F;font-weight:700;font-size:15px;">Back</button>
+      </sc-if>
+      <button type="button" onClick="{{next}}" style="flex:2;padding:15px;border-radius:14px;border:none;background:#2F6B5E;color:#FFFFFF;font-weight:700;font-size:15px;">{{nextLabel}}</button>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { done: false };
+  }
+  renderVals() {
+    const today = db.today();
+
+    // Step 1 of Daily Reflection: the parameters the user defined on Reflection Parameters.
+    const params = db.get('reflection.daily', content.dailyQuestions).map((q) => ({ key: 'q:' + q, q }));
+
+    // The 5 standard Inner Engineering tools, from the Sadhanapada journal's
+    // own reference page. Descriptions are original one-line prompts, not quotes.
+    const tools = [
+      { key: 't1', name: 'All the rules are my rules', desc: 'Where did you catch yourself blaming the rules today, instead of owning them?' },
+      { key: 't2', name: 'I am responsible for everything', desc: 'How much of today did you experience as something happening to you, versus something you were responsible for?' },
+      { key: 't3', name: 'This moment is inevitable', desc: 'Did you meet whatever showed up today without resistance, since it was always going to happen?' },
+      { key: 't4', name: 'I am not this body; I am not this mind', desc: 'A moment to notice the difference between what you experienced today, and who was doing the experiencing.' },
+      { key: 't5', name: 'I am a Mother to the World', desc: 'How much warmth did you extend today, strangers included?' },
+    ];
+
+    const steps = [
+      { type: 'quote' },
+      ...params.map((p) => ({ type: 'param', key: p.key, heading: p.q })),
+      ...tools.map((t) => ({ type: 'tool', key: t.key, heading: t.name, subtext: t.desc })),
+    ];
+    const total = steps.length;
+
+    // Work in progress is saved as you type (kv 'draft.dailyReflection'), so you can leave and come
+    // back. Finishing saves today's 'daily-reflection' entry; opening it again lets you edit it.
+    const saved = db.latest('daily-reflection', { date: today });
+    let draft = db.get('draft.dailyReflection', null);
+    if (!draft || draft.date !== today) {
+      draft = { date: today, step: 0, answers: {}, tags: {} };
+      if (saved) {
+        saved.data.answers.forEach((a) => {
+          draft.answers[a.key] = a.text;
+          if (a.tag) draft.tags[a.key] = a.tag;
+        });
+      }
+    }
+    const s = { ...draft, step: this.state.done ? total : Math.min(draft.step, total - 1) };
+    const saveDraft = (patch) => db.set('draft.dailyReflection', { ...draft, ...patch });
+    const current = steps[Math.min(s.step, total - 1)];
+
+    const finish = () => {
+      const answers = steps
+        .filter((st) => st.type !== 'quote')
+        .map((st) => ({ key: st.key, kind: st.type, question: st.heading, text: (s.answers[st.key] || '').trim(), tag: s.tags[st.key] || null }))
+        .filter((a) => a.text || a.tag);
+      db.upsert('daily-reflection', { answers });
+      db.del('draft.dailyReflection');
+      this.setState({ done: true });
+    };
+    const next = () => (s.step >= total - 1 ? finish() : saveDraft({ step: s.step + 1 }));
+    const back = () => saveDraft({ step: Math.max(s.step - 1, 0) });
+
+    const setAnswer = (e) => saveDraft({ answers: { ...s.answers, [current.key]: e.target.value } });
+
+    const dots = steps.map((_, i) => ({
+      color: i <= s.step ? '#2F6B5E' : '#EDE7D6',
+    }));
+
+    const isAnswer = current.type === 'param' || current.type === 'tool';
+
+    // The 9 annotation symbols from the journal's "Symbols" legend. These tag
+    // a whole written entry (not a line within it) -- one tag per entry.
+    const currentTag = s.tags[current.key] || null;
+    const toggleTag = (t) => saveDraft({ tags: { ...s.tags, [current.key]: currentTag === t ? null : t } });
+    const TAGS = ['spiral', 'star', 'ladder', 'noentry', 'balance', 'lotus', 'bulb', 'eye', 'chat'];
+    const tagFields = {};
+    TAGS.forEach((t) => {
+      const sel = currentTag === t;
+      tagFields[t + 'Bg'] = sel ? '#2F6B5E' : '#F1EADA';
+      tagFields[t + 'Color'] = sel ? '#FFFFFF' : '#837C6D';
+      tagFields[t + 'Pick'] = () => toggleTag(t);
+    });
+
+    return {
+      dateLabel: 'TODAY · ' + db.format(today).toUpperCase(),
+      answer: s.answers[current.key] || '',
+      isQuote: s.step < total && current.type === 'quote',
+      isAnswer: s.step < total && isAnswer,
+      isComplete: s.step === total,
+      sectionLabel: current.type === 'param' ? 'DAILY PARAMETER' : 'INNER ENGINEERING TOOL',
+      heading: current.heading,
+      subtext: current.subtext || '',
+      hasSubtext: !!current.subtext,
+      stepKey: current.key,
+      setAnswer,
+      showNav: s.step < total,
+      showBack: s.step > 0,
+      nextLabel: s.step === total - 1 ? 'Finish' : 'Next',
+      dots,
+      next,
+      back,
+      ...tagFields,
+    };
+  }
+}
+</script>
+</body>
+</html>

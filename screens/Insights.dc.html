@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Insights</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#FFFFFF;font-family:'Public Sans',sans-serif;}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;overflow:hidden;">
+
+  <div style="flex:1;overflow-y:auto;padding:28px 24px 20px 24px;display:flex;flex-direction:column;gap:22px;">
+
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:27px;color:#18160F;">Insights</h1>
+      <span style="font-size:13px;color:#837C6D;font-weight:600;">{{weekLabel}}</span>
+    </div>
+
+    <div style="display:flex;gap:10px;">
+      <div style="flex:1;background:#F1EADA;border-radius:16px;padding:16px 14px;display:flex;flex-direction:column;gap:4px;">
+        <span style="font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:#18160F;">{{practicesStat}}</span>
+        <span style="font-size:11.5px;color:#837C6D;font-weight:600;line-height:1.3;">Practices completed</span>
+      </div>
+      <div style="flex:1;background:#F1EADA;border-radius:16px;padding:16px 14px;display:flex;flex-direction:column;gap:4px;">
+        <span style="font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:#18160F;">{{minutesStat}}</span>
+        <span style="font-size:11.5px;color:#837C6D;font-weight:600;line-height:1.3;">Avg minutes/day</span>
+      </div>
+      <div style="flex:1;background:#F1EADA;border-radius:16px;padding:16px 14px;display:flex;flex-direction:column;gap:4px;">
+        <span style="font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:#18160F;">{{journalStat}}</span>
+        <span style="font-size:11.5px;color:#837C6D;font-weight:600;line-height:1.3;">Journal entries</span>
+      </div>
+    </div>
+
+    <!-- One tracked field from the Daily Tracker, this week (prefers a field named "Focus"). -->
+    <sc-if value="{{hasChart}}" hint-placeholder-val="{{true}}">
+      <div style="background:#F1EADA;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:14px;font-weight:700;color:#18160F;">{{chartTitle}}</span>
+          <span style="font-size:12.5px;color:#837C6D;font-weight:600;">{{chartAvg}}</span>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:8px;height:64px;">
+          <sc-for list="{{bars}}" as="b" hint-placeholder-count="7">
+            <div style="flex:1;height:{{b.height}};background:{{b.color}};border-radius:6px 6px 0 0;"></div>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:0 1px;">
+          <span style="font-size:10.5px;color:#837C6D;">M</span><span style="font-size:10.5px;color:#837C6D;">T</span><span style="font-size:10.5px;color:#837C6D;">W</span><span style="font-size:10.5px;color:#837C6D;">T</span><span style="font-size:10.5px;color:#837C6D;">F</span><span style="font-size:10.5px;color:#837C6D;">S</span><span style="font-size:10.5px;color:#837C6D;">S</span>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">{{monthLabel}}</span>
+      <div style="background:#F1EADA;border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;gap:8px;">
+          <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">M</span>
+            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">T</span>
+            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">W</span>
+            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">T</span>
+            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">F</span>
+            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">S</span>
+            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">S</span>
+          </div>
+          <div style="display:flex;gap:6px;flex:1;">
+            <sc-for list="{{weeks}}" as="w" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:6px;flex:1;">
+                <sc-for list="{{w.cells}}" as="c" hint-placeholder-count="7">
+                  <span title="{{c.title}}" style="height:24px;box-sizing:border-box;border-radius:6px;background:{{c.bg}};border:{{c.border}};opacity:{{c.opacity}};"></span>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
+          <span style="font-size:11px;color:#837C6D;">less</span>
+          <span style="width:14px;height:14px;border-radius:4px;background:#E7DFCB;"></span>
+          <span style="width:14px;height:14px;border-radius:4px;background:#BFDCD2;"></span>
+          <span style="width:14px;height:14px;border-radius:4px;background:#7FB5A4;"></span>
+          <span style="width:14px;height:14px;border-radius:4px;background:#2F6B5E;"></span>
+          <span style="font-size:11px;color:#837C6D;">more</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#1E4A40;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="#BFE0D6" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#BFE0D6;">FROM THE ARCHIVE</span>
+      </div>
+      <p style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1.45;color:#FFFFFF;">[A relevant Sadhguru passage on sustaining focus appears here]</p>
+      <p style="margin:0;font-size:13px;color:#BFE0D6;line-height:1.5;">Your focus hasn't moved much in three weeks — this felt worth sitting with.</p>
+      <button type="button" style="align-self:flex-start;margin-top:4px;background:transparent;border:none;padding:0;color:#FFFFFF;font-weight:700;font-size:14px;display:flex;align-items:center;gap:6px;">
+        Read more
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+  </div>
+
+  <div style="flex-shrink:0;display:flex;border-top:1px solid #E7DFCB;background:#FFFFFF;">
+    <a href="Home.dc.html" style="text-decoration:none;flex:1;padding:10px 0 8px 0;display:flex;flex-direction:column;align-items:center;gap:4px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 11L12 4L20 11V20H4V11Z" stroke="#837C6D" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span style="font-size:10.5px;font-weight:600;color:#837C6D;">Home</span>
+    </a>
+    <a href="Journal.dc.html" style="text-decoration:none;flex:1;padding:10px 0 8px 0;display:flex;flex-direction:column;align-items:center;gap:4px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5.5C6 4.5 9 4.5 12 6C15 4.5 18 4.5 20 5.5V18C18 17 15 17 12 18.5C9 17 6 17 4 18V5.5Z" stroke="#837C6D" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 6V18.5" stroke="#837C6D" stroke-width="1.8"/></svg>
+      <span style="font-size:10.5px;font-weight:600;color:#837C6D;">Journal</span>
+    </a>
+    <div style="flex:1;padding:10px 0 8px 0;display:flex;flex-direction:column;align-items:center;gap:4px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 19V13" stroke="#2F6B5E" stroke-width="1.8" stroke-linecap="round"/><path d="M12 19V6" stroke="#2F6B5E" stroke-width="1.8" stroke-linecap="round"/><path d="M19 19V10" stroke="#2F6B5E" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span style="font-size:10.5px;font-weight:700;color:#2F6B5E;">Insights</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    // Everything here is computed from the database (see lib/stats.js).
+    const today = db.today();
+    const week = db.weekStart();
+    const st = stats.week(week);
+    const dates = db.range(week, db.addDays(week, 6));
+
+    // Bar chart: one numeric field from the Daily Tracker, preferring one named "Focus".
+    const numeric = ['rating', 'number', 'percent', 'stars', 'duration'];
+    const params = db.get('tracker.params', content.trackerParams).filter((p) => numeric.includes(p.format));
+    const param = params.find((p) => /focus/i.test(p.name)) || params[0];
+    let bars = [];
+    let chartAvg = '';
+    if (param) {
+      const values = dates.map((d) => {
+        const e = db.latest('tracker', { date: d, match: { param: param.id } });
+        return e && Number.isFinite(Number(e.data.value)) ? Number(e.data.value) : null;
+      });
+      const known = values.filter((v) => v !== null);
+      const scale = { rating: 10, stars: 5, percent: 100 }[param.format] || Math.max(1, ...known);
+      const lastIdx = values.reduce((last, v, i) => (v !== null && dates[i] <= today ? i : last), -1);
+      bars = values.map((v, i) => ({
+        height: v === null ? '12%' : Math.max(6, Math.min(100, (v / scale) * 100)) + '%',
+        color: v === null ? '#E7DFCB' : i === lastIdx ? '#2F6B5E' : '#D8CDAE',
+      }));
+      const avg = known.length ? Math.round((known.reduce((a, b) => a + b, 0) / known.length) * 10) / 10 : null;
+      const suffix = { rating: ' / 10', stars: ' / 5', percent: '%' }[param.format] || '';
+      chartAvg = avg === null ? 'no entries yet' : 'avg ' + avg + suffix;
+    }
+
+    // Activity heatmap for this month: one column per week (Mon–Sun), shaded by the share of
+    // your practices done that day.
+    const now = db.toDate(today);
+    const monthStart = db.iso(new Date(now.getFullYear(), now.getMonth(), 1));
+    const monthEnd = db.iso(new Date(now.getFullYear(), now.getMonth() + 1, 0));
+    const shade = (r) => (r === 0 ? '#E7DFCB' : r <= 1 / 3 ? '#BFDCD2' : r <= 2 / 3 ? '#7FB5A4' : '#2F6B5E');
+    const weeks = [];
+    for (let w = db.weekStart(monthStart); w <= monthEnd; w = db.addDays(w, 7)) {
+      weeks.push({
+        cells: db.range(w, db.addDays(w, 6)).map((d) => {
+          const inMonth = d >= monthStart && d <= monthEnd;
+          const ratio = inMonth && d <= today ? stats.dayRatio(d) : 0;
+          return {
+            bg: shade(ratio),
+            border: d === today ? '2px solid #E0A458' : 'none',
+            opacity: !inMonth ? 0 : d > today ? 0.5 : 1,
+            title: db.format(d, { weekday: 'short', month: 'short', day: 'numeric' }) + ' · ' + Math.round(ratio * 100) + '%',
+          };
+        }),
+      });
+    }
+
+    return {
+      weekLabel: 'WEEK OF ' + db.weekLabel(week),
+      practicesStat: st.done + '/' + st.possible,
+      minutesStat: st.avgMinutes,
+      journalStat: st.journalDays + '/' + st.days,
+      hasChart: !!param,
+      chartTitle: param ? param.name + ', this week' : '',
+      chartAvg,
+      bars,
+      monthLabel: 'ACTIVITY · ' + db.format(today, { month: 'long' }).toUpperCase(),
+      weeks,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+/*
+ * pwa.css — shell styles added to every screen by support.js.
+ * Screens are designed as 390x844 artboards. On a phone the artboard fills the screen
+ * (inside the notch / home-indicator safe areas); on a desktop it sits in a phone-sized frame.
+ */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: #FFFFFF;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+  overscroll-behavior-y: none;
+}
+
+button,
+a {
+  cursor: pointer;
+}
+
+#dc-root {
+  height: 100%;
+  height: 100dvh;
+  box-sizing: border-box;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+#dc-root > .sc-host {
+  height: 100%;
+}
+
+/* The artboard: the screen's root <div style="width:390px;height:844px;..."> */
+#dc-root > .sc-host > div:not(.sc-logic-error) {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Tablet / desktop: show the screen in a phone-sized frame. */
+@media (min-width: 700px) and (min-height: 640px) {
+  html,
+  body {
+    background: #ECE8DF;
+  }
+  #dc-root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  #dc-root > .sc-host {
+    height: auto;
+  }
+  #dc-root > .sc-host > div:not(.sc-logic-error) {
+    width: 390px !important;
+    height: min(844px, calc(100dvh - 48px)) !important;
+    border-radius: 32px;
+    box-shadow: 0 1px 2px rgba(24, 22, 15, 0.06), 0 24px 60px rgba(24, 22, 15, 0.16);
+  }
+}
+
+/* Dev handle (added by support.js): a thin tab on the left edge on phones, a pill on desktop. */
+.pwa-dev-handle {
+  position: fixed;
+  z-index: 2147483000;
+  left: 0;
+  top: 50%;
+  width: 18px;
+  height: 64px;
+  margin-top: -32px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.pwa-dev-handle::before {
+  content: '';
+  width: 4px;
+  height: 36px;
+  border-radius: 0 4px 4px 0;
+  background: rgba(47, 107, 94, 0.35);
+}
+.pwa-dev-handle span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (min-width: 700px) and (min-height: 640px) {
+  .pwa-dev-handle {
+    top: 16px;
+    left: 16px;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 9px 14px;
+    border-radius: 999px;
+    background: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(24, 22, 15, 0.12);
+    font: 700 12.5px/1 'Public Sans', system-ui, sans-serif;
+    color: #2F6B5E;
+  }
+  .pwa-dev-handle::before {
+    display: none;
+  }
+  .pwa-dev-handle span {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+}
+
+.pwa-boot-error {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #18160F;
+  color: #FFFFFF;
+  font: 500 13.5px/1.45 'Public Sans', system-ui, sans-serif;
+  z-index: 2147483001;
+}

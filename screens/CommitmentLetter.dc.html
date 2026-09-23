@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My Commitment</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#FFFFFF;font-family:'Public Sans',sans-serif;}
+  input,textarea{font-family:'Public Sans',sans-serif;}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;overflow:hidden;">
+
+  <div style="flex:1;overflow-y:auto;padding:28px 24px 24px 24px;display:flex;flex-direction:column;gap:20px;">
+
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="Home.dc.html" aria-label="Back" style="text-decoration:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="#18160F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:#18160F;">My Commitment</h1>
+    </div>
+
+    <div style="background:#F1EADA;border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:8px;">
+      <p style="margin:0;font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:15px;line-height:1.4;color:#18160F;">"There is a distance between possibility and reality."</p>
+      <p style="margin:0;font-size:12.5px;color:#837C6D;line-height:1.4;">Sadhguru asks whether you have the courage to walk that distance — that's what this letter is for. —Sadhguru</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">I COMMIT TO</span>
+      <div style="background:#F1EADA;border-radius:18px;padding:6px 16px;">
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 0;">
+          <span style="font-size:14px;color:#18160F;">I,</span>
+          <input type="text" value="{{name}}" onInput="{{setName}}" readonly="{{lockedAttr}}" placeholder="your name" style="flex:1;border:none;border-bottom:1.5px solid #D8CDAE;background:transparent;font-size:14px;font-weight:700;color:#18160F;outline:none;padding:4px 2px;">
+        </div>
+        <sc-for list="{{checklist}}" as="c" hint-placeholder-count="4">
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-top:1px solid #E7DFCB;">
+            <span style="width:18px;height:18px;flex-shrink:0;margin-top:1px;border-radius:5px;background:#2F6B5E;display:flex;align-items:center;justify-content:center;">
+              <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span style="font-size:13.5px;line-height:1.5;color:#18160F;">{{c.text}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">WHEN IT GETS HARD, I'LL REMIND MYSELF</span>
+      <div style="background:#F1EADA;border-radius:18px;padding:4px 6px;">
+        <sc-for list="{{anchors}}" as="a" hint-placeholder-count="3">
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 10px;border-top:{{a.border}};">
+            <span style="font-size:13px;font-weight:700;color:#2F6B5E;flex-shrink:0;">{{a.num}}.</span>
+            <span style="flex:1;font-size:13.5px;line-height:1.5;color:#18160F;">{{a.text}}</span>
+            <button type="button" onClick="{{a.remove}}" aria-label="Remove" style="width:22px;height:22px;flex-shrink:0;border-radius:999px;border:none;background:#E9DFC9;display:flex;align-items:center;justify-content:center;">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 5L19 19M19 5L5 19" stroke="#837C6D" stroke-width="2.4" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <input type="text" value="{{anchorDraft}}" onInput="{{setAnchorDraft}}" onKeyDown="{{onAnchorKey}}" readonly="{{lockedAttr}}" placeholder="e.g. I'll remind myself why I started" style="flex:1;padding:12px 14px;border-radius:14px;border:1.5px solid #E7DFCB;background:#FFFFFF;font-size:13.5px;color:#18160F;outline:none;">
+        <button type="button" onClick="{{addAnchor}}" aria-label="Add" style="width:44px;flex-shrink:0;border-radius:14px;border:none;background:#2F6B5E;color:#FFFFFF;font-size:20px;font-weight:600;">+</button>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">SIGN &amp; DATE</span>
+      <div style="background:#F1EADA;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <input type="text" value="{{location}}" onInput="{{setLocation}}" readonly="{{lockedAttr}}" placeholder="Where are you right now?" style="padding:12px 14px;border-radius:12px;border:1.5px solid #E7DFCB;background:#FFFFFF;font-size:13.5px;color:#18160F;outline:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:12.5px;color:#837C6D;">{{dateLabel}}</span>
+          <sc-if value="{{signed}}" hint-placeholder-val="{{false}}">
+            <span style="display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#2F6B5E;">
+              <svg width="14" height="11" viewBox="0 0 14 11" fill="none"><path d="M1 5.5L5 9.5L13 1" stroke="#2F6B5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Signed
+            </span>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="flex-shrink:0;padding:0 24px 24px 24px;">
+    <button type="button" onClick="{{toggleSign}}" style="width:100%;box-sizing:border-box;padding:16px;border-radius:14px;border:none;background:{{signBtnColor}};color:#FFFFFF;font-weight:700;font-size:15.5px;">{{signBtnLabel}}</button>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { anchorDraft: '' };
+  }
+  renderVals() {
+    const s = this.state;
+    // The letter is saved as you type (kv 'commitment').
+    const c = db.get('commitment', {
+      name: '',
+      location: '',
+      anchors: [
+        "I'll remind myself this is the time and place for inner growth, and it won't come again.",
+        "I'll seek support from the people around me instead of carrying it alone.",
+      ],
+      signed: false,
+      signedOn: null,
+    });
+    const update = (patch) => db.set('commitment', { ...c, ...patch });
+
+    // Original, generic phrasing capturing the spirit of a program commitment
+    // letter — not a copy of any specific organization's document.
+    const checklist = [
+      { text: 'Follow the guidelines and schedule I’ve committed to.' },
+      { text: 'Show up for my daily practice without compromise.' },
+      { text: 'Bring full engagement to the work in front of me, not just what I feel like doing.' },
+      { text: 'Support the people walking this path alongside me.' },
+    ];
+
+    const setName = (e) => { if (!c.signed) update({ name: e.target.value }); };
+    const setLocation = (e) => { if (!c.signed) update({ location: e.target.value }); };
+    const setAnchorDraft = (e) => this.setState({ anchorDraft: e.target.value });
+    const addAnchor = () => {
+      const val = (s.anchorDraft || '').trim();
+      if (!val || c.signed) return;
+      update({ anchors: [...c.anchors, val] });
+      this.setState({ anchorDraft: '' });
+    };
+    const onAnchorKey = (e) => { if (e.key === 'Enter') addAnchor(); };
+
+    const anchors = c.anchors.map((text, i) => ({
+      num: i + 1,
+      text,
+      border: i === 0 ? 'none' : '1px solid #E7DFCB',
+      remove: () => { if (!c.signed) update({ anchors: c.anchors.filter((_, j) => j !== i) }); },
+    }));
+
+    const toggleSign = () => update(c.signed ? { signed: false, signedOn: null } : { signed: true, signedOn: db.today() });
+    const long = (d) => db.format(d, { month: 'short', day: 'numeric', year: 'numeric' });
+
+    return {
+      name: c.name,
+      setName,
+      checklist,
+      anchors,
+      anchorDraft: s.anchorDraft,
+      setAnchorDraft,
+      addAnchor,
+      onAnchorKey,
+      location: c.location,
+      setLocation,
+      // readonly="" locks an input; null leaves the attribute off.
+      lockedAttr: c.signed ? '' : null,
+      dateLabel: c.signed && c.signedOn ? 'Signed ' + long(c.signedOn) : 'Today, ' + long(db.today()),
+      signed: c.signed,
+      signBtnLabel: c.signed ? 'Edit commitment' : 'Sign commitment',
+      signBtnColor: c.signed ? '#18160F' : '#2F6B5E',
+      toggleSign,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Screens &amp; data</title>
+<script src="./support.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* A plain HTML page (no <x-dc>): it gets db / content / stats from support.js like any screen. */
+  :root { --ink: #18160F; --muted: #837C6D; --teal: #2F6B5E; --cream: #F1EADA; --line: #E7DFCB; --chip: #E9DFC9; }
+  html, body { background: #FFFFFF; }
+  body { font-family: 'Public Sans', system-ui, sans-serif; color: var(--ink); }
+  .page { max-width: 720px; margin: 0 auto; box-sizing: border-box; padding: calc(24px + env(safe-area-inset-top)) 20px calc(48px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 26px; }
+  header { display: flex; align-items: center; gap: 10px; }
+  header a { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+  h1 { margin: 0; font-family: 'Fraunces', serif; font-weight: 600; font-size: 25px; }
+  h2 { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--muted); }
+  h3 { margin: 18px 0 8px; font-size: 14px; }
+  p.note { margin: 0 0 10px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+  code { font-size: 12px; background: var(--cream); padding: 1px 5px; border-radius: 6px; }
+  .card { background: var(--cream); border-radius: 18px; padding: 2px 16px; }
+  .row { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-top: 1px solid var(--line); min-width: 0; }
+  .row:first-child { border-top: none; }
+  .grow { flex: 1; min-width: 0; }
+  .muted { color: var(--muted); font-size: 12.5px; }
+  a.screen { text-decoration: none; color: var(--ink); font-weight: 600; font-size: 14.5px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+  button, .btn { font: 700 13px 'Public Sans', system-ui, sans-serif; padding: 9px 13px; border-radius: 12px; border: 1.5px solid var(--teal); background: #FFFFFF; color: var(--teal); cursor: pointer; }
+  button.primary { background: var(--teal); color: #FFFFFF; }
+  button.danger { border-color: #9A3B3B; color: #9A3B3B; }
+  button.x { width: 26px; height: 26px; padding: 0; border: none; border-radius: 999px; background: var(--chip); color: var(--muted); font-size: 14px; line-height: 26px; flex-shrink: 0; }
+  details { background: var(--cream); border-radius: 16px; padding: 0 16px; margin-bottom: 8px; }
+  summary { cursor: pointer; padding: 13px 0; font-weight: 700; font-size: 14px; }
+  summary span { color: var(--muted); font-weight: 600; }
+  pre { margin: 4px 0 0; font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; word-break: break-word; color: var(--ink); }
+  textarea { width: 100%; box-sizing: border-box; min-height: 120px; margin-top: 6px; padding: 10px; border-radius: 12px; border: 1.5px solid var(--line); font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .empty { padding: 14px 0; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <a href="Home.dc.html" aria-label="Back">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="#18160F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <h1>Screens &amp; data</h1>
+  </header>
+
+  <section>
+    <h2>SCREENS</h2>
+    <p class="note">Every screen is an HTML file in <code>screens/</code>. Edit one and reload to see it. To add a screen, copy <code>Scratch.dc.html</code> and list it in <code>screens/screens.json</code>.</p>
+    <div class="card" id="screens"><div class="empty">Loading…</div></div>
+  </section>
+
+  <section>
+    <h2>DATA <span id="summary"></span></h2>
+    <p class="note">Everything is stored in this browser's IndexedDB (database <code>sadhana-pwa</code>). It stays on this device and is not uploaded anywhere.</p>
+    <div class="actions">
+      <button id="export" class="primary">Export JSON</button>
+      <label class="btn">Import JSON<input id="import" type="file" accept="application/json,.json" hidden></label>
+      <button id="demo">Load demo data</button>
+      <button id="undemo">Remove demo data</button>
+      <button id="erase" class="danger">Erase everything</button>
+    </div>
+    <h3>Tracking log <span class="muted">(entries: one per thing you did, newest first)</span></h3>
+    <div id="entries"></div>
+    <h3>Settings &amp; saved state <span class="muted">(kv)</span></h3>
+    <div class="card" id="kv"></div>
+  </section>
+
+  <section>
+    <h2>APP</h2>
+    <div class="card">
+      <div class="row"><span class="grow">Dev handle on every screen</span><button id="handle"></button></div>
+      <div class="row"><span class="grow">Offline cache <span class="muted" id="sw"></span></span><button id="refresh">Reset cache</button></div>
+      <div class="row"><span class="grow">Storage <span class="muted" id="storage"></span></span><button id="persist">Keep data</button></div>
+    </div>
+  </section>
+</div>
+
+<script>
+appReady.then(() => {
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, props, ...children) => {
+    const node = Object.assign(document.createElement(tag), props || {});
+    children.forEach((c) => node.append(c));
+    return node;
+  };
+  const when = (ts) => new Date(ts).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+
+  // ---------------------------------------------------------------- screens
+  fetch('screens.json', { cache: 'no-cache' })
+    .then((r) => r.json())
+    .then(({ screens }) => {
+      $('screens').replaceChildren(...screens.map((s) =>
+        el('div', { className: 'row' },
+          el('a', { className: 'screen grow', href: s.file, textContent: s.title }),
+          el('span', { className: 'muted', textContent: s.file }))));
+    })
+    .catch(() => { $('screens').replaceChildren(el('div', { className: 'empty', textContent: 'Could not read screens.json' })); });
+
+  // ---------------------------------------------------------------- data
+  // Many writes can arrive at once (e.g. demo data): redraw once they settle.
+  let timer = null;
+  const render = () => {
+    clearTimeout(timer);
+    timer = setTimeout(renderData, 50);
+  };
+
+  function renderData() {
+    const all = db.list(null);
+    const keys = db.keys();
+    $('summary').textContent = '· ' + all.length + ' entries, ' + keys.length + ' keys';
+
+    // Entries grouped by type
+    const types = [...new Set(all.map((e) => e.type))].sort();
+    const open = new Set([...document.querySelectorAll('#entries details[open]')].map((d) => d.dataset.type));
+    $('entries').replaceChildren(...(types.length ? types.map((type) => {
+      const list = all.filter((e) => e.type === type);
+      const details = el('details', { open: open.has(type) }, el('summary', {}, type + ' ', el('span', { textContent: '(' + list.length + ')' })));
+      details.dataset.type = type;
+      list.slice(0, 100).forEach((e) => {
+        const del = el('button', { className: 'x', textContent: '×', title: 'Delete entry' });
+        del.onclick = () => db.remove(e.id);
+        details.append(el('div', { className: 'row' },
+          el('div', { className: 'grow' },
+            el('div', { className: 'muted', textContent: e.date + ' · ' + when(e.ts) }),
+            el('pre', { textContent: JSON.stringify(e.data) })),
+          del));
+      });
+      if (list.length > 100) details.append(el('div', { className: 'empty', textContent: '…and ' + (list.length - 100) + ' older (use Export JSON to see all)' }));
+      return details;
+    }) : [el('div', { className: 'empty', textContent: 'Nothing tracked yet. Use the app, or load demo data.' })]));
+
+    // Key-value records
+    $('kv').replaceChildren(...(keys.length ? keys.map((key) => {
+      const value = db.get(key);
+      const pre = el('pre', { textContent: JSON.stringify(value, null, 2) });
+      const edit = el('button', { className: 'x', textContent: '✎', title: 'Edit JSON' });
+      const del = el('button', { className: 'x', textContent: '×', title: 'Delete key' });
+      const body = el('div', { className: 'grow' }, el('div', { textContent: key, style: 'font-weight:700;font-size:13.5px' }), pre);
+      del.onclick = () => { if (confirm('Delete "' + key + '"?')) db.del(key); };
+      edit.onclick = () => {
+        const area = el('textarea', { value: JSON.stringify(value, null, 2) });
+        const save = el('button', { className: 'primary', textContent: 'Save' });
+        save.onclick = () => {
+          try { db.set(key, JSON.parse(area.value)); } catch (err) { alert('Not valid JSON: ' + err.message); }
+        };
+        pre.replaceWith(el('div', {}, area, save));
+      };
+      return el('div', { className: 'row', style: 'align-items:flex-start' }, body, edit, del);
+    }) : [el('div', { className: 'empty', textContent: 'No saved settings yet.' })]));
+  }
+
+  $('export').onclick = () => {
+    const blob = new Blob([JSON.stringify(db.export(), null, 2)], { type: 'application/json' });
+    const a = el('a', { href: URL.createObjectURL(blob), download: 'sadhana-data-' + db.today() + '.json' });
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  };
+
+  $('import').onchange = async (e) => {
+    const file = e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    try {
+      const data = JSON.parse(await file.text());
+      const n = (data.entries || []).length;
+      if (confirm('Replace all data on this device with ' + file.name + ' (' + n + ' entries)?')) await db.import(data);
+    } catch (err) {
+      alert('Could not import: ' + err.message);
+    }
+  };
+
+  $('erase').onclick = () => {
+    if (confirm('Erase all data on this device? Export first if you want a copy.')) db.clear();
+  };
+
+  // Demo data: four weeks of plausible history so Insights and the Daily Tracker have something to show.
+  // Every demo entry has data.demo = true, so it can be removed again without touching your own entries.
+  $('demo').onclick = () => {
+    const today = db.today();
+    const selected = db.get('practices.selected', content.defaultPractices);
+    const params = db.get('tracker.params', content.trackerParams);
+    const questions = db.get('reflection.daily', content.dailyQuestions);
+    const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+    const pick = (list) => list[rnd(0, list.length - 1)];
+    const value = (format) => ({
+      arrow: pick(['up', 'up', 'same', 'down']),
+      rating: rnd(5, 9),
+      check: Math.random() < 0.75 ? 'yes' : 'no',
+      yesno: Math.random() < 0.75 ? 'yes' : 'no',
+      stars: rnd(2, 5),
+      percent: rnd(50, 100),
+      duration: rnd(10, 60),
+      number: rnd(12, 16) / 2,
+    })[format] ?? rnd(1, 10);
+    for (let i = 27; i >= 1; i--) {
+      const date = db.addDays(today, -i);
+      const at = (h, m) => db.toDate(date).getTime() + (h * 60 + (m || 0)) * 60000;
+      selected.forEach((id, k) => {
+        if (Math.random() < 0.75) {
+          const p = content.practices.find((x) => x.id === id);
+          db.add('practice', { practice: id, minutes: (p && p.minutes) || 15, demo: true }, { date, ts: at(6, k * 25) });
+        }
+      });
+      const mood = rnd(1, 4);
+      db.add('mood', { mood, moodLabel: ['Low', 'Down', 'Okay', 'Good', 'Great'][mood], energy: rnd(2, 5), demo: true }, { date, ts: at(8) });
+      params.forEach((p) => {
+        if (Math.random() < 0.85) db.add('tracker', { param: p.id, value: value(p.format), demo: true }, { date, ts: at(21) });
+      });
+      if (Math.random() < 0.7) {
+        const q = questions[0] || 'Demo question';
+        db.add('daily-reflection', { answers: [{ key: 'q:' + q, kind: 'param', question: q, text: 'Demo answer for ' + date + '.', tag: pick([null, 'star', 'ladder', 'lotus']) }], demo: true }, { date, ts: at(21, 30) });
+      }
+      if (Math.random() < 0.2) db.add('expression', { text: 'Demo expression from ' + date + '.', tag: pick([null, 'star', 'bulb']), demo: true }, { date, ts: at(19) });
+    }
+  };
+
+  $('undemo').onclick = () => {
+    db.list(null, { where: (e) => e.data && e.data.demo }).forEach((e) => db.remove(e.id));
+  };
+
+  // ---------------------------------------------------------------- app
+  const renderHandle = () => {
+    $('handle').textContent = db.get('dev.handle', true) === false ? 'Show' : 'Hide';
+  };
+  $('handle').onclick = () => db.set('dev.handle', db.get('dev.handle', true) === false);
+
+  async function renderApp() {
+    renderHandle();
+    const keys = 'caches' in window ? await caches.keys() : [];
+    const controlled = navigator.serviceWorker && navigator.serviceWorker.controller;
+    $('sw').textContent = controlled ? '· ready offline (' + (keys[0] || 'no cache') + ')' : '· not active (needs https or localhost)';
+    if (navigator.storage && navigator.storage.estimate) {
+      const est = await navigator.storage.estimate();
+      const persisted = navigator.storage.persisted ? await navigator.storage.persisted() : false;
+      $('storage').textContent = '· ' + Math.round((est.usage || 0) / 1024) + ' KB used' + (persisted ? ' · kept (won’t be cleared automatically)' : '');
+      $('persist').hidden = persisted;
+    }
+  }
+  $('refresh').onclick = async () => {
+    for (const key of await caches.keys()) await caches.delete(key);
+    const reg = navigator.serviceWorker && (await navigator.serviceWorker.getRegistration());
+    if (reg) await reg.update();
+    location.reload();
+  };
+  $('persist').onclick = async () => {
+    const ok = navigator.storage && navigator.storage.persist ? await navigator.storage.persist() : false;
+    if (!ok) alert('The browser did not grant persistent storage. Installing the app to the home screen usually helps.');
+    renderApp();
+  };
+
+  db.on(() => { render(); renderHandle(); });
+  renderData();
+  renderApp();
+});
+</script>
+</body>
+</html>
