@@ -5,7 +5,7 @@
  * you just edited; offline you get the cached copy. The large vendor runtime and Google Fonts are
  * "cache first". Change VERSION to make every installed copy drop its old cache.
  */
-const VERSION = 'sadhana-pwa-v3';
+const VERSION = 'sadhana-pwa-v4';
 const NETWORK_TIMEOUT = 4000; // ms before falling back to the cache on a slow connection
 
 const CORE = [
@@ -17,6 +17,7 @@ const CORE = [
   './lib/stats.js',
   './lib/setup.js',
   './lib/reminders.js',
+  './lib/quotes.js',
   './lib/pwa.css',
   './lib/dc-runtime.js',
   './screens/support.js',

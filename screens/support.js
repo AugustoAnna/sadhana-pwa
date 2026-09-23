@@ -5,12 +5,12 @@
  * exported .dc.html files. So any screen you drop into this folder automatically gets:
  *   1. PWA plumbing: viewport, manifest, icons, service worker (installable + offline)
  *   2. Data: lib/db.js (IndexedDB), lib/content.js, lib/stats.js, lib/setup.js, lib/reminders.js,
- *      loaded (and set up) before the screen renders
+ *      lib/quotes.js, loaded (and set up) before the screen renders
  *   3. The Design Component runtime (lib/dc-runtime.js) for pages that contain <x-dc>
  *   4. Navigation that saves first: links wait for pending writes, and Back/Close links go back
  *      in history (so the phone's back button and the in-app arrows agree)
  *
- * Globals for screens: db, content, stats, setup, reminders, nav. Plain .html pages should wait for
+ * Globals for screens: db, content, stats, setup, reminders, quotes, nav. Plain .html pages should wait for
  * `appReady`.
  */
 (function () {
@@ -61,7 +61,7 @@
 
   // ---------------------------------------------------------------- boot
 
-  window.appReady = Promise.all(['lib/db.js', 'lib/content.js', 'lib/stats.js', 'lib/setup.js', 'lib/reminders.js'].map((f) => load(ROOT + f)))
+  window.appReady = Promise.all(['lib/db.js', 'lib/content.js', 'lib/stats.js', 'lib/setup.js', 'lib/reminders.js', 'lib/quotes.js'].map((f) => load(ROOT + f)))
     .then(() => db.ready)
     .then(() => setup.run())
     .then(() => domReady)

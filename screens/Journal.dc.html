@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   body{margin:0;background:#FFFFFF;font-family:'Public Sans',sans-serif;}
+  [data-quotes]::-webkit-scrollbar{display:none;}
 </style>
 </helmet>
 <div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;overflow:hidden;">
@@ -35,14 +36,28 @@
       <div style="position:relative;width:100%;height:130px;">
         <img src="../images/journal.jpg" alt="Sadhguru" style="width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;">
       </div>
-      <div style="padding:14px 18px;display:flex;flex-direction:column;gap:8px;">
-        <button type="button" onClick="{{toggleWhy}}" style="display:flex;align-items:center;gap:5px;background:transparent;border:none;padding:0;">
-          <span style="font-size:12.5px;font-weight:700;color:#2F6B5E;">{{whyToggleLabel}}</span>
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" style="transform:{{whyRotate}};"><path d="M5 9L12 16L19 9" stroke="#2F6B5E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <sc-if value="{{whyOpen}}" hint-placeholder-val="{{false}}">
-          <p style="margin:0;font-size:13.5px;line-height:1.55;color:#18160F;padding-top:2px;">[Your description of why tracking matters goes here — e.g. Tracking turns a vague sense of "I'm doing okay" into something you can actually see: patterns in your energy, your focus, your consistency. A word or a symbol each day is often enough to notice what a whole month felt like.]</p>
-        </sc-if>
+      <!-- Quote of the day (lib/quotes.js), newest first: swipe, or use the arrows, for earlier days. -->
+      <div style="padding:14px 0 12px 0;display:flex;flex-direction:column;gap:10px;">
+        <div data-quotes onScroll="{{onQuotesScroll}}" style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;">
+          <sc-for list="{{quoteSlides}}" as="q" hint-placeholder-count="1">
+            <div style="flex:0 0 100%;scroll-snap-align:start;box-sizing:border-box;padding:0 18px;display:flex;flex-direction:column;gap:8px;">
+              <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#2F6B5E;">{{q.label}}</span>
+              <p style="margin:0;font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:15.5px;line-height:1.45;color:#18160F;">{{q.text}}</p>
+              <span style="font-size:12px;color:#837C6D;">{{q.by}}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 18px;">
+          <span style="font-size:12px;color:#837C6D;">{{quoteHint}}</span>
+          <div style="display:flex;gap:8px;">
+            <button type="button" onClick="{{quotePrev}}" aria-label="Newer quote" style="width:30px;height:30px;border-radius:999px;border:none;padding:0;background:#FFFFFF;opacity:{{quotePrevOpacity}};display:flex;align-items:center;justify-content:center;">
+              <svg width="8" height="12" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7L7 13" stroke="#2F6B5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" onClick="{{quoteNext}}" aria-label="Earlier quote" style="width:30px;height:30px;border-radius:999px;border:none;padding:0;background:#FFFFFF;opacity:{{quoteNextOpacity}};display:flex;align-items:center;justify-content:center;">
+              <svg width="8" height="12" viewBox="0 0 8 14" fill="none"><path d="M1 1L7 7L1 13" stroke="#2F6B5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -106,12 +121,41 @@
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { whyOpen: false };
+    // Quotes shown for the last `quoteDays` days; more load as you swipe back.
+    this.state = { quoteDays: 14, quoteIndex: 0 };
+  }
+  componentDidMount() {
+    quotes.refresh(this.state.quoteDays);
   }
   renderVals() {
     const s = this.state;
-    const toggleWhy = () => this.setState({ whyOpen: !s.whyOpen });
     const today = db.today();
+
+    // Quote of the day carousel (lib/quotes.js).
+    const list = quotes.list(s.quoteDays);
+    const quoteSlides = list.length
+      ? list.map((q) => ({
+          label: q.date === today ? 'QUOTE OF THE DAY' : db.format(q.date, { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase(),
+          text: q.text,
+          by: '—Sadhguru',
+        }))
+      : [{ label: 'QUOTE OF THE DAY', text: navigator.onLine === false ? 'Today\u2019s quote will appear here when you\u2019re online.' : 'Loading today\u2019s quote\u2026', by: '' }];
+    const index = Math.min(s.quoteIndex, quoteSlides.length - 1);
+    const scrollToSlide = (i) => {
+      const el = document.querySelector('[data-quotes]');
+      if (el) el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' });
+    };
+    const onQuotesScroll = (e) => {
+      const el = e.currentTarget;
+      const i = Math.round(el.scrollLeft / Math.max(1, el.clientWidth));
+      if (i !== this.state.quoteIndex) this.setState({ quoteIndex: i });
+      // Close to the oldest quote loaded so far: fetch two more weeks (up to about three months).
+      const days = this.state.quoteDays;
+      if (i >= list.length - 2 && list.length && days < 90 && days - list.length < 3) {
+        this.setState({ quoteDays: days + 14 });
+        quotes.refresh(days + 14);
+      }
+    };
 
     // Entries this month: the same kinds Past Entries shows, counted by the day they were written.
     const JOURNAL = ['daily-reflection', 'weekly-reflection', 'expression'];
@@ -133,10 +177,13 @@ class Component extends DCLogic {
       entriesLabel: (entriesCount === 1 ? 'entry' : 'entries') + ' this month',
       commitStatus: c && c.signed ? 'Signed ' + (c.signedOn ? long(c.signedOn) : '') : 'Not signed yet',
       commitPreview: anchor ? '“' + anchor + '”' : 'Write a letter to yourself to come back to on hard days.',
-      whyOpen: s.whyOpen,
-      whyToggleLabel: s.whyOpen ? 'Read less' : 'Read more',
-      whyRotate: s.whyOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-      toggleWhy,
+      quoteSlides,
+      onQuotesScroll,
+      quoteHint: index === 0 ? (quoteSlides.length > 1 ? 'Swipe for earlier quotes' : '') : (index + 1) + ' of ' + quoteSlides.length,
+      quotePrev: () => scrollToSlide(Math.max(0, index - 1)),
+      quoteNext: () => scrollToSlide(Math.min(quoteSlides.length - 1, index + 1)),
+      quotePrevOpacity: index === 0 ? 0.35 : 1,
+      quoteNextOpacity: index >= quoteSlides.length - 1 ? 0.35 : 1,
     };
   }
 }
