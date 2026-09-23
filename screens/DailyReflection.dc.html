@@ -33,11 +33,13 @@
   <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
 
     <sc-if value="{{isQuote}}" hint-placeholder-val="{{true}}">
-      <div style="display:flex;flex-direction:column;gap:18px;">
+      <div style="display:flex;flex-direction:column;gap:18px;min-height:0;overflow-y:auto;">
         <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">{{dateLabel}}</span>
+        <!-- A Sadhguru quote that's different from the Journal's quote of the day (lib/quotes.js). -->
         <div style="background:#F1EADA;border-radius:20px;padding:28px 22px;display:flex;flex-direction:column;gap:14px;">
           <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#2F6B5E;">TODAY'S QUOTE</span>
-          <p style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:21px;line-height:1.4;color:#18160F;">[Today's Sadhguru quote appears here]</p>
+          <p style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.4;color:#18160F;">{{quoteText}}</p>
+          <span style="font-size:12.5px;color:#837C6D;">{{quoteBy}}</span>
         </div>
         <p style="margin:0;font-size:14.5px;color:#837C6D;line-height:1.5;">Take a breath before you begin. This is a moment for you, not a task to finish.</p>
       </div>
@@ -122,8 +124,12 @@ class Component extends DCLogic {
     super(props);
     this.state = { done: false, symbolsOpen: false };
   }
+  componentDidMount() {
+    quotes.refreshReflection(db.today());
+  }
   renderVals() {
     const today = db.today();
+    const quote = quotes.reflection(today);
 
     // Step 1 of Daily Reflection: the parameters the user defined on Reflection Parameters.
     const params = db.get('reflection.daily', content.dailyQuestions).map((q) => ({ key: 'q:' + q, q }));
@@ -206,6 +212,8 @@ class Component extends DCLogic {
         border: i === 0 ? 'none' : '1px solid #E7DFCB',
       })),
       dateLabel: 'TODAY · ' + db.format(today).toUpperCase(),
+      quoteText: quote || (navigator.onLine === false ? 'Today’s quote will appear here when you’re online.' : 'Loading today’s quote…'),
+      quoteBy: quote ? '—Sadhguru' : '',
       answer: s.answers[current.key] || '',
       isQuote: s.step < total && current.type === 'quote',
       isAnswer: s.step < total && isAnswer,

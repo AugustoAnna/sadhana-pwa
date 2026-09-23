@@ -20,17 +20,36 @@
 
     <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:26px;color:#18160F;">Journal</h1>
 
-    <!-- Entries this month (like the Journal app on iPhone): opens Past Entries. -->
-    <a href="History.dc.html" aria-label="Past entries" style="text-decoration:none;flex-shrink:0;display:flex;align-items:center;gap:14px;background:#1E4A40;border-radius:20px;padding:18px 20px;">
-      <span style="flex:1;display:flex;flex-direction:column;gap:2px;">
-        <span style="font-family:'Fraunces',serif;font-weight:600;font-size:34px;line-height:1.05;color:#FFFFFF;">{{entriesCount}}</span>
-        <span style="font-size:13px;font-weight:600;color:#BFE0D6;">{{entriesLabel}}</span>
-      </span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#FFFFFF;">
-        See all
-        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1L7 7L1 13" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-    </a>
+    <!-- This month's entries by kind, laid out like the stats on the iPhone Journal app.
+         Each one opens Past Entries showing just that kind (History.dc.html?filter=...). -->
+    <div style="flex-shrink:0;display:flex;flex-direction:column;gap:10px;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">THIS MONTH</span>
+      <div style="display:flex;align-items:center;">
+        <a href="History.dc.html?filter=daily" aria-label="Past daily reflections" style="text-decoration:none;flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px;">
+          <span style="display:flex;align-items:center;gap:7px;">
+            <img src="../images/journal/daily-reflection.svg" alt="" style="width:22px;height:22px;flex-shrink:0;border-radius:6px;display:block;">
+            <span style="font-family:'Fraunces',serif;font-weight:600;font-size:24px;line-height:1.15;color:#18160F;">{{dailyCount}}</span>
+          </span>
+          <span style="font-size:13px;color:#837C6D;white-space:nowrap;">Daily</span>
+        </a>
+        <span style="width:1px;align-self:stretch;margin:4px 16px;background:#E7DFCB;flex-shrink:0;"></span>
+        <a href="History.dc.html?filter=weekly" aria-label="Past weekly reflections" style="text-decoration:none;flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px;">
+          <span style="display:flex;align-items:center;gap:7px;">
+            <img src="../images/journal/weekly-reflection.svg" alt="" style="width:22px;height:22px;flex-shrink:0;border-radius:6px;display:block;">
+            <span style="font-family:'Fraunces',serif;font-weight:600;font-size:24px;line-height:1.15;color:#18160F;">{{weeklyCount}}</span>
+          </span>
+          <span style="font-size:13px;color:#837C6D;white-space:nowrap;">Weekly</span>
+        </a>
+        <span style="width:1px;align-self:stretch;margin:4px 16px;background:#E7DFCB;flex-shrink:0;"></span>
+        <a href="History.dc.html?filter=expression" aria-label="Past expressions" style="text-decoration:none;flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px;">
+          <span style="display:flex;align-items:center;gap:7px;">
+            <img src="../images/journal/expressions.svg" alt="" style="width:22px;height:22px;flex-shrink:0;border-radius:6px;display:block;">
+            <span style="font-family:'Fraunces',serif;font-weight:600;font-size:24px;line-height:1.15;color:#18160F;">{{expressionCount}}</span>
+          </span>
+          <span style="font-size:13px;color:#837C6D;white-space:nowrap;">{{expressionLabel}}</span>
+        </a>
+      </div>
+    </div>
 
     <div style="background:#F1EADA;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;flex-shrink:0;">
       <div style="position:relative;width:100%;height:130px;">
@@ -157,15 +176,15 @@ class Component extends DCLogic {
       }
     };
 
-    // Entries this month: the same kinds Past Entries shows, counted by the day they were written.
-    const JOURNAL = ['daily-reflection', 'weekly-reflection', 'expression'];
+    // This month's entries of each kind, counted by the day they were written (as Past Entries groups them).
     const monthStart = today.slice(0, 8) + '01';
-    const entriesCount = db.list(null, {
+    const thisMonth = (type) => db.list(type, {
       where: (e) => {
         const day = db.iso(new Date(e.ts));
-        return JOURNAL.includes(e.type) && day >= monthStart && day <= today;
+        return day >= monthStart && day <= today;
       },
     }).length;
+    const expressionCount = thisMonth('expression');
 
     // My Commitment (saved by CommitmentLetter.dc.html as kv 'commitment').
     const c = db.get('commitment', null);
@@ -173,8 +192,10 @@ class Component extends DCLogic {
     const long = (d) => db.format(d, { month: 'short', day: 'numeric', year: 'numeric' });
 
     return {
-      entriesCount,
-      entriesLabel: (entriesCount === 1 ? 'entry' : 'entries') + ' this month',
+      dailyCount: thisMonth('daily-reflection'),
+      weeklyCount: thisMonth('weekly-reflection'),
+      expressionCount,
+      expressionLabel: expressionCount === 1 ? 'Expression' : 'Expressions',
       commitStatus: c && c.signed ? 'Signed ' + (c.signedOn ? long(c.signedOn) : '') : 'Not signed yet',
       commitPreview: anchor ? '“' + anchor + '”' : 'Write a letter to yourself to come back to on hard days.',
       quoteSlides,

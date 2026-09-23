@@ -27,7 +27,7 @@
 
     <div style="background:#F1EADA;border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:8px;">
       <p style="margin:0;font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:15px;line-height:1.4;color:#18160F;">"There is a distance between possibility and reality."</p>
-      <p style="margin:0;font-size:12.5px;color:#837C6D;line-height:1.4;">Sadhguru asks whether you have the courage to walk that distance — that's what this letter is for. —Sadhguru</p>
+      <p style="margin:0;font-size:12.5px;color:#837C6D;line-height:1.4;">—Sadhguru</p>
     </div>
 
     <div style="display:flex;flex-direction:column;gap:8px;">
@@ -35,7 +35,7 @@
       <div style="background:#F1EADA;border-radius:18px;padding:6px 16px;">
         <div style="display:flex;align-items:center;gap:10px;padding:14px 0;">
           <span style="font-size:14px;color:#18160F;">I,</span>
-          <input type="text" value="{{name}}" onInput="{{setName}}" readonly="{{lockedAttr}}" placeholder="your name" style="flex:1;border:none;border-bottom:1.5px solid #D8CDAE;background:transparent;font-size:14px;font-weight:700;color:#18160F;outline:none;padding:4px 2px;">
+          <input type="text" value="{{name}}" onInput="{{setName}}" readonly="{{lockedAttr}}" placeholder="your name" style="flex:1;border:none;border-bottom:1.5px solid {{lineColor}};background:transparent;font-size:14px;font-weight:700;color:{{fieldColor}};outline:none;padding:4px 2px;transition:color .2s ease,border-color .2s ease;">
         </div>
         <sc-for list="{{checklist}}" as="c" hint-placeholder-count="4">
           <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-top:1px solid #E7DFCB;">
@@ -55,22 +55,22 @@
           <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 10px;border-top:{{a.border}};">
             <span style="font-size:13px;font-weight:700;color:#2F6B5E;flex-shrink:0;">{{a.num}}.</span>
             <span style="flex:1;font-size:13.5px;line-height:1.5;color:#18160F;">{{a.text}}</span>
-            <button type="button" onClick="{{a.remove}}" aria-label="Remove" style="width:22px;height:22px;flex-shrink:0;border-radius:999px;border:none;background:#E9DFC9;display:flex;align-items:center;justify-content:center;">
+            <button type="button" onClick="{{a.remove}}" aria-label="Remove" style="width:22px;height:22px;flex-shrink:0;border-radius:999px;border:none;background:#E9DFC9;opacity:{{a.removeOpacity}};display:flex;align-items:center;justify-content:center;">
               <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 5L19 19M19 5L5 19" stroke="#837C6D" stroke-width="2.4" stroke-linecap="round"/></svg>
             </button>
           </div>
         </sc-for>
       </div>
       <div style="display:flex;gap:8px;">
-        <input type="text" value="{{anchorDraft}}" onInput="{{setAnchorDraft}}" onKeyDown="{{onAnchorKey}}" readonly="{{lockedAttr}}" placeholder="e.g. I'll remind myself why I started" style="flex:1;padding:12px 14px;border-radius:14px;border:1.5px solid #E7DFCB;background:#FFFFFF;font-size:13.5px;color:#18160F;outline:none;">
-        <button type="button" onClick="{{addAnchor}}" aria-label="Add" style="width:44px;flex-shrink:0;border-radius:14px;border:none;background:#2F6B5E;color:#FFFFFF;font-size:20px;font-weight:600;">+</button>
+        <input type="text" value="{{anchorDraft}}" onInput="{{setAnchorDraft}}" onKeyDown="{{onAnchorKey}}" readonly="{{lockedAttr}}" placeholder="e.g. I'll remind myself why I started" style="flex:1;padding:12px 14px;border-radius:14px;border:1.5px solid {{fieldBorder}};background:{{fieldBg}};font-size:13.5px;color:{{fieldColor}};outline:none;transition:background-color .2s ease,color .2s ease,border-color .2s ease;">
+        <button type="button" onClick="{{addAnchor}}" aria-label="Add" style="width:44px;flex-shrink:0;border-radius:14px;border:none;background:{{addBg}};color:#FFFFFF;font-size:20px;font-weight:600;transition:background-color .2s ease;">+</button>
       </div>
     </div>
 
     <div style="display:flex;flex-direction:column;gap:8px;">
       <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">SIGN &amp; DATE</span>
       <div style="background:#F1EADA;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px;">
-        <input type="text" value="{{location}}" onInput="{{setLocation}}" readonly="{{lockedAttr}}" placeholder="Where are you right now?" style="padding:12px 14px;border-radius:12px;border:1.5px solid #E7DFCB;background:#FFFFFF;font-size:13.5px;color:#18160F;outline:none;">
+        <input type="text" value="{{location}}" onInput="{{setLocation}}" readonly="{{lockedAttr}}" style="padding:12px 14px;border-radius:12px;border:1.5px solid {{fieldBorder}};background:{{fieldBg}};font-size:13.5px;color:{{fieldColor}};outline:none;transition:background-color .2s ease,color .2s ease,border-color .2s ease;">
         <div style="display:flex;align-items:center;justify-content:space-between;">
           <span style="font-size:12.5px;color:#837C6D;">{{dateLabel}}</span>
           <sc-if value="{{signed}}" hint-placeholder-val="{{false}}">
@@ -136,6 +136,7 @@ class Component extends DCLogic {
       num: i + 1,
       text,
       border: i === 0 ? 'none' : '1px solid #E7DFCB',
+      removeOpacity: c.signed ? 0.4 : 1,
       remove: () => { if (!c.signed) update({ anchors: c.anchors.filter((_, j) => j !== i) }); },
     }));
 
@@ -155,6 +156,12 @@ class Component extends DCLogic {
       setLocation,
       // readonly="" locks an input; null leaves the attribute off.
       lockedAttr: c.signed ? '' : null,
+      // Once signed, the text boxes grey out a little to show the letter is locked.
+      fieldBg: c.signed ? '#EEEAE2' : '#FFFFFF',
+      fieldBorder: c.signed ? '#E2DCCF' : '#E7DFCB',
+      fieldColor: c.signed ? '#7D7669' : '#18160F',
+      lineColor: c.signed ? '#E2DCCF' : '#D8CDAE',
+      addBg: c.signed ? '#C9C2B3' : '#2F6B5E',
       dateLabel: c.signed && c.signedOn ? 'Signed ' + long(c.signedOn) : 'Today, ' + long(db.today()),
       signed: c.signed,
       signBtnLabel: c.signed ? 'Edit commitment' : 'Sign commitment',

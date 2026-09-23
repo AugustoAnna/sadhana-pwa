@@ -82,7 +82,9 @@
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { filter: 'all', expanded: {} };
+    // The Journal's "This month" stats open this screen on one kind: History.dc.html?filter=daily|weekly|expression
+    const filter = nav.param('filter');
+    this.state = { filter: ['daily', 'weekly', 'expression'].includes(filter) ? filter : 'all', expanded: {} };
   }
   renderVals() {
     const s = this.state;

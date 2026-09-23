@@ -37,6 +37,56 @@
       </div>
     </div>
 
+    <!-- Mood & energy against practice: minutes practiced each day as bars, and that day's
+         Mood & Energy check-in (mood 1-5 + energy 1-5, so 2-10) as the line. -->
+    <div style="background:#F1EADA;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <span style="font-size:14px;font-weight:700;color:#18160F;">Mood &amp; energy vs. practice</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+          <span style="padding:4px 10px;border-radius:999px;background:{{linkBg}};color:{{linkColor}};font-size:11.5px;font-weight:700;white-space:nowrap;">{{linkLabel}}</span>
+          <div style="display:flex;background:#FFFFFF;border-radius:10px;padding:3px;gap:2px;flex-shrink:0;">
+            <sc-for list="{{ranges}}" as="r" hint-placeholder-count="2">
+              <button type="button" onClick="{{r.pick}}" style="padding:5px 9px;border-radius:8px;border:none;background:{{r.bg}};color:{{r.color}};font-weight:700;font-size:11.5px;white-space:nowrap;">{{r.label}}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <span style="font-size:10.5px;font-weight:600;color:#837C6D;">{{topMinutes}}</span>
+        <div style="position:relative;height:150px;">
+          <div style="position:absolute;left:0;right:0;top:0;border-top:1px dashed #DDD3BF;"></div>
+          <div style="position:absolute;left:0;right:0;top:50%;border-top:1px dashed #DDD3BF;"></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;border-top:1px solid #DDD3BF;"></div>
+          <div style="position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:flex-end;">
+            <sc-for list="{{chartDays}}" as="d" hint-placeholder-count="14">
+              <div title="{{d.title}}" style="flex:1;height:100%;display:flex;align-items:flex-end;justify-content:center;">
+                <div style="width:{{d.barWidth}};height:{{d.barHeight}};background:#9DC9BA;border-radius:4px 4px 0 0;"></div>
+              </div>
+            </sc-for>
+          </div>
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none;">
+            <path d="{{linePath}}" fill="none" stroke="#E0712B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+          </svg>
+          <sc-for list="{{dots}}" as="p" hint-placeholder-count="14">
+            <span style="position:absolute;left:{{p.x}};top:{{p.y}};box-sizing:border-box;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:999px;background:#FFFFFF;border:2px solid #E0712B;pointer-events:none;"></span>
+          </sc-for>
+        </div>
+        <div style="display:flex;">
+          <sc-for list="{{chartDays}}" as="d" hint-placeholder-count="14">
+            <span style="flex:1;min-width:0;text-align:center;font-size:10px;color:#837C6D;white-space:nowrap;">{{d.label}}</span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <span style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:#837C6D;"><span style="width:10px;height:10px;border-radius:3px;background:#9DC9BA;"></span>Minutes practiced</span>
+        <span style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:#837C6D;"><span style="width:14px;height:0;border-top:2px solid #E0712B;"></span>Mood + energy (out of 10)</span>
+      </div>
+
+      <p style="margin:0;font-size:13px;line-height:1.5;color:#18160F;">{{moodInsight}}</p>
+    </div>
+
     <!-- One tracked field from the Daily Tracker, this week (prefers a field named "Focus"). -->
     <sc-if value="{{hasChart}}" hint-placeholder-val="{{true}}">
       <div style="background:#F1EADA;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:16px;">
@@ -54,40 +104,6 @@
         </div>
       </div>
     </sc-if>
-
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">{{monthLabel}}</span>
-      <div style="background:#F1EADA;border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;gap:8px;">
-          <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
-            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">M</span>
-            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">T</span>
-            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">W</span>
-            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">T</span>
-            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">F</span>
-            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">S</span>
-            <span style="height:24px;display:flex;align-items:center;font-size:11px;color:#837C6D;font-weight:600;">S</span>
-          </div>
-          <div style="display:flex;gap:6px;flex:1;">
-            <sc-for list="{{weeks}}" as="w" hint-placeholder-count="5">
-              <div style="display:flex;flex-direction:column;gap:6px;flex:1;">
-                <sc-for list="{{w.cells}}" as="c" hint-placeholder-count="7">
-                  <span title="{{c.title}}" style="height:24px;box-sizing:border-box;border-radius:6px;background:{{c.bg}};border:{{c.border}};opacity:{{c.opacity}};"></span>
-                </sc-for>
-              </div>
-            </sc-for>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
-          <span style="font-size:11px;color:#837C6D;">less</span>
-          <span style="width:14px;height:14px;border-radius:4px;background:#E7DFCB;"></span>
-          <span style="width:14px;height:14px;border-radius:4px;background:#BFDCD2;"></span>
-          <span style="width:14px;height:14px;border-radius:4px;background:#7FB5A4;"></span>
-          <span style="width:14px;height:14px;border-radius:4px;background:#2F6B5E;"></span>
-          <span style="font-size:11px;color:#837C6D;">more</span>
-        </div>
-      </div>
-    </div>
 
     <div style="background:#1E4A40;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px;">
       <div style="display:flex;align-items:center;gap:8px;">
@@ -123,12 +139,76 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { range: 14 }; // days shown in the mood & energy chart
+  }
   renderVals() {
     // Everything here is computed from the database (see lib/stats.js).
     const today = db.today();
     const week = db.weekStart();
     const st = stats.week(week);
     const dates = db.range(week, db.addDays(week, 6));
+
+    // Mood & energy vs. practice, one point per day: minutes practiced, and the day's average
+    // check-in as mood (1-5) + energy (1-5), from 2 to 10.
+    const N = this.state.range;
+    const series = db.range(db.addDays(today, -(N - 1)), today).map((date) => {
+      const checkins = db.list('mood', { date }).filter((e) => Number.isFinite(Number(e.data.mood)) && Number.isFinite(Number(e.data.energy)));
+      const level = checkins.length
+        ? checkins.reduce((sum, e) => sum + Number(e.data.mood) + 1 + Number(e.data.energy), 0) / checkins.length
+        : null;
+      return { date, minutes: stats.minutes(date), level };
+    });
+    const top = Math.max(60, Math.ceil(Math.max(0, ...series.map((p) => p.minutes)) / 60) * 60);
+    const xAt = (i) => ((i + 0.5) / N) * 100;              // % across, the middle of that day's bar
+    const yAt = (level) => 94 - ((level - 2) / 8) * 88;    // % down: 10 near the top, 2 near the bottom
+    const round1 = (n) => Math.round(n * 10) / 10;
+    let linePath = '';
+    series.forEach((p, i) => {
+      if (p.level === null) return;
+      const joined = i > 0 && series[i - 1].level !== null;
+      linePath += (joined ? 'L' : 'M') + xAt(i).toFixed(2) + ' ' + yAt(p.level).toFixed(2) + ' ';
+    });
+    const labelEvery = N > 20 ? 5 : 2;
+    const chartDays = series.map((p, i) => ({
+      barHeight: p.minutes ? Math.max(2, (p.minutes / top) * 100) + '%' : '0%',
+      barWidth: N > 20 ? '70%' : '58%',
+      label: (N - 1 - i) % labelEvery === 0 ? String(Number(p.date.slice(8))) : '',
+      title: db.format(p.date, { weekday: 'short', month: 'short', day: 'numeric' }) + ' · ' + p.minutes + ' min' +
+        (p.level === null ? '' : ' · mood + energy ' + round1(p.level) + '/10'),
+    }));
+    const dots = series
+      .map((p, i) => ({ p, i }))
+      .filter(({ p }) => p.level !== null)
+      .map(({ p, i }) => ({ x: xAt(i) + '%', y: yAt(p.level) + '%' }));
+
+    // How closely they move together, over finished days (today may still be in progress).
+    const days = series.filter((p) => p.level !== null && p.date < today);
+    const mean = (list) => list.reduce((sum, v) => sum + v, 0) / list.length;
+    let linkLabel = 'Not enough check-ins yet';
+    let r = 0;
+    let moodInsight = 'Check in on Mood & Energy each day to see how it moves with your practice.';
+    if (days.length >= 5) {
+      const mx = mean(days.map((p) => p.minutes));
+      const my = mean(days.map((p) => p.level));
+      let sxy = 0, sxx = 0, syy = 0;
+      days.forEach((p) => {
+        sxy += (p.minutes - mx) * (p.level - my);
+        sxx += (p.minutes - mx) ** 2;
+        syy += (p.level - my) ** 2;
+      });
+      r = sxx && syy ? sxy / Math.sqrt(sxx * syy) : 0; // correlation, -1 to 1
+      linkLabel = r >= 0.6 ? 'Strong link' : r >= 0.3 ? 'Some link' : r > -0.3 ? 'No clear link yet' : 'Opposite link';
+      // Compare days at or above the typical amount of practice with the lighter ones.
+      const sorted = days.map((p) => p.minutes).sort((a, b) => a - b);
+      const cut = Math.max(15, Math.round(sorted[Math.floor(sorted.length / 2)] / 15) * 15);
+      const more = days.filter((p) => p.minutes >= cut).map((p) => p.level);
+      const less = days.filter((p) => p.minutes < cut).map((p) => p.level);
+      moodInsight = more.length && less.length
+        ? 'On days you practiced ' + cut + '+ min, mood + energy averaged ' + round1(mean(more)) + '/10. On lighter days, ' + round1(mean(less)) + '/10.'
+        : 'Log a few more days with different amounts of practice to compare.';
+    }
 
     // Bar chart: one numeric field from the Daily Tracker, preferring one named "Focus".
     const numeric = ['rating', 'number', 'percent', 'stars', 'duration'];
@@ -153,28 +233,6 @@ class Component extends DCLogic {
       chartAvg = avg === null ? 'no entries yet' : 'avg ' + avg + suffix;
     }
 
-    // Activity heatmap for this month: one column per week (Mon–Sun), shaded by the share of
-    // your practices done that day.
-    const now = db.toDate(today);
-    const monthStart = db.iso(new Date(now.getFullYear(), now.getMonth(), 1));
-    const monthEnd = db.iso(new Date(now.getFullYear(), now.getMonth() + 1, 0));
-    const shade = (r) => (r === 0 ? '#E7DFCB' : r <= 1 / 3 ? '#BFDCD2' : r <= 2 / 3 ? '#7FB5A4' : '#2F6B5E');
-    const weeks = [];
-    for (let w = db.weekStart(monthStart); w <= monthEnd; w = db.addDays(w, 7)) {
-      weeks.push({
-        cells: db.range(w, db.addDays(w, 6)).map((d) => {
-          const inMonth = d >= monthStart && d <= monthEnd;
-          const ratio = inMonth && d <= today ? stats.dayRatio(d) : 0;
-          return {
-            bg: shade(ratio),
-            border: d === today ? '2px solid #E0A458' : 'none',
-            opacity: !inMonth ? 0 : d > today ? 0.5 : 1,
-            title: db.format(d, { weekday: 'short', month: 'short', day: 'numeric' }) + ' · ' + Math.round(ratio * 100) + '%',
-          };
-        }),
-      });
-    }
-
     return {
       weekLabel: 'WEEK OF ' + db.weekLabel(week),
       practicesStat: st.done + '/' + st.possible,
@@ -184,8 +242,20 @@ class Component extends DCLogic {
       chartTitle: param ? param.name + ', this week' : '',
       chartAvg,
       bars,
-      monthLabel: 'ACTIVITY · ' + db.format(today, { month: 'long' }).toUpperCase(),
-      weeks,
+      ranges: [[14, '14 days'], [30, '30 days']].map(([n, label]) => ({
+        label,
+        bg: N === n ? '#2F6B5E' : 'transparent',
+        color: N === n ? '#FFFFFF' : '#837C6D',
+        pick: () => this.setState({ range: n }),
+      })),
+      linkLabel,
+      linkBg: r >= 0.6 ? '#DCEBE5' : '#FFFFFF',
+      linkColor: r >= 0.6 ? '#2F6B5E' : '#837C6D',
+      topMinutes: top + ' min',
+      chartDays,
+      linePath,
+      dots,
+      moodInsight,
     };
   }
 }
