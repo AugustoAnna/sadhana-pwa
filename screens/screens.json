@@ -21,6 +21,13 @@
   ],
   "assets": [
     "images/journal.jpg",
+    "images/journal/mood.svg",
+    "images/journal/daily-reflection.svg",
+    "images/journal/weekly-reflection.svg",
+    "images/journal/daily-tracker.svg",
+    "images/journal/expressions.svg",
+    "images/journal/commitment.svg",
+    "images/journal/past-entries.svg",
     "images/practices/achala-arpanam.webp",
     "images/practices/angamardana.webp",
     "images/practices/ardhasiddhasana.webp",
