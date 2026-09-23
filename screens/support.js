@@ -9,7 +9,7 @@
  *   3. The Design Component runtime (lib/dc-runtime.js) for pages that contain <x-dc>
  *   4. Navigation that saves first: links wait for pending writes, and Back/Close links go back
  *      in history (so the phone's back button and the in-app arrows agree)
- *   5. A 3-second splash with the logo when the app opens
+ *   5. A 4.5-second splash with the logo when the app opens
  *
  * Globals for screens: db, content, stats, setup, reminders, quotes, nav. Plain .html pages should wait for
  * `appReady`.
@@ -78,10 +78,10 @@
     })
     .catch(showBootError);
 
-  // The splash stays 3 seconds, longer if the screen isn't ready yet (8 at most).
+  // The splash stays 4.5 seconds, longer if the screen isn't ready yet (8 at most).
   if (splash) {
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    Promise.race([Promise.all([wait(3000), window.appReady]), wait(8000)]).then(splash.hide);
+    Promise.race([Promise.all([wait(4500), window.appReady]), wait(8000)]).then(splash.hide);
   }
 
   // ---------------------------------------------------------------- splash
@@ -105,9 +105,9 @@
         'html::before{top:0;right:0;bottom:0;left:0;background:#F37021 url("' + ROOT + 'icons/splash-lotus.webp") center/var(--pwa-splash-w) var(--pwa-splash-h) no-repeat;}' +
         'html::after{z-index:2147483647;left:50%;top:50%;width:var(--pwa-splash-w);height:var(--pwa-splash-h);' +
         'background:url("' + ROOT + 'icons/splash-snake.webp") center/100% 100% no-repeat;' +
-        // 44.7% 59.47% is the middle of the coil in the image; turning left, the snake moves head first.
+        // 44.7% 59.47% is the middle of the coil in the image; the snake turns clockwise.
         'transform:translate(-50%,-50%);transform-origin:44.7% 59.47%;animation:pwa-splash-spin 2.4s linear infinite;}' +
-        '@keyframes pwa-splash-spin{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(-360deg);}}' +
+        '@keyframes pwa-splash-spin{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);}}' +
         'html.pwa-splash-out::before,html.pwa-splash-out::after{opacity:0;}' +
         '@media (prefers-reduced-motion:reduce){html::after{animation:none;}}',
     });
