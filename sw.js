@@ -5,7 +5,7 @@
  * you just edited; offline you get the cached copy. The large vendor runtime and Google Fonts are
  * "cache first". Change VERSION to make every installed copy drop its old cache.
  */
-const VERSION = 'sadhana-pwa-v6';
+const VERSION = 'sadhana-pwa-v7';
 const NETWORK_TIMEOUT = 4000; // ms before falling back to the cache on a slow connection
 
 const CORE = [
@@ -27,6 +27,8 @@ const CORE = [
   './icons/icon-512.png',
   './icons/maskable-512.png',
   './icons/apple-touch-icon.png',
+  './icons/splash-lotus.webp',
+  './icons/splash-snake.webp',
 ];
 
 self.addEventListener('install', (event) => {

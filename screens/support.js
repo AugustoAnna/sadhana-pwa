@@ -9,6 +9,7 @@
  *   3. The Design Component runtime (lib/dc-runtime.js) for pages that contain <x-dc>
  *   4. Navigation that saves first: links wait for pending writes, and Back/Close links go back
  *      in history (so the phone's back button and the in-app arrows agree)
+ *   5. A 3-second splash with the logo when the app opens
  *
  * Globals for screens: db, content, stats, setup, reminders, quotes, nav. Plain .html pages should wait for
  * `appReady`.
@@ -43,6 +44,8 @@
   add('link', { rel: 'apple-touch-icon', href: ROOT + 'icons/apple-touch-icon.png' });
   add('link', { rel: 'stylesheet', href: ROOT + 'lib/pwa.css' });
 
+  const splash = startSplash();
+
   function load(src) {
     return new Promise((resolve, reject) => {
       const s = document.createElement('script');
@@ -74,6 +77,50 @@
       document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reminders.schedule(); });
     })
     .catch(showBootError);
+
+  // The splash stays 3 seconds, longer if the screen isn't ready yet (8 at most).
+  if (splash) {
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    Promise.race([Promise.all([wait(3000), window.appReady]), wait(8000)]).then(splash.hide);
+  }
+
+  // ---------------------------------------------------------------- splash
+
+  // The logo on Isha orange when the app opens (once per session, not on every screen): the lotus
+  // stays still while the snake spins around the middle of its coil. The two layers are
+  // icons/splash-lotus.webp and icons/splash-snake.webp, the same size, stacked. They're drawn with
+  // pseudo-elements on <html>, so the splash is there from the first frame, before the screen renders.
+  function startSplash() {
+    if (/\/Dev\.html$/.test(location.pathname)) return null;
+    let first = false;
+    try {
+      first = !sessionStorage.getItem('sadhana-pwa.splashShown');
+      sessionStorage.setItem('sadhana-pwa.splashShown', '1');
+    } catch (err) { /* storage blocked: skip the splash rather than show it on every screen */ }
+    if (!first) return null;
+    const style = add('style', {
+      textContent:
+        'html{--pwa-splash-w:min(56vw,230px);--pwa-splash-h:calc(var(--pwa-splash-w)*1.2632);}' +
+        'html::before,html::after{content:"";position:fixed;z-index:2147483646;transition:opacity .45s ease;}' +
+        'html::before{top:0;right:0;bottom:0;left:0;background:#F37021 url("' + ROOT + 'icons/splash-lotus.webp") center/var(--pwa-splash-w) var(--pwa-splash-h) no-repeat;}' +
+        'html::after{z-index:2147483647;left:50%;top:50%;width:var(--pwa-splash-w);height:var(--pwa-splash-h);' +
+        'background:url("' + ROOT + 'icons/splash-snake.webp") center/100% 100% no-repeat;' +
+        // 44.7% 59.47% is the middle of the coil in the image; turning left, the snake moves head first.
+        'transform:translate(-50%,-50%);transform-origin:44.7% 59.47%;animation:pwa-splash-spin 2.4s linear infinite;}' +
+        '@keyframes pwa-splash-spin{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(-360deg);}}' +
+        'html.pwa-splash-out::before,html.pwa-splash-out::after{opacity:0;}' +
+        '@media (prefers-reduced-motion:reduce){html::after{animation:none;}}',
+    });
+    return {
+      hide() {
+        document.documentElement.classList.add('pwa-splash-out');
+        setTimeout(() => {
+          style.remove();
+          document.documentElement.classList.remove('pwa-splash-out');
+        }, 500);
+      },
+    };
+  }
 
   // Screens read `db` inside renderVals(). Whenever data changes, re-render every mounted component
   // so the screen always shows what's in the database.
