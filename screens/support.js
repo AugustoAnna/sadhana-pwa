@@ -37,7 +37,7 @@
   meta('apple-mobile-web-app-title', 'Sadhana');
   meta('apple-mobile-web-app-status-bar-style', 'default');
   add('link', { rel: 'manifest', href: ROOT + 'manifest.webmanifest' });
-  add('link', { rel: 'icon', href: ROOT + 'icons/icon.svg', type: 'image/svg+xml' });
+  add('link', { rel: 'icon', href: ROOT + 'icons/favicon.png', type: 'image/png' });
   add('link', { rel: 'apple-touch-icon', href: ROOT + 'icons/apple-touch-icon.png' });
   add('link', { rel: 'stylesheet', href: ROOT + 'lib/pwa.css' });
 
