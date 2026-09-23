@@ -24,7 +24,8 @@ cached for offline use.
 index.html              redirects to screens/Home.dc.html
 manifest.webmanifest    app name, icons, start page
 sw.js                   service worker (offline cache)
-icons/                  app icons
+icons/                  app icons: the hand-drawn spiral on orange #F37021; illustration.png is
+                        the cleaned drawing on a transparent background, for reuse in screens
 lib/
   db.js                 the IndexedDB layer (global `db`)
   content.js            shared static content: practice catalog, default questions, tracker rows
