@@ -40,7 +40,7 @@
             <span style="font-family:'Fraunces',serif;font-weight:600;font-size:17px;color:#18160F;">The Importance of Sadhana</span>
             <p style="margin:0;font-size:13.5px;line-height:1.6;color:#18160F;"><span style="font-weight:700;">Sadhguru:</span> The word "sadhana" literally means a tool or an instrument. When we say "sadhana", we are not talking about any particular aspect. We are talking about using every aspect of life – both internal and external – so that it is a continuous nurturing for your life. Because the very nature of a human being is such, unless there is some dynamism, some movement in their life towards betterment within and outside of themselves, they will feel frustrated. They have to keep moving to a newer and newer possibility. Sadhana is that which facilitates that.</p>
             <p style="margin:0;font-size:13.5px;line-height:1.6;color:#18160F;">Everything can be sadhana. The way you eat, the way you sit, the way you stand, the way you breathe, the way you conduct your body, mind and your energies and emotions – this is sadhana. Sadhana does not mean any specific kind of activity; sadhana means you are using everything as a tool for your wellbeing.</p>
-            <button type="button" onClick="{{openVideo}}" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:12px;border:none;background:#2F6B5E;color:#FFFFFF;font-weight:700;font-size:13.5px;opacity:{{videoButtonOpacity}};">
+            <button type="button" onClick="{{openVideo}}" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:12px;border:none;background:#2F6B5E;color:#FFFFFF;font-weight:700;font-size:13.5px;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#FFFFFF" stroke-width="1.6"/><path d="M10 8.5L15.5 12L10 15.5V8.5Z" fill="#FFFFFF"/></svg>
               {{videoLabel}}
             </button>
@@ -255,9 +255,14 @@
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 5L19 19M19 5L5 19" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/></svg>
         </button>
       </div>
-      <div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000000;">
-        <iframe src="{{videoSrc}}" title="{{videoTitle}}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0;"></iframe>
-      </div>
+      <sc-if value="{{hasVideo}}" hint-placeholder-val="{{true}}">
+        <div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000000;">
+          <iframe src="{{videoSrc}}" title="{{videoTitle}}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0;"></iframe>
+        </div>
+      </sc-if>
+      <sc-if value="{{noVideo}}" hint-placeholder-val="{{false}}">
+        <div style="border-radius:14px;background:rgba(255,255,255,0.10);padding:22px 18px;font-size:14px;line-height:1.5;color:#FFFFFF;">The video link hasn't been added yet. Put a YouTube link in lib/content.js (sadhanaVideo.url) and it will play here.</div>
+      </sc-if>
     </div>
   </sc-if>
 
@@ -375,11 +380,12 @@ class Component extends DCLogic {
       testReminder: () => reminders.test(),
       reminderRows,
       // The video plays inside the app once a link is set in lib/content.js (sadhanaVideo.url).
-      videoLabel: video ? 'Watch: ' + content.sadhanaVideo.title : '[Watch: Sadhguru on Sadhana]',
-      videoButtonOpacity: video ? 1 : 0.55,
-      openVideo: () => { if (video) this.setState({ videoOpen: true }); },
+      videoLabel: 'Watch: ' + content.sadhanaVideo.title,
+      openVideo: () => this.setState({ videoOpen: true }),
       closeVideo: () => this.setState({ videoOpen: false }),
-      videoOpen: !!(video && s.videoOpen),
+      videoOpen: !!s.videoOpen,
+      hasVideo: !!video,
+      noVideo: !video,
       videoSrc: video || '',
       videoTitle: content.sadhanaVideo.title,
     };
