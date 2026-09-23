@@ -14,7 +14,7 @@
   textarea{font-family:'Public Sans',sans-serif;}
 </style>
 </helmet>
-<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;padding:28px 24px 24px 24px;overflow:hidden;">
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;padding:28px 24px 24px 24px;overflow:hidden;position:relative;">
 
   <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
     <a href="Journal.dc.html" aria-label="Close" style="text-decoration:none;width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -61,6 +61,7 @@
           <button type="button" onClick="{{bulbPick}}" aria-label="Intensity" style="width:30px;height:30px;border-radius:999px;border:none;background:{{bulbBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5a4 4 0 0 0-2 7.5c.5.4.8 1 .8 1.6v.4h2.4v-.4c0-.6.3-1.2.8-1.6A4 4 0 0 0 8 1.5Z" stroke="{{bulbColor}}" stroke-width="1.2"/><line x1="6.5" y1="13.2" x2="9.5" y2="13.2" stroke="{{bulbColor}}" stroke-width="1.2"/><line x1="6.8" y1="14.4" x2="9.2" y2="14.4" stroke="{{bulbColor}}" stroke-width="1.2"/></svg></button>
           <button type="button" onClick="{{eyePick}}" aria-label="Needs attention" style="width:30px;height:30px;border-radius:999px;border:none;background:{{eyeBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8Z" stroke="{{eyeColor}}" stroke-width="1.2"/><circle cx="8" cy="8" r="1.8" stroke="{{eyeColor}}" stroke-width="1.2"/></svg></button>
           <button type="button" onClick="{{chatPick}}" aria-label="Talk to facilitator" style="width:30px;height:30px;border-radius:999px;border:none;background:{{chatBg}};display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2.5 3.5h11a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H7l-3 2.5v-2.5H2.5a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1Z" stroke="{{chatColor}}" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
+    <button type="button" onClick="{{openSymbols}}" aria-label="What the symbols mean" style="width:30px;height:30px;border-radius:999px;border:1.5px solid #E7DFCB;background:#FFFFFF;display:flex;align-items:center;justify-content:center;padding:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#837C6D" stroke-width="1.8"/><path d="M12 11v5" stroke="#837C6D" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.2" fill="#837C6D"/></svg></button>
         </div>
       </div>
     </sc-if>
@@ -86,13 +87,40 @@
     </div>
   </sc-if>
 
+  <!-- What the 9 symbols mean (opened from the (i) button next to them). -->
+  <sc-if value="{{symbolsOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:flex-end;">
+      <div onClick="{{closeSymbols}}" style="position:absolute;inset:0;background:rgba(24,22,15,0.28);"></div>
+      <div style="position:relative;max-height:82%;overflow-y:auto;background:#FFFFFF;border-radius:24px 24px 0 0;padding:22px 24px 26px 24px;display:flex;flex-direction:column;gap:10px;box-shadow:0 -8px 30px rgba(24,22,15,0.12);">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <span style="font-family:'Fraunces',serif;font-weight:600;font-size:20px;color:#18160F;">What the symbols mean</span>
+          <button type="button" onClick="{{closeSymbols}}" aria-label="Close" style="width:30px;height:30px;flex-shrink:0;border-radius:999px;border:none;background:#F1EADA;display:flex;align-items:center;justify-content:center;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 5L19 19M19 5L5 19" stroke="#837C6D" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <span style="font-size:13px;color:#837C6D;line-height:1.5;">Tag an entry with one symbol so you can spot it when you look back.</span>
+        <div style="display:flex;flex-direction:column;">
+          <sc-for list="{{symbols}}" as="sym" hint-placeholder-count="9">
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:{{sym.border}};">
+              <span style="width:32px;height:32px;flex-shrink:0;border-radius:999px;background:#F1EADA;display:flex;align-items:center;justify-content:center;"><img src="{{sym.icon}}" alt="" style="width:15px;height:15px;"></span>
+              <span style="display:flex;flex-direction:column;gap:1px;">
+                <span style="font-size:14px;font-weight:700;color:#18160F;">{{sym.label}}</span>
+                <span style="font-size:12.5px;color:#837C6D;line-height:1.4;">{{sym.description}}</span>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { done: false };
+    this.state = { done: false, symbolsOpen: false };
   }
   renderVals() {
     const today = db.today();
@@ -168,6 +196,15 @@ class Component extends DCLogic {
     });
 
     return {
+      symbolsOpen: !!this.state.symbolsOpen,
+      openSymbols: () => this.setState({ symbolsOpen: true }),
+      closeSymbols: () => this.setState({ symbolsOpen: false }),
+      symbols: content.symbols.map((x, i) => ({
+        label: x.label,
+        description: x.description,
+        icon: content.symbolIcon(x.id, '#837C6D'),
+        border: i === 0 ? 'none' : '1px solid #E7DFCB',
+      })),
       dateLabel: 'TODAY · ' + db.format(today).toUpperCase(),
       answer: s.answers[current.key] || '',
       isQuote: s.step < total && current.type === 'quote',

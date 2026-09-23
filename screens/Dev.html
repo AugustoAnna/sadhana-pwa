@@ -178,50 +178,10 @@ appReady.then(() => {
     if (confirm('Erase all data on this device? Export first if you want a copy.')) db.clear();
   };
 
-  // Demo data: four weeks of plausible history so Insights and the Daily Tracker have something to show.
-  // Every demo entry has data.demo = true, so it can be removed again without touching your own entries.
-  $('demo').onclick = () => {
-    const today = db.today();
-    const selected = db.get('practices.selected', content.defaultPractices);
-    const params = db.get('tracker.params', content.trackerParams);
-    const questions = db.get('reflection.daily', content.dailyQuestions);
-    const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
-    const pick = (list) => list[rnd(0, list.length - 1)];
-    const value = (format) => ({
-      arrow: pick(['up', 'up', 'same', 'down']),
-      rating: rnd(5, 9),
-      check: Math.random() < 0.75 ? 'yes' : 'no',
-      yesno: Math.random() < 0.75 ? 'yes' : 'no',
-      stars: rnd(2, 5),
-      percent: rnd(50, 100),
-      duration: rnd(10, 60),
-      number: rnd(12, 16) / 2,
-    })[format] ?? rnd(1, 10);
-    for (let i = 27; i >= 1; i--) {
-      const date = db.addDays(today, -i);
-      const at = (h, m) => db.toDate(date).getTime() + (h * 60 + (m || 0)) * 60000;
-      selected.forEach((id, k) => {
-        if (Math.random() < 0.75) {
-          const p = content.practices.find((x) => x.id === id);
-          db.add('practice', { practice: id, minutes: (p && p.minutes) || 15, demo: true }, { date, ts: at(6, k * 25) });
-        }
-      });
-      const mood = rnd(1, 4);
-      db.add('mood', { mood, moodLabel: ['Low', 'Down', 'Okay', 'Good', 'Great'][mood], energy: rnd(2, 5), demo: true }, { date, ts: at(8) });
-      params.forEach((p) => {
-        if (Math.random() < 0.85) db.add('tracker', { param: p.id, value: value(p.format), demo: true }, { date, ts: at(21) });
-      });
-      if (Math.random() < 0.7) {
-        const q = questions[0] || 'Demo question';
-        db.add('daily-reflection', { answers: [{ key: 'q:' + q, kind: 'param', question: q, text: 'Demo answer for ' + date + '.', tag: pick([null, 'star', 'ladder', 'lotus']) }], demo: true }, { date, ts: at(21, 30) });
-      }
-      if (Math.random() < 0.2) db.add('expression', { text: 'Demo expression from ' + date + '.', tag: pick([null, 'star', 'bulb']), demo: true }, { date, ts: at(19) });
-    }
-  };
-
-  $('undemo').onclick = () => {
-    db.list(null, { where: (e) => e.data && e.data.demo }).forEach((e) => db.remove(e.id));
-  };
+  // Demo data (lib/setup.js): five weeks of history, every entry marked data.demo = true.
+  // "Load" replaces earlier demo entries; your own entries are never touched.
+  $('demo').onclick = () => setup.seedDemo({ replace: true });
+  $('undemo').onclick = () => setup.removeDemo();
 
   // ---------------------------------------------------------------- app
   const renderHandle = () => {

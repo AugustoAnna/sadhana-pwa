@@ -5,7 +5,7 @@
  * you just edited; offline you get the cached copy. The large vendor runtime and Google Fonts are
  * "cache first". Change VERSION to make every installed copy drop its old cache.
  */
-const VERSION = 'sadhana-pwa-v2';
+const VERSION = 'sadhana-pwa-v3';
 const NETWORK_TIMEOUT = 4000; // ms before falling back to the cache on a slow connection
 
 const CORE = [
@@ -15,6 +15,8 @@ const CORE = [
   './lib/db.js',
   './lib/content.js',
   './lib/stats.js',
+  './lib/setup.js',
+  './lib/reminders.js',
   './lib/pwa.css',
   './lib/dc-runtime.js',
   './screens/support.js',
@@ -30,11 +32,11 @@ self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(VERSION);
     await cache.addAll(CORE);
-    // Pre-cache every screen listed in screens.json so the whole app works offline right away.
+    // Pre-cache every screen and asset listed in screens.json so the whole app works offline right away.
     try {
       const res = await fetch('./screens/screens.json', { cache: 'no-cache' });
-      const { screens } = await res.json();
-      await cache.addAll(screens.map((s) => './screens/' + s.file));
+      const { screens, assets = [] } = await res.json();
+      await cache.addAll([...screens.map((s) => './screens/' + s.file), ...assets.map((a) => './' + a)]);
     } catch (err) {
       console.warn('[sw] could not pre-cache screens', err);
     }
@@ -58,6 +60,16 @@ self.addEventListener('fetch', (event) => {
   } else if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
     event.respondWith(cacheFirst(req));
   }
+});
+
+// Tapping a reminder notification opens the app (or brings it to the front).
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil((async () => {
+    const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    if (windows.length) return windows[0].focus();
+    return self.clients.openWindow(new URL('./screens/Home.dc.html', self.registration.scope).href);
+  })());
 });
 
 // Screens are cached without their ?query, so PracticeDetail.dc.html?p=isha works offline too.

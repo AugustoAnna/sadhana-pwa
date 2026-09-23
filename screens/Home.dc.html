@@ -13,14 +13,15 @@
   body{margin:0;background:#FFFFFF;font-family:'Public Sans',sans-serif;}
 </style>
 </helmet>
-<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;overflow:hidden;">
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;display:flex;flex-direction:column;overflow:hidden;position:relative;">
 
   <div style="flex:1;overflow-y:auto;padding:28px 24px 20px 24px;display:flex;flex-direction:column;gap:22px;">
 
     <div style="display:flex;align-items:center;justify-content:space-between;">
       <h1 style="margin:0;font-family:'Fraunces',serif;font-weight:600;font-size:26px;color:#18160F;">Sadhana Tracker</h1>
-      <button type="button" aria-label="Notifications" style="width:36px;height:36px;border:none;background:transparent;padding:0;display:flex;align-items:center;justify-content:center;">
+      <button type="button" onClick="{{openReminders}}" aria-label="Practice reminders" style="position:relative;width:36px;height:36px;border:none;background:transparent;padding:0;display:flex;align-items:center;justify-content:center;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#18160F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 0 1-3.4 0" stroke="#18160F" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <sc-if value="{{remindersOn}}" hint-placeholder-val="{{false}}"><span style="position:absolute;top:6px;right:7px;width:9px;height:9px;border-radius:999px;background:#2F6B5E;border:2px solid #FFFFFF;box-sizing:border-box;"></span></sc-if>
       </button>
     </div>
 
@@ -29,7 +30,7 @@
         <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScdHyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wAARCAGQAq4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD5UooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKcDwabRQAUUUUAFFFFABRRRQAUUUUAFFFFABRS4pKAClxSUUAFLSUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUALSUUUAFFFFABRRRQAUtJRQAUUUUAFFFFABRRRQAUUUUALSUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFLQAlFFFABRRRQAUUUUAFFFFABRRRQAUUtJQAUUUUAFFLjFFABSUUUALSUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUucUlABS0lFABRRRQAUUUUAFFLSUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUtACUUUUAFFFFABRRRQAUUUUAFFFFABS0UUAFJRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRS4JpKACiil60AJRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUtFJQAUUUUAFFL2pKACiiigAooooAKKKKACiiigAooooAKKKKAFxRSUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFLQAlLSUUAFFFKOKACkoooAXtSUuKSgAopaSgAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigBcnGO1JRRQAUUUUAFLiiigBKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiloASiiigBRQAT2Nanhvw1qvizWLfSNHs5bu9uG2xxoPzJPYDuTwK+qPh1+zHoHhdI7rxUi69q/DfZEz9lgPv/fP149qxrV40ldmlOk5nzD4f8DeI/E/OkaPeXSA8yKmEH/AjxXpHhf4DfZZvtXjO4kt4U5WztSN0xx0aQ8IM8cAmvpLXbxIbhNDsI2e72gJY2ACmNfViOI19zivN/FuuaNoE0lrFaprerIcSJ5jfZYH9GbOWI7/0ry5Y+rNtRVj0I4anFJvU8xvfC9rHPJHpken+UoO9oYBiMem5wT+JxmuekttJ+0Ov2+2kdhtcxRKwX6nbj8qXxb43fUJyks0d9sHywonlWkJzyBGvDY9WJzXG3WpXd5nzZTs6hEAVR+AwK6aNCbV5SIqVEtkaeoaNo6vm21iDn+E5OPyFZ8ehy3Ic2s0MyxjLkMVC/UkAVSx3zxSl3Zdm47c5xniuyKcepzPlfQfNYSW7bXkhJ9EkVv5GrmoeHpdLsIbm6ubVZZ+Utkk3yhf7zAcKPTPJqgFKj3pWLPyTk+9Vdi9mrFcikqUoKYQRVXMnFobRS4pKZIUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABS0lKRzxQAlFFFABRRRQAUtJRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAC9a0NA0LUPEmr2uk6ZbPc3l1IIook6sT/TuT6VnjrX1r+yT8NodO0abxxqEAN1dloLEsP8AVwjh3Hux4z6D3rOpPkjcuEbs9L+D/wAH9M+FWhiKMJc6zcoDe3uOp/uJ6IP16mt3Vb+e682z04rbwg7Jr+T7qk/wxjq7/kB61e8T63Y+H9HlvNQd1i4QRxDMkztwsUY6lmPAFfMvxU+KmsSs+kwTRwXTBo5Ird/kso+8KHu3Z5O5BAwOvlVW5Ox2U4u1zrPEnjOP7ZceDvAzR20QRrjVNW3AMyj77mTsM8bj16LxzXzx4z8RC7u5bHS5iumxkKpTI8845c9zk/h7U5/EV1beH73RvNREv7hbi5kz884VcKmf7oJJx649K5uWWIn7jevP+FdNGkou9i5bFYhiuWGKb1OAOOlOZ1Prn3phkFdhg2gCADJNGAOaQuo6mgkdyKYnboA9qVcg0mQBjIoBBPJFAri9fSm+owMGnZHHApO/bFANXIWGKSpiAajddp68VSZhKNhlFFFMkKKKKACiiigAooooAKKKKACiiigAopaSgAooooAKKKKAFpKWigBKKKKAFpKKKACiiigAooooAKKWkoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACilzxijNAE9layXt3DbQrulmdY0HqxOB+pr9HPD2kReGfD+heH4AoS1gjtzgcHYmWP4kfrXwL8Lo0n+I/hiJ1BVtTtgQen+sFff5uVm8RrEMn7PGc/Vhn+WK8/G1OVpHTQjdM8f+JvjCW6+L1npcNyIYfD+n3F5uIBVbho8Bz2+UMD+HvXzXrN0kl7K8LOELEq7tuZueST65rqfitfy33xH8RTrKyma4eJiO8anB/l0rgb2YLGcY9sdhUU48zudK0VivcspYlRufAy3UVReQY+ZgT6Ctrwv4U13xzqaWGlwNIWYbnY7Yoge7N0H8/SvU5PhN4d8ENJHqV1FrF8hXLMCsERwCfl6t3HP5V1SnGmtSFGdR6aI8PAeT7iE/QE1G4ZSQ2QfevWdaltlJNmIrePODGigAEj0Feba0Q1yzbsknkZzinRr+0exnWocive5m5HpQDjrzRRXQcgZpyHmmUooGmSA+o4p4YdcVGrZ7U7jv+VTY1ix1RS4J4p3IPGfpSPz1600KT0I6KWkpmQUUUUAFFFFABRRRQAUUUUAFFFFABRS0daAEooooAKKKKACiiloASiiloASiiigAoopaAEpaSigAooooAKWkooAKXNJRQAUUUUAFFFLQAlFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFLQBv/D+6+w+OdAusZ8nUIJMeuJAa+9IJ8eMXmTGy8tVkX8FH/wBavz40mG8e/hayieWeN1dFQZJIORxX3X4X1ZNV0/wrqCF186JoG3/e3GP7pGOoKnrXk5kneLR34RJpnzJ8UCy+NtSto40w87M/y/NuwM8+mTn61T0DQI9WuJtKis47+9vSlpbXRBENoT80kmP4mVBx2GSfSuw+KelRP4ru9SWXyZPtIxu+6qAHPA5LEjIxx+ddN4Z01rDxHosiQRQQPa+ZAqspw7/fL4PD4A+X044p0pOMUatJvlZ6g3hnRvAPga1sNHgjtxChQuIw5lkO0lnzyWJHB7e1eQ+PLrRYYJr+fUVuLlcmTLKuW/hRUzjB65yeK7f4qeJpVsF0O2USzTNtCdWAPfGMduOa4nVfB2i6l4HvJJJbS2vbQBV+0NveVx94AfTPJ9BxV6SlZlNSjHR2PG9c8RaTMZ0tg7vInySBcCN88jGenUZrjZHLtnJP1p1ygSeRVOVDEA+tMVS5CgEk+ld1OmorQ82c5N2YmOM9qbW54p8MXnhO9Gn33E6qpkXH3GKglfcjOM1iVcWmromUXF2YlLSUUyRQ2Dmn59ajpQaBpkvXnpTWII96TeRTc5pIqUrhSUUUyAooooAKWkpaAEooooAKKWkoAU80lFLQAlFFFABRRRQAUUUuaAEpaSloASiiigAooooAKKKKACiiigAooooAKKKKAFzSUUUAFFFFABRS0lABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABSikqa3VGyCW8w4CADIJ96AOz8E6A9xbzXUgSGJAGknaQoQMj5FI7nqccgdxX0p4H8SS31h9pumhhht5RJAYgQGYdcqOhxn8TmvL/AIeeEjJ9l812mEMnlwRKMBDgMc9B8zY5Pb16V3Wk2F5q181rBNHCZH5Zvlji5OcjJ/un64rzqz5nqjuo+6i/4h8PaXeK9zerCLi8LOVO4/Z417AHgu3QcnAJ781hvqMg1CyuLGBILRJPKV5mHzoAOBjONuMDjqR713U8Nk2kRJIi3trFiZxgHzlBChQB3OOBnI5rk7+2t01yFIrVWhlCr5MGFVgBkOSOjcrnAxx0qbWVkbQ1kbXjyOyhWGeJEE0qAlwOSOn19a88+J6aRrnhGCZLW3Wa3YIJYpMFsjJBA9/WvTNQjju7CdrgRyvs2IPU55BxnHB/MV4L420OdZJ/s5YQbiFGT07E+/UVN2mdEvhseTXCKJXCdAeM16h8KPhTd6v9h8VagqJpUVwHRGbmbYeRjrjIx71x1tbW1jeLFcpEzhl3bxkDFfVfgq2ml0zS9HTT7vy4dM87zXBRAz8gKMdgcZ9a3rV2o2ic9DDLn5p7Hy98Ur97/wAXXkrMDucsDn1NcdXQ+OHZ/Ed2CuCrYwO3tXPmumirU0cWJ/iyEooorUwCloooAKSlzSUALQ2M8cUlFABS0lLQAlFFFABRRRQAUUUUAFFFLQAlFKcHoMUlABRRRQAUUtJQAUUUUAKKSiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKWgBKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAcmAw3DIzyK3PDtgjtFeTIDF9qigAIyMk5OfTjp9fasIV6N8KdIsb8X8+pRzPEkJWFIixLT5G0gDqRn1HBqZuyKgrs9gtNJntLGG2KqsKaiySiNvK3hWKE4IOdxVD179q6e/id1tb2JDFcTrhcHDTnH8AxyVVhx3rz9dcvYrVbOcwwXMNunnJKS5kkUFcgdAxABJHeuy0C6F1bWY3zXb2Mis8YcuYj0P4H5RnPGMelcMrHYjft9KfR7a2s5jPGsKDbsUqo4yNx7t6/lVmPRFmuI723tS0jMxjuZzlFxgsT646BeBgd6kDTX1nbBJMQhipO/KMzkHgnkkZLHr1rrtBtwtlLbTKA/LYJzjBz0P8/Wla5XNbU5PXLJrG2il37UDlSFXezrnjgdTnn8a8j+IVrG9mp81S0RlcqHGcdyFxnGT39K9r1yB43vUlld2uVQKqRlyM9Mcjqe/49q5LXfCEGvxRae77Lbl5vs+N0rZAIz3+YYNS0bqeh81+HvCt94l12BFQGBpVJLHG4dQBjPXH4V6Hrb+NIvGdzrtpqSwxBVVILm4IEsfA2IF9Ox4wcV3rjw/4U06SO2TyIIwISwG7zCc9T6DGD2rzfxV4wZpSIEjkEkBhKKMBSRjIPrwpBqryZHtEkeX+LYjfeIbhrItcCT58IpLD1BHXIrnniaM4ZSp9CMVrPq8kV+LlHZpVHLEkE49/X39qj1eY3Eqybywdcgnrg812QvFKJxTXO3Iy6MUrLikFamAtJTsYFNNA7B2pKdu+XGBTaBBRRRQAtBpKKACilFJQAtJS0lABRRRQAUvakooAKKKKACiiigAopaSgApaSigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAClpKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAHxRtJIqqCxJ6CvUfh5Elpb+VMJSZX8xtigsqgYyAeOuB+J9K4zwiLRr1UuGeMs64mXnyh3OO56dxXdxSNYXLzi3WeFLmOVLq1UobgBcCNWbheuTxkE1hWlpY0prW52dq0cdrNBGk0007hYFRgqFlOXbJxwB0HILd+K7r4f6EdOWOK+Lg30W9jC207FODn1yNwwP8A644rwxZXGrzRyXCebLtMMZQ7vKy4I2kc4ySM47n1r3Lw3pU2j6OrB1YlB99QPKA6gE8nnnt6965NzpWxNaokVkwitkigxlIETbhmGScnvnr39a04n8kOzRnc6KOmQB2H4n8qljVWhKsm3GXLdOPp74zn2pQ8kwdmVyWGzaDgnHP/AOv8K0sS2YutytHbsXXep+6V5kYjj5R346Z4/KuavdTtEtby2G2N2URMWfYUiB546DIznucjFbusWowT5rwCPKu5fIA/l3wK8z16O81FWU5ngiIT58BcAjuSCBzjPUfpWblZmq1R4/8AEPxnPqupraxTBrGIkKMfuuOpX+Wfxrg9b1KW4dT5pOABgcYx/WvTNa0/RpZbmA2RGWHltnnI9MnnP+c1y2oeHdORPtYd3t2BG5UbarjtuxgnAJwKunUiuhEo6aHBZ5Jq21wj2yofvg9fatZ/DE6O5mjaBM/KzghW74z+VZculzQTeXKBH3yTwAenNdanGRz8kolbgjim+lDABiAcigGrJvcOopDTuMAjrSH1oBjcUlLSUyBaSlxSUAFFFL1oAKKSigAooooAKKKKACiiigApaSigApe9FFAAaSilzxQAlFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAGho18bG6VtqsDxyM4969Lk1KXVxclPLhcuGS2P8LBeSqjPACnr615RAypKrMoYA9CetdnoN2G1SL7PMJbmMxFVlUYkORlevqcehFY1kVCVnY+k/hho4uNJtLlikMkUJMrK+GUht2XA9wcEe4x3r0aBmIhkd9hid2PGSMqPX+Vc98IN1/wCHrSWW2WBpImKlSMeVk4xznuOvY13E1oJZgoKiMzOxIPzEcfzI/KuRLQ6nJXsZ+nyzysGdjtJO7+6QR/n86mW5KSpHLGMgcnd2H9PWrswSGRc+WEDgk546d/XpWXdmDE58suGJAXbjAx7dOop3shbmVq90swltREQvTcYzgnqMfn/+quW1r7NbWQS2WFXYb52c8NyMKO+efz9q37y9kjV0MylguHY5JXkkDryee1YcyRtJP5sb7Ap8xUIU7hyVx2+vYism7s2ijyrVdLiSZJjBnc/GQWJ54x6cHntmsn7GLnTZHeNcwx74jj5iqsVbI6A/dz+HrXb+IIpbK3kkaRsXCupKqMphhj6ghgeMZya5+4jitbiCJoXl88fZ5FUcKHTDED1JOQfpQtAZy2q6hd3INkAEjYgeXxsjcdcdyCOM5z2NcPdTuTKpi/cvldpGdnOcc9CO1dRrNy0Ze0txGJA4JdTnDd0BzyM/hxWLeujXT3AQHf8AOygBQTjDDFaxkQ1c5q6tggBXGM4OOKqEAdRzXSXlqqwyBQqoF25PfoR9DjArCnhVW+Ug8ZxjGK6qc7oynHqiuBQfenbe1DLtPQ5+lamTRGaSnHPpSUzMKSlJzSUAFL0pKXvQAdaSlzzmkoAWkoooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigApcUAZOK9D+GnwW8R/EidJLeH7Dpe7EmoXCkRj12Dq59h+JpOSWrGk27I88ArW0BXE8kgRmESiVtuc4UjNeoXf7NWs6d4mi0y+1nTLbTpCdupSFhGf9nb2c+hIHvXu/gD4TeFPhzo81pc6INfvbjd5l1cQJukibjYisSNv0OTWM6sWrItU31Oa+BV8lpb3TPA+bRSVjR8sFU4Ykdc/MucdcA+te3JOs7BluCnmIGwVGFwfz9eK85s/BXhC8vTf+FZrjSpYmljmspA8bh2G4jDfMv3TwMjkmut067Rg6MhgkhBQIrYBK8gFj1yCT0rkTtodNtDWvvuNKuXI5GCB83b9f5VXvtk03zBkRcedhcEdAB+fenF4m2ROUYE+Y6j0HbPvxVW5M8EMcQA8k/M7k8gc8Z9/XtQ2CRi3luytut1JbaX5APAGBj0x1rHuo/JS3LQqjysSzpwCoOD9efWt/UXV1kkIAkEZCtHnKdcD079T6VgF5NigOURgA0YALEdVJ9s8fhWbZojnNUjtZbmWAKZMxt5WMZ3Y2qcHqcdSO4HpXFXd4Y9Sjnniz5TBGiJ3Dao+XPp2H/6q67WAvmqshYshyHI4Q57H8vb2rldWaaS6heSRmkWPErKAC6HJz07kn86Lg0eeahEqStuTacLkBuw46+vWsmRg8rGcMxLbtwxycdu3pXS6vCI5SMblx7cDPT+dc8sbtG6+YQF4XPHGe/pTiySlethTAiGWNcuWXI+Xuf5VhTJiQgLgAnjPSuimj3OBG23CHk9+Dx+NYt5Fz5gGN3OP8+ldNKXQViiR7U0/T9amZcsc4B70xlOOnSuhMzlEhcHNMNS4z3FRtVowkuo2loFFMgKSiigBaKSigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKsWVjcahcJbWkMk80hwsca5LH6Um0ldjSbdkQYqxZafdajcJbWkEk8znCxxqWYn6V3uhfB3UJ5I5dbuFsLU/eEYEkg/DoPzr2bwrF4V+H8IXRdJjnugObq5yWf3Pr9OlcFTMqK0g7s7qeX1XrNWRyXws/Z+klnj1LxLaC7KEMmn7tsWf8Apq/Uj/ZX8SK981LWbbw3pyWsb23nBPLjMaiOKEdkVR90f1rzy8+JGqXobyJkh7fIM+WO2AMD881wXibxRqjOPtE8sgPKyMwBU98AYFc/1nmfvbm7oKOx794J12z8ZaZLoWvBLi7MTLIG+8yEnGfcdjXncWpeJfhtqt7pzs11psM/lrbXchKyg5K7B1B2jJZeB3HIrgdD8V6nZXw1K2udtwgwChTd+PqOlev6/eWfxN8IRanpxC69pke4pvBd1H3hx15GRRfm23RNrPyZtaNr9h4usJb+0jMioPLczY82FgeASB8wwTg1oWNvK9kQwZ9zKQzHliFySCecEj/Oa8q0jW7jQntLzTktwLuFvtO4AI0xzlXAIwMdO2RmvSo9XN3breiTylaPYYy+7yZFxweem0jn2FClfVkuNtjWjLx3A8tJZAQF25HGRu5J6Y6/lSySC4sY3kkJSYlUG7iQYJJ/MflWal6HjgaSTfy8cipwOOq/jnBPQ8U/zmdQ0gb/AEdFiK7flztLAqM9ycH0x3p8wrDbi+CHzJQhMg4BGBt9Djk8D+dZWrPFHIf3f7pcKygcBuCxU9cZ7Vbnu4DJtWItGi79znjByCcDgHnpiueurxbvy9rplzgGR/mbP8OO2PWlcaMvXEWUokEhLuCCQMFWHIA+vI49q5jV3ByItzIhyAy+vH4109/LFJdiMtIjICS2OPu4PA5z7D865nUJXEs0bO4OPmUHhMDAA9TnP5UDOU1GDZbrGASkZBTC9jwf5VgNYGSZoYlUvI2AS2Bn1JPAP1rqbu2knURxMqsGCAkgYB55J9s4rn7mNJZmZUQR7WyMnpjPfuaYmjCuYB5bSKeVABYHoPX39PxrJmi3KwIxg/L/AI1vXJUxP8hQuAwAOQB159axpQDG6HjIxk962gyDKIBQnHFQnPqOTVudVCjGQSOR71XlGPbHYV1xYmQEc8g1G61I2cE0x8ng9q0TOeZHjjrSU6kxVGIlKKKSgAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKUCgB8EElxMkUSs8jsFVVGSSegFe8+EvD+mfD61gtbkM/iC8TfM4APkLjIQf55/KuJ+F2mwaYsnia9h81oi0VmhPHmY5c/ToPc1p6r8QHOpSmAPcM6AI0rAlHHccfkOxAPavDzL2mJl9Xh8K38/L0PUwaVFe1e56al415Kiy5Ej87QO3sP8afdaZ5iCPKK5+4WbOO/Ncl4O1WbWY7uW8vLZ2aZSrDOUYg/NkgfKcYPvz2r0HSkbUIANoeXjIzyMV8filLA1NOh9FRkq8NTgbuKSykkSeUboiArLCxxkjgdM49O9Tx3OnPFJp80z3Dvg5VADKMcMABkYNdT4u8PzXlh9qGV2/LkcZXGc+1eTSpe2EzhGZOhyTt49PpX02DxEK8FUj1PHxFKUJOI+4j+y3RUPtZTgODjOK2fDXiC90XUbe9tJdk8JyrJ/F9R3B9K5OSfzHKrtldCcu/XPXjP51bsbm5HmASENxzG4/wA+ldb01Oe1z0+61ix1N/t9hbRxreP/AKZbbceQ+DyG6FS3IB6Ee9dHpWqvHZwxRwx+dcRhNzAETucgyY6dl6/3q8x07UBDbfZ1RFkuCI2lYjcq+vPAJOMsecZA4NbOiX/2xZbaVdk1m6bVji3HYWABGeARwff1pcwrdD0y2u2mEo4ZBIS05bqinlVPbkDH4mrGratPZwSXcEqhXCssJI5fceFPrjnd2rk9J1eW5ulIBl87c8jSYCLsU4zgdflHA9au3V35kUsLn7QFj8xoyGOXGemeg5I6duKAaLd/dfaLiBGljRnPlSswLbSec/Lwep6d/rVHYEDSy25WRpQWVXJJUsePY9P0qnc3JaItBlZl8rAlb7iDqMgcAnJyOSCKW0nhuTM8aByqhUBQhUcfdwB1BHJPpVITRXv7x8SuzFXhZtzn5jktkgnuOR+QrD1CZZfMd2VCWKjDg56d/c96uXc8LpcBVPG0M2cq2eTj0yM4xVG4iSdBsk2Q3GHVD8oiBHAP09fegDHuh5cblUGX+YkH5VzjI+vasCZkiaWQqmXYuueAd3YAdMV0OpZWJY49nUfMBleM5/HHNcteFJoTwVwxxhe2en+HqKqwmVZc3WC2WbPPzckY/pWVPGpG8glWB3A+taW2RGBI2h3G3I/AAe1VvKeUSBd3lqOQPb27c/yrREGE4U7gzDB5DAcgVSZBkjjI4+tbF2g+VY1BbdgYGST/AIVmXEZA6DP68V1QkJlRjkEHjHtUTLjn1qxKsixglSEcZU/3qrsfl6VujGQwikNOAz60bfWqMbDMUU9gBTcUyWhtFFFAgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigApQaSigDe0LUShELlirDbjNPjRo9QaCZjnqrD+MVJ8PPCd9438XaboNgSst1JhpAM+Ug5Zz9ACa+mfix8E9MPwtiu/DVsV1Dw+ZLgOBmS7jzibce543D/dIrkmkp2XU7YTvBNnhfhS6bSLhvLjmuQxUJGPugE4+b354HrXr/AIUv/LvljikEoXbFKevU9ePqBXlmjSLb2qXK+WHlH+sZM7OPvD6ZyPcZr1fwjJY6LbRaMYpBdpzchXzGu5h91eSxGEYNnnmvls5pKrTk7anr4Kbi0j0XWI449KMRAZHGCMjr2P51454u8LXlzFI9vAxeM5KICdo969Tvbx5I1gYL5qAqxXJAPtWddwJNZf6S0zIAFaFJMbmI4JP+T6V83w9iXRl7Kb6nfiaF4XPnO6s1tSokIWYnkls4Ppj/AD1q9AyTxtJDGEVFG7GBjP8A9epvGMdvpd/NHJGgaV8xhVOUHoTVPRLucxtFDaiQOVJ/dk554+nTivv1K8eboeG1Z2NASwPFsdXzznaw5z2rUGqOtxHcxzNH9pjSCYRj5V2sNisD1Hyjkd+a5+6LWtwFkLPJIdzKMHaT644zUtvPjzIw37txtODzyOtR6CudkNWnggkltEib5BuETYO3PJGD19SOtaOma4bm3njM4uIlWQlS5yoXBGB14Y5rhdJvMwzRShmMabAFODnPUewH86nGoPp920w3bZImj4C4fICkH1BFLW4zsbvWZJ9s0jFmhXY7BOowSAT6cE56AZ68VjnxJ9qlniGYlgUyyPGmA7ZJCnuMjPTjI6VS81J0liDvbq6AbNxXfz1HYHP4VyC3NxHfSxXauyxnLHOCfTJ9/SrimzOVz021lFxA0FxKj4LXJkMuMBVySD6nHSore7zbxW0kajbtZFU5yQCCMknAOT0rDi1YSyNc3CJcXM2XAGMPISeSOwH3sevtUa6vK0flPKsbyPtBA6KARgAdQOaYXLWqSxlzOkQEaqWRmk/1xIwxU9zk5Jx04rnZSBYTXIMpYBQjDGCcAZ+vb8a1b69jOpXcU0csk6gQqhIXYEPXaBwCCD7VhXd0TAsCXDSG4VjkNjdlsnr0HGa0SJbI7h3VbdjtJVTuDnAHfP0xVO6mEUTFSWEh2ouTlf8AOasTSPL+8dkcmIDaCMIgO3P4YH55qi0xkuBkMpEe3DDG317VSXckqzxZjRFUrNuDK2cYHb6VnXpOT3wMkgVqvtlUsqgjbgAeuO388VWvUiktJH5kfA2kcBQOuf5YrWm9QZhucnaGz0puzOc9Ka2DlRjOetHLAY7V12Oe9xWwMYBH1puO/Sn9TzwPam9qoTY00nIORT89eBSEcUCaGEUhp23OcUmKZm0NooooEFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUoGaSpbeF7iaOGJSzyMFVR3J4AoA+pf2QfBi2Wkat4zuowHnJs7ViOiL80jD6nA/CvonTLZV0m3hkXcrRYZX53Z6g/XNYHgTwzF4U8G6X4YiC5s7NFm4xukblyfqxat641KG1v7WxdgJJwSinqQK8+Ury5jtUdOVHyn458G/8IX4q1DRE/48kDXVkMH5on6L7kcr/wABrO8I6/DpN3Db2lrHNfySbXlkUEdRjLH7qhfwGM4Net/tLaS32TTdft1/0nT92/H3nhPUf8BPP0Jrw+zWOLULW4VRJb3DZlCkjIPQn3U815+JpLVPZnXQnorbnu4MqWVvdOYyZFVPMTgOQMBgOvIHU46E1NCgFk8kx2oRnOcfQfjVvSkj1LTIjeNAjMnkpDEDyo4BHYDcCQR2IzmuZ8X6ozwLBbExxjK5z0PTNfnkqbWJUYdz6ClU5qbR5Z43trKfVZJZYXkO7d5Z7H+g+pqnYTXWpD7PbwR26oMAKNxweOnStPVLJr2UjZiTO44yQO5qzoFmY7xm+0hHEbblhbhQBwSw/Cvv6MuaCR4tRWbOZ1XQpLaZY5rZw0/3JZnJBYdRj/Pas1oZLKUxyxCNudwJPXPvXqF5pFlqmmFbeNTcrnDsxba/UkZPBIGPxrz3UYw2Ibp83acKVG4kdifT8a7EtDmbKkk727x3cTMjH5WHf0BP15FXmvFu8mVVJCgjaOpHA6++Kz3hwmTu6cofun1H1qO1nMDlN2Sq8HGcjOKVhXLn2iTzFXzNyj5QWJx7/wA6j1pYLlJJouJkIwiDIIBGSTn64+uKh8zLA85ByCPbnHvURuvJKsAGAy2GXIPpxQlrcTdxx1SeWCJXkDLEfNGOQDwufyAHtTb+/kBUMw5YSccAnGOv9Ky7q4MNxwRtbJG1cAe1U7u8ZI15BcgnGPu5raNO5DZ0VtexLcPHMfMKISjJ1UFQCc9SzYH0qpqF9NPLDPHEu6QIo2ArhVyMD9Pxqto13NYhLxJ3WUtwyfeGP581XudS2mSNIoxKH2rIGJ2qOir6YOeffFaKPvaCNRZl/wBHtnGPJlO2N8fOX4Puen4VBqQVpGkRt7RqEZlBzOTklsnkAcDpjism4vTDLtjfzFRdobbjnrkd+p696ZBdToQiyvtJGAx4xV8jWoGraW0v2XBiVd7A5Yc8dx7HP41U1plRUhhbomJMkdc4Jz6ZzVqfUXS1iaSRi0AxFkdAD0HtmsK/u3nbJwqnnaABRTjd3FJ2RDb2xmWaXgLGuSfc9KjVtuRwatKTb2ewdZjuP+6OlU2wW57+ldKdzG1khGABpQOOPpSEYOP50u7DDr1pkCc80hyRTiB2OfemkYPWmDBe9J2p2CeRSFfSgTQw0U4rgc9RTT0pkWEooooEFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABXffArw8viX4qeHrORN8MdyLmUY4KRAuc/98iuBr379kPRhP4p1rWnTcthYGNT6NI2P5K1RUdotlwV5H1Zo0v2q4vJycgybelcD8Wdal8O+IdH1JN2ImHHY+td/4cjEemq2SfMYv9c155+0FYPeaBBJGCChJ3eled9g7ftmv8V7Ma34GOo2uHdEWVSOQykcj6Yr5r8M6ODqsUJnCRKpZT12+oHvgV7b8GPGNr4g8LnwlqTFbmBDGpPJdevfuM9K8l8caLP4C8USWMgZATvgct95Sen41hXTqU3Y1pNQlqekeH7pLh1RJ5IomjFrLnkooXKAex2j8Q2e1SeMbSNHMoHLttfA+UNx8wHYEc57nNc54X1IRSRXMJZEuFMbqcEhc+nPRgG59K7jXl/tGxjsoQ7sJfKnJAByM7BgDpxtA46ivisRT5Z37HsUqlmjyh7cLcurgSB1KDAz8x6celVtjQiRS2yJVCpGDjHqPety9sjcRPMwK7OpIxz9KyJgZbfdhsvwykdG/wAMc17eDr8ysRXp2dx9tfzNZy2ivtjcDCxjYox9Op6day9a06S604SW0YSQAMfLXL+nP+e9Sw+cswihCr15L4HWuu0rS4nsvMW7d0ABkEOQgPQgsOuK9OLk5aHFJJI8gtTLp84kmt5BHu2mSRuQcfxelQa3atpt7NFE3AGQyEEOpGccdq6vU/D6xPdxiI+QX3KCxJ685z/OsG80yVLJo3YP9mY7PUdOD7HOR+Ndi03OR3MOK+KYIZgy8A56fWnNOCMoQF7c8CqUoMUhA4ySffNNMny9cfmfwrbkXQRJeOskWT1TrgdqyZpTI5OTn69a0n+YFecEYH+H51kou2Rsj7vXNbU1oSy5dXSpbrBGgBBB35O7p09MZNVMk55zTGfdJuJxz1pVOeh/OtErCT1JoIRNuBkWJVUtl/5e5PapbNDJMAB0/Kq5LY5I6Y61MkjQxttDF24z6ClIYl7cm4kbrtXgD0FRwxCQmSTPlr+vtUsVoWBklxGnJ6VHeXPmHYuFQdABjNC7Il92RTyGWQsT1/QVAxB596cTxTccc1ojKbuBAzyTTO9OY8dMUzNUZyeo/jOaBnHNBPagAH6UDFzkE/rRSYGaXigEHHrUZNPpGyDQKRHRS+tJTMwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAUV9c/siaH9m8Aa1qhTD3175IY/3Y0/xY18jKMmvvf9n/AEYaN8IPD0JADXMDXj+5kYsP0xWOIfu2NaK1udtpEpaFkIVSmBgHI/Cud+KcRuPDEwVdzDkA9K3LE+Tqc8Ochhu565o8T2v2zRbmEDlkPGM54rhWqsdOzufGdrr1z4b11r6wu9jQyfIVfJPPQ/nXtPim2svjh8NY9T08Kdb08YdR97gcg45x6V8/+LLFdP1i7iwSRIfbv2rV+GvxHn8Ba0ZAGNldkRXUYP3VyPm+opRj1Rq9Tofh1eSxRXWn3Hy3EeYW56EZzz6kV69pF7PdR2sZM8jOfs0yjJ2sAAZSeg+TY3vye1ee+N7Gx0vXbbxLoksctpfbHm2cqW/hcH0PQ1dTXTFamS2kfZOoZ/LC8YBHVhgdWXPYGvnMyw1qt+jO6hO8LdUdFr+jtI5niyysMS4xxIDz9AeGAxnDV5/fSrBd+UzYV+obkA5617RDBNqOgeZdiK1upUVfsoYZRgSI8nuSMg7uT9K8j8Q2ItrosU+bnPt7f59K8zL5unWcJHdze0plextbZpP3qmRODvkbYicjt1z6V12makJZ7lYYjJbgCOV5PkjVB6Z6n6eua5AsZxEWOQpXCgdCPQf1961UDTIku8t8p2857+lfTRxCjscEqN9yTWlgcXCWo3Q7TskHCx5GMEn+VeZX93JaxQykK77djhQShUAjGfbsa9KZBLA8UsbgKcsgBLe3H4/hXJeL9BZZDbtDKZJE3xb5Ox6nCj5R9a6KVVz3MKkFE82u3idzsJVSOh7fjVNZdoIyR9OKtXURildCmMdvpVOX5D/vdK9CCMUOJOSxzgfpVC6JViAAAxzgVdVwcAkk9Kq3yZAOCNpxj0rWG5nUvbQqjGfanptyT71Gp57U9WyQ2Oc1q0YRZOFywAGSelWY2VY97EMRjAz/ACqtuI2nbjnt1xRNKcEHrUNXNhZrl3J54C7celVsluOlLuzknrTSfmqkrGbYP14pmfl60rZHQ0hIK5xVGTeomSRSDrR2oxmmQOHAJ4pRjpSfWlXk+1BaYopDSk8YppOaAYvc4pG6UKcUp5FAdCKilIpKZkFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAE1nbvd3MVvGMvK4RfqTgfzr9HdIhXSNOstLRdq2drHAAvQbUC/wAxXwT8J9IXXfiP4c0+RdySX8Rcf7KtuP6LX3bptwNQlldRuLvk57cmuPEy95I6qEdGzTihB1ES452jqcVdmj8yB0JHIIzVFZPKu0QsWc9eavy/cYdiKxiWz4u+NGm/YfFt0qDamcLxjIHt3rzSZhyuSfYj3r3b9oiwSLVBdKictyRzgdOfrXhM6jcdx4ByAp5q4avU0T0Njw/40vNFsZtJnBuNNuDzE/WP3Q9vp7V2/hHxDFfxC3DCRS+CGbBzwOB05/xrymWNny+3jGOvStzwletZX6oWwGYEHbn5h0rDGYeNWm31NaU3GVz608GXK31pIs8SnYoS6m+Zm+ThCceoI9vlNcv8QbKOa6muECl2zvOzbiTv17Y5/GqPhjVp7OFCQrtdIqbFbCiQNlCx9M/oa0b69+3WrK4lYqCZdxBIcYy2Bk/7PPcHNfD1IOElKPQ9ejZSfZnA28YiJjGSWOB9QBx/T8a7Dw5pct8kISAyEcABsDt3/SsO6sVjKNkMkhAyeAB1x9a7nwqJJ7LYZmhj5JZBgH3x3z9a9OniYyaXcc6TXvIffaO8YDh47YMMSQwoCz5GCCx5456VxnieJXsBF5SmaBWt9xGTsYcN1x12813GoTJJbJCxkijHzCOJvmkxknJ69eprzjxfc3MtvO8QS1iRfmWNctJ3Az36e1e1QxNO1onmVKU92eO6kFuY1kJ3TKMP7+/vWZKGdDnsMj6GrV1Ptmd1V/nJJB781XUlwSwG0HIFepDYwKgJIzj6UkvzRsDnBHTNOkQxOVYYB/WmAjhTjFaruJq6sUcnNTRYwPlHXqaa6DzD2GaeHEfIrV6nLFWH7hgkkZ9O1RM4Y5FJvLKAe3SkJAxn9KVinLTQXP6jpSHBz1FIeehpM++aZDY1hSE/LinMePxpp+7VGTEpwPtTaM0yUxT9Kcpz1pmeKduwuKRSeovBP/1qXFNXpTgM5oKWoKMfWl744pv1HFKODggUikRt1NNqRxxTMU0ZSVmJRRRTJCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKXFGKAPUf2dYCvj2TUym5NM0+5uifRtuxf1cV9YfD27M8DMxyGxjLd+pOK+Zv2f4BbaJ4w1Tjf5VrZJxnPmS7jj8Er6D8IqbKCFlY4PRSPu4FebiZfvD0aEf3Z3c0O7VIJdwJAII7D3rUfJU4wPwqlayiYo+3GCSAe3FXXzxg+lEe5DPnj9oLR1Wza+uizvk+TF0WIHPJ9WPp2r5tuFAjyev1zx619ifG/S/tmlDcjSeblFXt689z9K+V7zwtqVm5N1DHZxgkBriQRfofmx+FUpJMqJz6cxsCckeg6VZsP3cwZdwKEHg1IbWKEkLdwSk8HYG/mQKEhwTsZdueoOP/1U5PoWeoeGtfRtNkL4yqgDJOR1GPQckV0Hhfe5muLsy3epX6FLW0UkuWHzDdxwpzngjoa8j0i4uLSfy93yyMGDE5CkH098CvR/D3iJkWXycxPPF5Ezbs7gcHAPbJHOOxI6GvAxeFUG2loztpVW7HQPZNLqkUM2HIOGKx4j3D+6O49zjrXc6bbi1jU52noOOMGuf8GW41iG0WRZ1MKyCYeUAqAH5GJzk85HpzzXVzKYo23D5kODyODmvjMzqzp1YpdD2aE1ONupQ1cK25CSdq56jIJ5rgNXhYz+S8TnOQAATkd69F8v7QAwwrIcMT3qvLock0jLHKsK7+ViUb2PfOc4zn+VfRZTL2q0OHFPl3PmzxnoJ0m+MRtPLVx8uW6/SuaVQrDKDPsMZ/z/AFr134wrY21zDapKjXMHyt8+4hDzz7+3tXlEiK0hAJ2jkKK+upuyseVvqVbtS2yQgjORyOwqqcZP6gVfmjPklT25A+lUM568DGDiuiD0JaK84wQ2M1FgEHnpVmRMxnPHoKrKOtbJ6HLUVpC7cDrSNRxTjj8DQSNNFKaTPFMTEYcU32p7cU3vzTIY09aSpOCDTKZLQUmeaDSUCHrTxyDUYOKeDke9JlxYvTGRQQMUduc/WikUBUHkdPSojxmpeDxTHpkSQyiiimQFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAuaBQOKBQB9Pfsv+GbfxB4C1dWcrIurRs4HcLF8v6sa9V1/SdS02BWs4DsTk7eeMfp+VeT/ALHOqv8AZ/EukqfmBgulHt8yn+lfS6t5qlWAIPBGK82tBObud9ObikeZ+CfiHFPqh0u8LR3DHEccqkM/soPUV1nirx9pXh6BiWWaUdBuwufr1P4VH4m0pYYJLmxt4ors5Xz1iBdFI/hPb8K8h1ayt7e5mlvA80xIy8rZycdPasOaUFY0spamT47+Kuta/JtgYwwKMgRDDKf514rrc0st48ksh3nk7iScfjXr3iDUbC306SNpbaBR12vls49sV41q11BJcsYmZgxJG4nFaUk2wdtkQIAuWBySM49DViFipG7Iz37VSh4OF2nHNXfvj7wYHBwa2loBJcXI8s8ksPm+X1rR8O621vcLKiuVfAbvggjoPpWDcSSRDn7o46VDYXJhd4g4QPyD6GplRUoNMFKzufSfh/xZYsbUzSMjRbIrmOJR++Qcje3XkADAwCRyea9LvrdZolmTaUcAMV+YPxkPnpyOPqDXy94c1ddMkhZnDCUBLjdycZ9fUYBHuK+o9D1CPU9GxczGZuELsRgAjKYwPdTx2avhM9wPLH3UenQrtNSRnxr5QIQhCeN3tTY3hi1GOHlYS6hyRy/OPw608FssHXY6kjkY2kcH+VVLi2USBiMDIOOckg55Oetebk2MdNSpdTvxNNT948N8cWb3firV7zUSC11cSNDDGOUgVyinPYHZwO+DXCa1ZLZlZII12kYJznn29q9z8a6CuoeILjUDjZJp1t5bNhQxWRkYDPfIz+NeQeJ7lLa7msYpUCRlgyphiD259cdq/QMJWdRKR4s4KOhzyASwbgqkY5APP41mOoQkZHBxn2rVhC9AOV54HJ+tUL1Ss5Ixzz9K9Gm9bGLK3APfP9PpVRhhj61dYZJyMf0qtcA5zgjNdETCqtLjAeMcUnHtQQBxnmmsRjrV2ML6DmxwKTjH0pD607oMUB1BgAM96TvS/WkPXNA2hMjB45plOc+g/Gm0zKQhFFKRTaZA7ijoeKFPFBpFdCQdM9PrSe9MBNKCQeuKB8w4n+VNbkU45x1oHQ/Sgb1I8UlPK8U3FMzsJRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFLSUUAe8fshagbbx7qluThJdMdj9VdCP5mvsFBtTdxk18Z/sm6bd3HxIlvohi1tLKQXDHp8+FUfnz+FfXsuoGIOVwTyRxXBXaU2dlNNxQaonmWchbcSAcAHv6V8q/FK/1K01KaOS5igizjkFj+PvX0vea7sjYFRxjhcn8c4rwH4zyaVeAmZkhYBtoH3i39OKwum7GqTR4zd6hbli8+oNcls/LHGVUHHvWCHV2zjjrwalnVFmKrng+lMERB4ySOcV1xikNEwIKrjbn68f41OkuQcg/hxVZMjnGM9QTzinCTHB4wCKTQMdcsMNz9OtZ5yrBuhHSr0sisM5z6g9xVGdctnOeeprSBEje0O8lu75EMkYLrjDcAsOn4mvafA3itSlpaCENc2pUPJku3lZ+UKAeMHIPHQr7189WE7RXe0EAsNoPoe1enWEMui+XqcExcXCLFIzc43D5vY4/pXlZph4zjyvqb4WofTN3bedFFeNI5cgfMQACcdT65/mKxLpp4pmRmJDn744rF8N+JZHsHjnEaN5h/cJu+6R8z5PXBHAGRyB71eurxLu32W8hdlOSUGTx7V+bVcPLC4m9tD3qMueFiHxNaWuo+HItpWRrZzgk8JlT09eleC+KdAcXZurUeYkjDdtUgAn3PaveblXvrYpKhhikQBFHDZxndj1rhPE/h66+x5YM1urHLRkgLn1HbtX2+X4ymoqMDza1GV22eMXds1jcmFmXeOpz0yKq3yY2yYJz6VpeJtPXTbwBDuBBJJHBNZjs8sDL8uE5GK+hpu6UkcbK5+YZY8/SoZU3I3t0qTJxkHHahh3Pb0rdOxEldWM8k5pfwqWZAp3DIB61HuJ5xWpwyi07MMcdqXPSkOT1pMdKYDiwBppbPNBHT3oYYpCbYhNHOOKSimTccMCmEc06g0DkNpRzSUCghCnPenAAnk03tS0FIUjp0xS9B1pAcUh5oKuOyaay4GfWgZxS43ADPNAPUjopSMHFJTMwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9k=" alt="Sadhguru" style="width:100%;height:100%;object-fit:cover;display:block;">
       </div>
       <div style="padding:16px 18px;display:flex;flex-direction:column;gap:8px;">
-        <p style="margin:0;font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:15px;line-height:1.4;color:#18160F;">"There is no 'best' thing to do in life."<br><span style="font-size:12px;font-style:normal;color:#837C6D;">Whatever you do, doing it with everything you've got is what makes it worthwhile. —Sadhguru</span></p>
+        <p style="margin:0;font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:15px;line-height:1.4;color:#18160F;">"There is no ‘best’ thing to do in life. If you put your everything into what you are doing, it is a great thing."<br><span style="font-size:12px;font-style:normal;color:#837C6D;">—Sadhguru</span></p>
         <button type="button" onClick="{{toggleWhy}}" style="display:flex;align-items:center;gap:5px;background:transparent;border:none;padding:4px 0 0 0;">
           <span style="font-size:12.5px;font-weight:700;color:#2F6B5E;">{{whyToggleLabel}}</span>
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" style="transform:{{whyRotate}};"><path d="M5 9L12 16L19 9" stroke="#2F6B5E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -39,9 +40,9 @@
             <span style="font-family:'Fraunces',serif;font-weight:600;font-size:17px;color:#18160F;">The Importance of Sadhana</span>
             <p style="margin:0;font-size:13.5px;line-height:1.6;color:#18160F;"><span style="font-weight:700;">Sadhguru:</span> The word "sadhana" literally means a tool or an instrument. When we say "sadhana", we are not talking about any particular aspect. We are talking about using every aspect of life – both internal and external – so that it is a continuous nurturing for your life. Because the very nature of a human being is such, unless there is some dynamism, some movement in their life towards betterment within and outside of themselves, they will feel frustrated. They have to keep moving to a newer and newer possibility. Sadhana is that which facilitates that.</p>
             <p style="margin:0;font-size:13.5px;line-height:1.6;color:#18160F;">Everything can be sadhana. The way you eat, the way you sit, the way you stand, the way you breathe, the way you conduct your body, mind and your energies and emotions – this is sadhana. Sadhana does not mean any specific kind of activity; sadhana means you are using everything as a tool for your wellbeing.</p>
-            <button type="button" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:12px;border:none;background:#2F6B5E;color:#FFFFFF;font-weight:700;font-size:13.5px;">
+            <button type="button" onClick="{{openVideo}}" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:12px;border:none;background:#2F6B5E;color:#FFFFFF;font-weight:700;font-size:13.5px;opacity:{{videoButtonOpacity}};">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#FFFFFF" stroke-width="1.6"/><path d="M10 8.5L15.5 12L10 15.5V8.5Z" fill="#FFFFFF"/></svg>
-              [Watch: Sadhguru on Sadhana]
+              {{videoLabel}}
             </button>
           </div>
         </sc-if>
@@ -90,12 +91,17 @@
                   <svg width="13" height="10" viewBox="0 0 13 10" fill="none"><path d="M1 5L4.5 8.5L12 1" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </sc-if>
               </span>
-              <span style="width:44px;height:44px;flex-shrink:0;border-radius:12px;background:{{p.iconBg}};"></span>
+              <img src="{{p.image}}" alt="" style="width:44px;height:44px;flex-shrink:0;border-radius:12px;object-fit:cover;background:#E9DFC9;">
               <span style="display:flex;flex-direction:column;">
                 <span style="font-size:15px;font-weight:700;color:#18160F;">{{p.name}}</span>
                 <span style="font-size:12.5px;color:#837C6D;">{{p.duration}}</span>
               </span>
             </button>
+            <sc-if value="{{p.playable}}" hint-placeholder-val="{{false}}">
+              <button type="button" aria-label="Play {{p.name}}" style="width:38px;height:38px;flex-shrink:0;border-radius:999px;border:none;padding:0;background:rgba(47,107,94,0.12);display:flex;align-items:center;justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#2F6B5E"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </sc-if>
             <sc-if value="{{p.hasDetail}}" hint-placeholder-val="{{false}}">
               <a href="{{p.detailHref}}" aria-label="Practice details" style="text-decoration:none;width:30px;height:30px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M1 1L7 7L1 13" stroke="#837C6D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -111,6 +117,64 @@
         <sc-if value="{{noPractices}}" hint-placeholder-val="{{false}}">
           <a href="AddPractices.dc.html" style="text-decoration:none;display:block;padding:18px 0;font-size:13.5px;color:#837C6D;">No practices yet. Tap here to add some.</a>
         </sc-if>
+      </div>
+    </div>
+
+    <!-- Progress: all-time totals and a calendar of minutes practiced per day (from the Sadhana Tracker app). -->
+    <div style="display:flex;flex-direction:column;gap:12px;flex-shrink:0;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:.04em;color:#837C6D;">MY PRACTICE PROGRESS</span>
+      <div style="display:flex;gap:10px;">
+        <div style="flex:1;min-width:0;background:#F1EADA;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:2px;">
+          <span style="font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:#18160F;">{{totalDays}}</span>
+          <span style="font-size:12px;color:#837C6D;font-weight:600;white-space:nowrap;">total days</span>
+        </div>
+        <div style="flex:1;min-width:0;background:#F1EADA;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:2px;">
+          <span style="font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:#18160F;">{{streakDays}}</span>
+          <span style="font-size:12px;color:#837C6D;font-weight:600;white-space:nowrap;">day streak</span>
+        </div>
+        <div style="flex:1;min-width:0;background:#F1EADA;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:2px;">
+          <span style="font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:#18160F;">{{totalMinutes}}</span>
+          <span style="font-size:12px;color:#837C6D;font-weight:600;white-space:nowrap;">total minutes</span>
+        </div>
+      </div>
+      <div style="background:#F1EADA;border-radius:20px;padding:16px 14px 16px 10px;display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;">
+          <div style="flex-shrink:0;width:16px;margin-right:6px;">
+            <div style="height:20px;"></div>
+            <div style="display:grid;grid-template-rows:repeat(7, 24px);row-gap:4px;margin-top:6px;font-size:12px;font-weight:600;color:#18160F;">
+              <span style="display:flex;align-items:center;justify-content:center;">M</span>
+              <span style="display:flex;align-items:center;justify-content:center;">T</span>
+              <span style="display:flex;align-items:center;justify-content:center;">W</span>
+              <span style="display:flex;align-items:center;justify-content:center;">T</span>
+              <span style="display:flex;align-items:center;justify-content:center;">F</span>
+              <span style="display:flex;align-items:center;justify-content:center;">S</span>
+              <span style="display:flex;align-items:center;justify-content:center;">S</span>
+            </div>
+          </div>
+          <div data-progress style="flex:1;min-width:0;overflow-x:auto;">
+            <div style="display:flex;gap:10px;width:max-content;">
+              <sc-for list="{{months}}" as="m" hint-placeholder-count="2">
+                <div style="flex:0 0 auto;">
+                  <div style="height:20px;line-height:20px;font-size:14px;font-weight:700;color:#18160F;white-space:nowrap;">{{m.label}}</div>
+                  <div style="display:grid;grid-template-columns:repeat({{m.columns}}, 24px);grid-template-rows:repeat(7, 24px);gap:4px;margin-top:6px;">
+                    <sc-for list="{{m.cells}}" as="c" hint-placeholder-count="30">
+                      <span title="{{c.title}}" style="grid-column:{{c.col}};grid-row:{{c.row}};border-radius:6px;background:{{c.fill}};box-shadow:{{c.ring}};"></span>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding-left:6px;">
+          <span style="font-size:12px;color:#837C6D;">less</span>
+          <div style="flex:1;display:flex;gap:2px;height:10px;">
+            <sc-for list="{{shades}}" as="sh" hint-placeholder-count="12">
+              <span style="flex:1;border-radius:2px;background:{{sh.color}};"></span>
+            </sc-for>
+          </div>
+          <span style="font-size:12px;color:#837C6D;">more</span>
+        </div>
       </div>
     </div>
 
@@ -131,22 +195,118 @@
     </a>
   </div>
 
+  <!-- Practice reminders (opened from the bell). Settings live in kv 'reminders' (lib/reminders.js). -->
+  <sc-if value="{{remindersOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:flex-end;">
+      <div onClick="{{closeReminders}}" style="position:absolute;inset:0;background:rgba(24,22,15,0.28);"></div>
+      <div style="position:relative;background:#FFFFFF;border-radius:24px 24px 0 0;padding:22px 24px 28px 24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 -8px 30px rgba(24,22,15,0.12);">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <span style="font-family:'Fraunces',serif;font-weight:600;font-size:20px;color:#18160F;">Practice reminders</span>
+          <button type="button" onClick="{{closeReminders}}" aria-label="Close" style="width:30px;height:30px;flex-shrink:0;border-radius:999px;border:none;background:#F1EADA;display:flex;align-items:center;justify-content:center;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 5L19 19M19 5L5 19" stroke="#837C6D" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <sc-if value="{{permissionAsk}}" hint-placeholder-val="{{true}}">
+          <div style="background:#F1EADA;border-radius:16px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <span style="font-size:13.5px;color:#18160F;line-height:1.4;">Turn on notifications to get your reminders.</span>
+            <button type="button" onClick="{{allowNotifications}}" style="flex-shrink:0;padding:9px 14px;border-radius:12px;border:none;background:#2F6B5E;color:#FFFFFF;font-weight:700;font-size:13px;">Allow</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{permissionBlocked}}" hint-placeholder-val="{{false}}">
+          <div style="background:#F1EADA;border-radius:16px;padding:14px 16px;font-size:13.5px;color:#18160F;line-height:1.45;">{{permissionBlockedText}}</div>
+        </sc-if>
+        <sc-if value="{{permissionOn}}" hint-placeholder-val="{{false}}">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(47,107,94,0.10);border-radius:16px;padding:12px 16px;">
+            <span style="font-size:13.5px;font-weight:700;color:#2F6B5E;">Notifications are on</span>
+            <button type="button" onClick="{{testReminder}}" style="padding:4px 0;border:none;background:transparent;color:#2F6B5E;font-weight:700;font-size:13px;text-decoration:underline;">Send a test</button>
+          </div>
+        </sc-if>
+
+        <div style="display:flex;flex-direction:column;">
+          <sc-for list="{{reminderRows}}" as="r" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-top:{{r.border}};">
+              <div style="display:flex;flex-direction:column;gap:3px;">
+                <span style="font-size:15px;font-weight:700;color:#18160F;">{{r.label}}</span>
+                <!-- An invisible native time input over the time, so tapping opens the phone's time picker. -->
+                <label style="position:relative;align-self:flex-start;display:flex;align-items:center;gap:5px;">
+                  <span style="font-size:13.5px;font-weight:700;color:{{r.timeColor}};">{{r.timeLabel}}</span>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 9L12 16L19 9" stroke="{{r.timeColor}}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <input type="time" value="{{r.time}}" onInput="{{r.setTime}}" onClick="{{r.openPicker}}" aria-label="{{r.timeAria}}" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;border:none;padding:0;margin:0;">
+                </label>
+              </div>
+              <button type="button" onClick="{{r.toggle}}" aria-pressed="{{r.enabled}}" aria-label="{{r.label}}" style="width:46px;height:28px;flex-shrink:0;border-radius:999px;border:none;background:{{r.trackColor}};position:relative;padding:0;">
+                <span style="position:absolute;top:3px;left:{{r.knobPos}};width:22px;height:22px;border-radius:999px;background:#FFFFFF;transition:left .15s;"></span>
+              </button>
+            </div>
+          </sc-for>
+        </div>
+        <span style="font-size:12px;color:#837C6D;line-height:1.5;">For now, reminders arrive while the app is open. Getting them with the app closed needs a push server.</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- In-app video player (the link is set in lib/content.js: sadhanaVideo). -->
+  <sc-if value="{{videoOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:24px;background:rgba(24,22,15,0.88);">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <span style="font-family:'Fraunces',serif;font-weight:600;font-size:18px;color:#FFFFFF;">{{videoTitle}}</span>
+        <button type="button" onClick="{{closeVideo}}" aria-label="Close video" style="width:34px;height:34px;flex-shrink:0;border-radius:999px;border:none;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 5L19 19M19 5L5 19" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000000;">
+        <iframe src="{{videoSrc}}" title="{{videoTitle}}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0;"></iframe>
+      </div>
+    </div>
+  </sc-if>
+
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { whyOpen: false };
+    this.state = { whyOpen: false, videoOpen: false, remindersOpen: false };
+  }
+  componentDidMount() {
+    // The progress calendar opens scrolled to the current month (earlier months are to the left).
+    const el = document.querySelector('[data-progress]');
+    if (el) el.scrollLeft = el.scrollWidth;
   }
   renderVals() {
     const s = this.state;
     const toggleWhy = () => this.setState({ whyOpen: !s.whyOpen });
+
+    // Reminders sheet (lib/reminders.js). Turning a reminder on asks for notification permission.
+    const permission = reminders.permission();
+    const askPermission = () => reminders.requestPermission().then(() => this.forceUpdate());
+    const timeText = (t) => {
+      const [h, m] = t.split(':').map(Number);
+      return ((h % 12) || 12) + ':' + String(m).padStart(2, '0') + (h < 12 ? ' AM' : ' PM');
+    };
+    const reminderRows = reminders.list().map((r, i) => ({
+      label: r.label,
+      enabled: r.enabled,
+      time: r.time,
+      timeLabel: timeText(r.time),
+      timeAria: r.label + ' time',
+      timeColor: r.enabled ? '#2F6B5E' : '#837C6D',
+      border: i === 0 ? 'none' : '1px solid #E7DFCB',
+      trackColor: r.enabled ? '#2F6B5E' : '#E7DFCB',
+      knobPos: r.enabled ? '21px' : '3px',
+      toggle: () => {
+        reminders.update(r.id, { enabled: !r.enabled });
+        if (!r.enabled && permission === 'default') askPermission();
+      },
+      setTime: (e) => { if (e.target.value) reminders.update(r.id, { time: e.target.value }); },
+      openPicker: (e) => { try { e.target.showPicker(); } catch (err) { /* not supported: the input still works */ } },
+    }));
     const today = db.today();
 
     // My practices: the catalog in lib/content.js, filtered and ordered by what Add Practices saved.
     const ids = db.get('practices.selected', content.defaultPractices);
-    const defs = ids.map((id) => content.practices.find((p) => p.id === id)).filter(Boolean);
+    const defs = ids.map((id) => content.practice(id)).filter(Boolean);
     // Every tick is a 'practice' entry for today; streaks and Insights are computed from them.
     const doneToday = db.list('practice', { date: today });
 
@@ -156,7 +316,9 @@ class Component extends DCLogic {
       return {
         name: d.name,
         duration: d.minutes ? d.minutes + ' mins' : '',
-        iconBg: d.color,
+        image: d.image,
+        // Guided and timed practices have a play button (it doesn't play anything yet).
+        playable: d.type === 'guided' || d.type === 'timed',
         border: i === 0 ? 'none' : '1px solid #E7DFCB',
         done,
         checkBg: done ? '#2F6B5E' : '#FFFFFF',
@@ -175,6 +337,8 @@ class Component extends DCLogic {
     const totalCount = defs.length;
     const doneCount = practices.filter((p) => p.done).length;
     const streak = stats.streak();
+    const totals = stats.totals();
+    const video = content.videoEmbedUrl(content.sadhanaVideo.url);
     const r = 26;
     const circumference = 2 * Math.PI * r;
     const fraction = totalCount ? doneCount / totalCount : 0;
@@ -192,6 +356,32 @@ class Component extends DCLogic {
       whyToggleLabel: s.whyOpen ? 'Read less' : 'Read more',
       whyRotate: s.whyOpen ? 'rotate(180deg)' : 'rotate(0deg)',
       toggleWhy,
+      totalDays: totals.days,
+      streakDays: streak,
+      totalMinutes: totals.minutes,
+      months: stats.calendarMonths(),
+      shades: stats.shades.map((color) => ({ color })),
+      remindersOn: reminders.anyOn(),
+      remindersOpen: !!s.remindersOpen,
+      openReminders: () => this.setState({ remindersOpen: true }),
+      closeReminders: () => this.setState({ remindersOpen: false }),
+      permissionAsk: permission === 'default',
+      permissionOn: permission === 'granted',
+      permissionBlocked: permission === 'denied' || permission === 'unsupported',
+      permissionBlockedText: permission === 'unsupported'
+        ? 'This browser can\u2019t show notifications. On iPhone, add the app to your Home Screen first, then open it from there.'
+        : 'Notifications are blocked for this app. Turn them on in your browser or phone settings.',
+      allowNotifications: askPermission,
+      testReminder: () => reminders.test(),
+      reminderRows,
+      // The video plays inside the app once a link is set in lib/content.js (sadhanaVideo.url).
+      videoLabel: video ? 'Watch: ' + content.sadhanaVideo.title : '[Watch: Sadhguru on Sadhana]',
+      videoButtonOpacity: video ? 1 : 0.55,
+      openVideo: () => { if (video) this.setState({ videoOpen: true }); },
+      closeVideo: () => this.setState({ videoOpen: false }),
+      videoOpen: !!(video && s.videoOpen),
+      videoSrc: video || '',
+      videoTitle: content.sadhanaVideo.title,
     };
   }
 }
